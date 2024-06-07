@@ -1,0 +1,26 @@
+{
+  "name": "app-agilis",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "type:check": "vue-tsc --noEmit",
+    "lint": "eslint **/*.{ts,js,vue,html}",
+    "lint:fix": "eslint **/*.{ts,js,vue,html} --fix"
+  },
+  "dependencies": {
+    "vue": "^3.4.21",
+    "@eslint/js": "^9.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0",
+    "vue-tsc": "^2.0.6",
+    "eslint": "^8.49.0"
+  }
+}
