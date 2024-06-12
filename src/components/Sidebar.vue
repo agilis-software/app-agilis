@@ -1,42 +1,49 @@
+<script setup lang="ts">
+import { Icon } from '@iconify/vue'
+import { ref } from 'vue'
+
+const sidebarActive = ref(false)
+
+function handleSidebar() {
+  sidebarActive.value = !sidebarActive.value
+}
+</script>
+
 <template>
   <div
-    class="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-white pb-4 pt-5 w-60"
+    :class="`hidden md:flex w-8 ${
+      sidebarActive ? 'md:w-64' : 'md:w-8'
+    } md:flex-col md:fixed md:inset-y-0 transition-all absolute`"
+    @mouseover="handleSidebar"
+    @mouseout="handleSidebar"
   >
-    <div class="flex flex-shrink-0 items-center space-y-5 px-4">
-      <img
-        class="h-8 w-auto"
-        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-        alt="Your Company"
-      />
-    </div>
-    <div class="mt-5 flex flex-grow flex-col h-full">
-      <nav
-        class="flex-1 space-y-1 bg-white"
-        aria-label="Sidebar"
-      >
-        <!-- Current: "border-indigo-600 bg-indigo-50 text-indigo-600", Default: "border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->
-        <a
-          href="#"
-          class="border-indigo-600 bg-indigo-50 text-indigo-600 group flex items-center border-l-4 px-3 py-2 text-sm font-medium"
+    <div class="flex-1 flex flex-col min-h-0 bg-[#2F2C2C] relative">
+      <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+        <div
+          :class="`flex justify-end absolute ${
+            sidebarActive ? 'left-60 ml-1' : 'left-5'
+          } z-10`"
         >
-          <!-- Current: "text-indigo-500", Default: "text-gray-400 group-hover:text-gray-500" -->
-          <svg
-            class="text-indigo-500 mr-3 h-6 w-6 flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            aria-hidden="true"
+          <button
+            type="button"
+            @click="handleSidebar"
+            @mouseover="''"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+            <Icon
+              class="bg-[#8D00EE] text-white rounded-full size-5 cursor-pointer transition-all"
+              :icon="sidebarActive ? 'bx:left-arrow-alt' : 'bx:right-arrow-alt'"
             />
-          </svg>
-          Dashboard
-        </a>
-      </nav>
+
+            <div
+              v-if="sidebarActive"
+              @mouseover="handleSidebar"
+            >
+              <!-- Logo aqui -->
+              <!-- <Navbar /> -->
+            </div>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>

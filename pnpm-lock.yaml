@@ -14,6 +14,9 @@ importers:
       '@headlessui/vue':
         specifier: ^1.7.22
         version: 1.7.22(vue@3.4.27(typescript@5.4.5))
+      '@types/node':
+        specifier: ^20.14.2
+        version: 20.14.2
       vue:
         specifier: ^3.4.21
         version: 3.4.27(typescript@5.4.5)
@@ -26,7 +29,7 @@ importers:
         version: 4.1.2(vue@3.4.27(typescript@5.4.5))
       '@vitejs/plugin-vue':
         specifier: ^5.0.4
-        version: 5.0.5(vite@5.2.13)(vue@3.4.27(typescript@5.4.5))
+        version: 5.0.5(vite@5.2.13(@types/node@20.14.2))(vue@3.4.27(typescript@5.4.5))
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
@@ -44,7 +47,7 @@ importers:
         version: 5.4.5
       vite:
         specifier: ^5.2.13
-        version: 5.2.13
+        version: 5.2.13(@types/node@20.14.2)
       vue-tsc:
         specifier: ^2.0.6
         version: 2.0.19(typescript@5.4.5)
@@ -385,6 +388,9 @@ packages:
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+
+  '@types/node@20.14.2':
+    resolution: {integrity: sha512-xyu6WAMVwv6AKFLB+e/7ySZVr/0zLCzOa7rSpq6jNwpqOrUbcACDWC+53d4n2QHOnDou0fbIsg8wZu/sxrnI4Q==}
 
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
@@ -1133,6 +1139,9 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+
   update-browserslist-db@1.0.16:
     resolution: {integrity: sha512-KVbTxlBYlckhF5wgfyZXTWnMn7MMZjMu9XG8bPlliUOP9ThaF4QnhP8qrjrH7DRzHfSk0oQv1wToW+iA5GajEQ==}
     hasBin: true
@@ -1458,11 +1467,15 @@ snapshots:
 
   '@types/estree@1.0.5': {}
 
+  '@types/node@20.14.2':
+    dependencies:
+      undici-types: 5.26.5
+
   '@ungap/structured-clone@1.2.0': {}
 
-  '@vitejs/plugin-vue@5.0.5(vite@5.2.13)(vue@3.4.27(typescript@5.4.5))':
+  '@vitejs/plugin-vue@5.0.5(vite@5.2.13(@types/node@20.14.2))(vue@3.4.27(typescript@5.4.5))':
     dependencies:
-      vite: 5.2.13
+      vite: 5.2.13(@types/node@20.14.2)
       vue: 3.4.27(typescript@5.4.5)
 
   '@volar/language-core@2.2.5':
@@ -2242,6 +2255,8 @@ snapshots:
 
   typescript@5.4.5: {}
 
+  undici-types@5.26.5: {}
+
   update-browserslist-db@1.0.16(browserslist@4.23.0):
     dependencies:
       browserslist: 4.23.0
@@ -2254,12 +2269,13 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
-  vite@5.2.13:
+  vite@5.2.13(@types/node@20.14.2):
     dependencies:
       esbuild: 0.20.2
       postcss: 8.4.38
       rollup: 4.18.0
     optionalDependencies:
+      '@types/node': 20.14.2
       fsevents: 2.3.3
 
   vue-router@4.3.2(vue@3.4.27(typescript@5.4.5)):
