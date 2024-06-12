@@ -1,10 +1,10 @@
-import { RouteRecordRaw } from "vue-router"
+import type { RouteRecordRaw } from 'vue-router'
 
 interface Route {
-    path: string
-    component: any
-    children: RouteRecordRaw[]
-  }
+  path: string
+  component: any
+  children: RouteRecordRaw[]
+}
 
 export const routes: Route[] = [
     {
