@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
 import IconAgilis from '@icons/IconAgilis.vue'
+import { reactive } from 'vue'
+import router from '~/router'
 
 const credentials = reactive({
   email: '',
@@ -8,7 +9,7 @@ const credentials = reactive({
 })
 
 function handleSubmit() {
-
+  router.push('/organizations')
 }
 </script>
 
