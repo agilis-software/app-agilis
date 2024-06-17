@@ -13,7 +13,7 @@ function handleSidebar() {
   <div
     :class="`hidden md:flex w-8 ${
       sidebarActive ? 'md:w-64' : 'md:w-8'
-    } md:flex-col md:fixed md:inset-y-0 transition-all absolute`"
+    } md:flex-col md:fixed md:inset-y-0 transition-all absolute z-20`"
     @mouseover="handleSidebar"
     @mouseout="handleSidebar"
   >
@@ -22,7 +22,7 @@ function handleSidebar() {
         <div
           :class="`flex justify-end absolute ${
             sidebarActive ? 'left-60 ml-1' : 'left-5'
-          } z-10`"
+          } z-20`"
         >
           <button
             type="button"

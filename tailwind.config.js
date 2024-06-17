@@ -4,6 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        'primary-color': '#8d00ec',
         'electric-violet': {
           100: '#e8ccfb',
           200: '#d199f7',

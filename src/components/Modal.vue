@@ -6,6 +6,8 @@ import {
   TransitionChild,
   TransitionRoot,
 } from '@headlessui/vue'
+import { Icon } from '@iconify/vue'
+import Button from '~/components/Button.vue'
 
 interface Props {
   isOpen: boolean
@@ -13,6 +15,8 @@ interface Props {
 }
 
 defineProps<Props>()
+
+const emit = defineEmits(['handleClose'])
 </script>
 
 <template>
@@ -55,9 +59,18 @@ defineProps<Props>()
             >
               <DialogTitle
                 as="h3"
-                class="text-lg font-medium leading-6"
+                class="text-lg font-medium leading-6 flex justify-between"
               >
-                {{ title }}
+                <span>{{ title }}</span>
+                <Button
+                  class="size-8"
+                  @click="emit('handleClose')"
+                >
+                  <Icon
+                    class="size-8"
+                    icon="bx:x"
+                  />
+                </Button>
               </DialogTitle>
               <div class="mt-2">
                 <slot />

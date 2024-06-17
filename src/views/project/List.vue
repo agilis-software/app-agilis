@@ -67,6 +67,7 @@ function closeModal() {
     :is-open
     title="Criar projeto"
     @close="closeModal"
+    @handle-close="closeModal"
   >
     <CreateProduct />
   </Modal>
