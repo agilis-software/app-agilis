@@ -12,7 +12,7 @@ function handleSidebar() {
 <template>
   <div
     :class="`hidden md:flex w-8 ${
-      sidebarActive ? 'md:w-64' : 'md:w-8'
+      sidebarActive ? 'w-64' : 'w-8'
     } md:flex-col md:fixed md:inset-y-0 transition-all absolute z-20`"
     @mouseover="handleSidebar"
     @mouseout="handleSidebar"
@@ -20,9 +20,9 @@ function handleSidebar() {
     <div class="flex-1 flex flex-col min-h-0 bg-[#2F2C2C] relative">
       <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
         <div
-          :class="`flex justify-end absolute ${
+          :class="`transition-all flex justify-end absolute ${
             sidebarActive ? 'left-60 ml-1' : 'left-5'
-          } z-20`"
+          } z-10`"
         >
           <button
             type="button"
@@ -30,8 +30,10 @@ function handleSidebar() {
             @mouseover="''"
           >
             <Icon
-              class="bg-[#8D00EE] text-white rounded-full size-5 cursor-pointer transition-all"
-              :icon="sidebarActive ? 'bx:left-arrow-alt' : 'bx:right-arrow-alt'"
+              :class="`bg-[#8D00EE] text-white rounded-full size-5 cursor-pointer transition-transform duration-300 ${
+                sidebarActive ? 'rotate-0' : 'rotate-180'
+              }`"
+              icon="bx:left-arrow-alt"
             />
 
             <div
