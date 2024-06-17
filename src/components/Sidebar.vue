@@ -11,8 +11,8 @@ function handleSidebar() {
 
 <template>
   <div
-    :class="`hidden md:flex w-8 ${
-      sidebarActive ? 'w-64' : 'w-8'
+    :class="`hidden md:flex ${
+      sidebarActive ? 'w-64 shadow shadow-black/15' : 'w-8'
     } md:flex-col md:fixed md:inset-y-0 transition-all absolute z-20`"
     @mouseover="handleSidebar"
     @mouseout="handleSidebar"
