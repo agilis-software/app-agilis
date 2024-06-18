@@ -13,7 +13,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@icons/*": ["./src/components/icons/*"]
     },
     "jsx": "preserve",
 
