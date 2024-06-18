@@ -1,4 +1,5 @@
 import antfu from '@antfu/eslint-config'
+const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended')
 
 export default antfu({
   files: ['**/*.ts'],
@@ -46,4 +47,5 @@ export default antfu({
     'curly': 0,
     'no-console': 'warn',
   },
+  eslintPluginPrettierRecommended
 })

@@ -32,6 +32,11 @@ export const routes: Route[] = [
         name: 'projects',
         component: () => import('~/views/project/List.vue'),
       },
+      {
+        path: '/backlog',
+        name: 'backlog',
+        component: () => import('~/views/backlog/List.vue'),
+      },
     ],
   },
 ]
