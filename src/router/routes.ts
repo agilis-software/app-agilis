@@ -11,7 +11,7 @@ export const routes: RouteStyle[] = [
   {
     path: '',
     component: () => import('~/layouts/AuthLayout.vue'),
-    redirect: '',
+    redirect: '/login',
     children: [
       {
         path: '/login',
@@ -28,7 +28,7 @@ export const routes: RouteStyle[] = [
   {
     path: '',
     component: () => import('~/layouts/AppLayout.vue'),
-    redirect: '',
+    redirect: '/login',
     children: [
       {
         path: '/projects',
@@ -39,7 +39,7 @@ export const routes: RouteStyle[] = [
   },
   {
     path: '/organizations',
-    redirect: '',
+    redirect: '/login',
     component: () => import('~/views/organization/List.vue'),
   },
 ]
