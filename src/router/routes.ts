@@ -1,15 +1,17 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-interface Route {
+interface RouteStyle {
   path: string
   component: any
+  redirect: string
   children?: RouteRecordRaw[]
 }
 
-export const routes: Route[] = [
+export const routes: RouteStyle[] = [
   {
     path: '',
     component: () => import('~/layouts/AuthLayout.vue'),
+    redirect: '',
     children: [
       {
         path: '/login',
@@ -26,6 +28,7 @@ export const routes: Route[] = [
   {
     path: '',
     component: () => import('~/layouts/AppLayout.vue'),
+    redirect: '',
     children: [
       {
         path: '/projects',
@@ -36,6 +39,7 @@ export const routes: Route[] = [
   },
   {
     path: '/organizations',
+    redirect: '',
     component: () => import('~/views/organization/List.vue'),
   },
 ]
