@@ -2,6 +2,7 @@
 import Search from '~/components/Search.vue'
 import TaskRow from '~/components/TaskRow.vue'
 import { Icon } from '@iconify/vue'
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 </script>
 
 <template>
@@ -20,15 +21,19 @@ import { Icon } from '@iconify/vue'
         <Search />
       </div>
 
-      <div class="w-full h-80 bg-[#2C2A2A] rounded-lg mt-10 p-4 text-white">
-        <div class="flex items-center mb-3">
+      <Disclosure
+        class="w-full bg-[#2C2A2A] rounded-lg mt-10 p-4 text-white"
+        as="div"
+        v-slot="{ open }"
+      >
+        <DisclosureButton class="flex items-center mb-3 w-full">
           <Icon
-            class="size-8"
+            :class="[open && 'rotate-180 transform', 'size-8 transition-transform']"
             icon="bx:chevron-down"
           />
           <span class="text-xl"> Quadro </span>
-        </div>
-        <div class="px-6 flex flex-col gap-y-4">
+        </DisclosureButton>
+        <DisclosurePanel class="px-6 flex flex-col gap-y-4">
           <TaskRow
             taskId="PI-2"
             title="Teste de uma tarefa aqui"
@@ -39,18 +44,22 @@ import { Icon } from '@iconify/vue'
             title="Teste de uma tarefa aqui"
             image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
           />
-        </div>
-      </div>
+        </DisclosurePanel>
+      </Disclosure>
 
-      <div class="w-full h-80 bg-[#2C2A2A] rounded-lg mt-10 p-4 text-white">
-        <div class="flex items-center mb-3">
+      <Disclosure
+        class="w-full bg-[#2C2A2A] rounded-lg mt-10 p-4 text-white"
+        as="div"
+        v-slot="{ open }"
+      >
+        <DisclosureButton class="flex items-center mb-3 w-full">
           <Icon
-            class="size-8"
+            :class="[open && 'rotate-180 transform', 'size-8 transition-transform']"
             icon="bx:chevron-down"
           />
           <span class="text-xl"> Backlog </span>
-        </div>
-        <div class="px-6 flex flex-col gap-y-4">
+        </DisclosureButton>
+        <DisclosurePanel class="px-6 flex flex-col gap-y-4">
           <TaskRow
             taskId="PI-2"
             title="Teste de uma tarefa aqui"
@@ -61,8 +70,8 @@ import { Icon } from '@iconify/vue'
             title="Teste de uma tarefa aqui"
             image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
           />
-        </div>
-      </div>
+        </DisclosurePanel>
+      </Disclosure>
     </div>
   </div>
 </template>
