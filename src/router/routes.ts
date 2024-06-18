@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 interface Route {
   path: string
   component: any
-  children: RouteRecordRaw[]
+  children?: RouteRecordRaw[]
 }
 
 export const routes: Route[] = [
@@ -38,5 +38,9 @@ export const routes: Route[] = [
         component: () => import('~/views/backlog/List.vue'),
       },
     ],
+  },
+  {
+    path: '/organizations',
+    component: () => import('~/views/organization/List.vue'),
   },
 ]
