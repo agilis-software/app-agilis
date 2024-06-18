@@ -23,10 +23,18 @@ defineProps<Props>()
 
     <div class="flex gap-x-8">
       <select class="bg-[#505050] px-3 py-1 rounded w-32" name="status">
-        <option value="backlog">Backlog</option>
-        <option value="to-do">To-Do</option>
-        <option value="doing">Doing</option>
-        <option value="done">Done</option>
+        <option value="backlog">
+          Backlog
+        </option>
+        <option value="to-do">
+          To-Do
+        </option>
+        <option value="doing">
+          Doing
+        </option>
+        <option value="done">
+          Done
+        </option>
       </select>
 
       <div class="flex items-end justify-end">
@@ -34,7 +42,7 @@ defineProps<Props>()
           :src="imageSource"
           alt="task-collaborator-image"
           class="size-8 rounded-full"
-        />
+        >
       </div>
     </div>
   </div>
