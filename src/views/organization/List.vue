@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { ref } from 'vue'
+import Modal from '~/components/Modal.vue'
 import OrganizationCard from '~/components/OrganizationCard.vue'
 import IconAgilis from '~/components/icons/IconAgilis.vue'
+import CreateOrganization from '~/views/organization/Create.vue'
 
 interface Organization {
   title: string
@@ -26,6 +29,16 @@ const organizations: Organization[] = [
     createdAt: new Date('2024/03/30'),
   },
 ]
+
+const isOpen = ref(false)
+
+function openModal() {
+  isOpen.value = true
+}
+
+function closeModal() {
+  isOpen.value = false
+}
 </script>
 
 <template>
@@ -48,22 +61,23 @@ const organizations: Organization[] = [
       </div>
     </div>
 
-    <div class="ml-8 pl-8">
+    <div class="md:ml-8 md:pl-8">
       <main class="w-full p-12">
-        <div class="flex justify-between flex-col md:flex-row">
+        <div class="flex justify-between flex-col md:flex-row items-center sm:items-start">
           <h1 class="text-white font-semibold text-4xl">
             Suas Organizações
           </h1>
           <button
             class="bg-electric-violet-600 flex justify-center items-center px-4 py-2 text-white font-medium rounded-md w-fit my-2 md:my-0"
+            @click="openModal"
           >
             Nova
           </button>
         </div>
 
-        <div class="my-8 flex flex-wrap flex-row gap-8">
+        <div class="my-8 flex justify-center items-center flex-wrap flex-col gap-8 sm:flex-row sm:justify-start sm:items-start">
           <template
-            v-for="(organization) in organizations"
+            v-for="organization in organizations"
             :key="organization.title"
           >
             <OrganizationCard :organization="organization" />
@@ -72,4 +86,12 @@ const organizations: Organization[] = [
       </main>
     </div>
   </div>
+  <Modal
+    :is-open
+    title="Nova organização"
+    @close="closeModal"
+    @handle-close="closeModal"
+  >
+    <CreateOrganization />
+  </Modal>
 </template>
