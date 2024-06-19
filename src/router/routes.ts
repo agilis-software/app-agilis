@@ -33,6 +33,11 @@ export const routes: Route[] = [
         component: () => import('~/views/project/List.vue'),
       },
       {
+        path: '/projects/:id/chats/:chatId',
+        name: 'chat',
+        component: () => import('~/views/project/Chat.vue'),
+      },
+      {
         path: '/backlog',
         name: 'backlog',
         component: () => import('~/views/backlog/List.vue'),

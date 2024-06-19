@@ -7,7 +7,7 @@ import Sidebar from '~/components/Sidebar.vue'
     <div>
       <Sidebar />
     </div>
-    <div class="ml-8 p-8 w-full">
+    <div class="md:ml-8 py-8 px-16 w-full">
       <RouterView />
     </div>
   </div>
