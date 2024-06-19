@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import OrganizationCard from '~/components/organization/OrganizationCard.vue'
+import OrganizationCard from '~/components/OrganizationCard.vue'
 import IconAgilis from '~/components/icons/IconAgilis.vue'
 
 interface Organization {
