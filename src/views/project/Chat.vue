@@ -47,24 +47,21 @@ const messages = ref(messageList)
         </div>
 
         <div class="flex flex-col justify-start gap-4 px-2">
-          <template
-            v-for="(message, index) in messages"
-            :key="index"
+          <div
+            v-for="(message, i) in messages"
+            :key="i"
+            :class="{
+              'self-end': message.author.id === userId,
+              'self-start': message.author.id !== userId,
+            }"
           >
-            <div
-              :class="{
-                'self-end': message.author.id === userId,
-                'self-start': message.author.id !== userId,
-              }"
-            >
-              <MessageCard
-                :author="message.author"
-                :created-at="message.createdAt"
-                :text="message.text"
-                :current-user="message.author.id === userId"
-              />
-            </div>
-          </template>
+            <MessageCard
+              :author="message.author"
+              :created-at="message.createdAt"
+              :text="message.text"
+              :current-user="message.author.id === userId"
+            />
+          </div>
         </div>
       </div>
     </div>

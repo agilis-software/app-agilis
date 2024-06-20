@@ -86,7 +86,7 @@ const members = ref(projectMemberList)
         </h2>
       </div>
       <div class="px-2 flex flex-col gap-2">
-        <template
+        <div
           v-for="(chat, index) in chats"
           :key="index"
         >
@@ -101,7 +101,7 @@ const members = ref(projectMemberList)
               </p>
             </div>
           </RouterLink>
-        </template>
+        </div>
       </div>
     </div>
 
@@ -116,7 +116,7 @@ const members = ref(projectMemberList)
         </h2>
       </div>
       <div class="px-2 flex flex-col gap-2">
-        <template
+        <div
           v-for="(member, index) in members"
           :key="index"
         >
@@ -140,7 +140,7 @@ const members = ref(projectMemberList)
               </div>
             </div>
           </RouterLink>
-        </template>
+        </div>
       </div>
     </div>
 
