@@ -44,7 +44,7 @@ function closeModal() {
         <RouterLink
           v-for="(project, index) in projectCardList"
           :key="index"
-          to="backlog"
+          to="kanban"
         >
           <ProjectCard
             :title="project.title"
@@ -60,9 +60,9 @@ function closeModal() {
       </div>
       <div class="flex py-5">
         <TaskCard
-          title="Fazer protótipo"
+          title="Desenvolver Aplicação"
           date="01/06/2024"
-          task-id="PI-1"
+          task-id="PI-2"
           image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
         />
       </div>

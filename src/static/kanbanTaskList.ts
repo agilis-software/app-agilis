@@ -18,7 +18,7 @@ export const doingTasks = [
     title: 'Escrever documentação',
     date: '01/06/2024',
     taskId: 'PI-3',
-    imageSource: 'https://avatars.githubusercontent.com/u/83726062?v=4',
+    imageSource: 'https://avatars.githubusercontent.com/u/101351852?v=4',
   },
 ]
 
@@ -27,6 +27,6 @@ export const doneTasks = [
     title: 'Fazer protótipo',
     date: '30/04/2024',
     taskId: 'PI-1',
-    imageSource: 'https://avatars.githubusercontent.com/u/83726062?v=4',
+    imageSource: 'https://avatars.githubusercontent.com/u/92488096?v=4',
   },
 ]
