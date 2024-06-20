@@ -37,13 +37,13 @@ import TaskRow from '~/components/TaskRow.vue'
         </DisclosureButton>
         <DisclosurePanel class="px-6 flex flex-col gap-y-4">
           <TaskRow
-            task-id="PI-2"
-            title="Teste de uma tarefa aqui"
+            task-id="PI-3"
+            title="Desenvolver Aplicação"
             image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
           />
           <TaskRow
-            task-id="PI-2"
-            title="Teste de uma tarefa aqui"
+            task-id="PI-5"
+            title="Fazer Deploy"
             image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
           />
         </DisclosurePanel>
@@ -63,13 +63,13 @@ import TaskRow from '~/components/TaskRow.vue'
         </DisclosureButton>
         <DisclosurePanel class="px-6 flex flex-col gap-y-4">
           <TaskRow
-            task-id="PI-2"
-            title="Teste de uma tarefa aqui"
+            task-id="PI-4"
+            title="Fazer Modelagem"
             image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
           />
           <TaskRow
-            task-id="PI-2"
-            title="Teste de uma tarefa aqui"
+            task-id="PI-6"
+            title="Desenvolver API"
             image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
           />
         </DisclosurePanel>
