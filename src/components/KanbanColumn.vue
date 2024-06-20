@@ -7,7 +7,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="bg-[#2C2A2A] w-72 rounded-lg p-5 h-fit">
+  <div class="bg-[#2C2A2A] w-68 rounded-lg p-5 h-fit">
     <div class="text-xl font-bold">
       {{ title }}
     </div>
