@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import Button from '~/components/Button.vue'
 import Modal from '~/components/Modal.vue'
 import ProjectCard from '~/components/ProjectCard.vue'
@@ -40,12 +41,16 @@ function closeModal() {
         </Button>
       </div>
       <div class="flex justify-start gap-x-8 py-5">
-        <ProjectCard
+        <RouterLink
           v-for="(project, index) in projectCardList"
           :key="index"
-          :title="project.title"
-          :description="project.description"
-        />
+          to="backlog"
+        >
+          <ProjectCard
+            :title="project.title"
+            :description="project.description"
+          />
+        </RouterLink>
       </div>
       <div class="flex flex-col justify-start gap-y-4">
         <hr class="w-full border border-[#2F2C2C]">
