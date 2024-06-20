@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
-
 const { currentUser, author, text, createdAt } = defineProps<{
   currentUser: boolean
   author: {

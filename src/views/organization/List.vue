@@ -1,34 +1,14 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import Modal from '~/components/Modal.vue'
 import OrganizationCard from '~/components/OrganizationCard.vue'
 import IconAgilis from '~/components/icons/IconAgilis.vue'
+import { organizationList } from '~/static/organizationList'
 import CreateOrganization from '~/views/organization/Create.vue'
 
-interface Organization {
-  title: string
-  description: string
-  createdAt: Date
-}
-
-const organizations: Organization[] = [
-  {
-    title: 'Fatec Jahu',
-    description: 'Instituição de Ensino - Faculdade de Tecnologia',
-    createdAt: new Date('2024/03/20'),
-  },
-  {
-    title: 'Agilis Software',
-    description: 'Criadora do Agilis, software de gestão de tarefas',
-    createdAt: new Date('2024/03/30'),
-  },
-  {
-    title: 'Freelances',
-    description: 'Organização de projetos pessoais',
-    createdAt: new Date('2024/03/30'),
-  },
-]
+const organizations = ref(organizationList)
 
 const isOpen = ref(false)
 
@@ -76,12 +56,13 @@ function closeModal() {
         </div>
 
         <div class="my-8 flex justify-center items-center flex-wrap flex-col gap-8 sm:flex-row sm:justify-start sm:items-start">
-          <template
+          <RouterLink
             v-for="organization in organizations"
             :key="organization.title"
+            to="/projects"
           >
             <OrganizationCard :organization="organization" />
-          </template>
+          </RouterLink>
         </div>
       </main>
     </div>
