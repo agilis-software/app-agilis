@@ -1,8 +1,21 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import Search from '~/components/Search.vue'
 import TaskRow from '~/components/TaskRow.vue'
+import Modal from '~/components/Modal.vue'
+import CreateTask from '~/views/task/Create.vue'
+
+const isOpen = ref(false)
+
+function openModal() {
+  isOpen.value = true
+}
+
+function closeModal() {
+  isOpen.value = false
+}
 </script>
 
 <template>
@@ -30,7 +43,8 @@ import TaskRow from '~/components/TaskRow.vue'
       >
         <DisclosureButton class="flex items-center mb-3 w-full">
           <Icon
-            class="size-8 transition-transform" :class="[open && 'rotate-180 transform']"
+            class="size-8 transition-transform"
+            :class="[open && 'rotate-180 transform']"
             icon="bx:chevron-down"
           />
           <span class="text-xl"> Quadro </span>
@@ -56,24 +70,47 @@ import TaskRow from '~/components/TaskRow.vue'
       >
         <DisclosureButton class="flex items-center mb-3 w-full">
           <Icon
-            class="size-8 transition-transform" :class="[open && 'rotate-180 transform']"
+            class="size-8 transition-transform"
+            :class="[open && 'rotate-180 transform']"
             icon="bx:chevron-down"
           />
           <span class="text-xl"> Backlog </span>
         </DisclosureButton>
         <DisclosurePanel class="px-6 flex flex-col gap-y-4">
-          <TaskRow
-            task-id="PI-4"
-            title="Fazer Modelagem"
-            image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
-          />
-          <TaskRow
-            task-id="PI-6"
-            title="Desenvolver API"
-            image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
-          />
+          <div class="flex flex-col gap-y-4">
+            <TaskRow
+              task-id="PI-4"
+              title="Fazer Modelagem"
+              image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
+            />
+            <TaskRow
+              task-id="PI-6"
+              title="Desenvolver API"
+              image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
+            />
+          </div>
+          <div class="pt-4 -ml-3">
+            <Button
+              class="flex items-center justify-start"
+              @click="openModal"
+            >
+              <Icon
+                icon="bx:plus"
+                class="size-6 cursor-pointer"
+              />
+              <span class="text-lg"> Nova Tarefa </span>
+            </Button>
+          </div>
         </DisclosurePanel>
       </Disclosure>
     </div>
   </div>
+  <Modal
+    :is-open
+    title="Criar tarefa"
+    @close="closeModal"
+    @handle-close="closeModal"
+  >
+    <CreateTask />
+  </Modal>
 </template>
