@@ -22,7 +22,7 @@ function handleSidebar() {
       class="flex-1 flex flex-col min-h-0 bg-[#2F2C2C] relative items-center"
     >
       <div
-        class="p-2 transition-all transform"
+        class="p-2 transition-all transform h-full"
         :class="{ 'opacity-0 -translate-x-12': !sidebarActive, 'opacity-100 duration-200': sidebarActive }"
       >
         <Navbar />

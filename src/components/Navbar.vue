@@ -1,67 +1,21 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { computed, ref } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
+import { chatList } from '~/static/chatList'
+import { projectMemberList } from '~/static/projectMemberList'
 
-const chats = ref([
-  {
-    id: 1,
-    name: 'Geral',
-    canAccess: true,
-  },
-  {
-    id: 2,
-    name: 'Time Dev',
-    canAccess: true,
-  },
-  {
-    id: 3,
-    name: 'Time Produto',
-    canAccess: false,
-  },
-])
+const route = useRoute()
 
-const members = ref([
-  {
-    id: 1,
-    name: 'Bianca Morais',
-    icon: new URL('~/assets/img/bianca.jpg', import.meta.url).href,
-    chatId: 4,
-    messages: 0,
-  },
-  {
-    id: 2,
-    name: 'Eduardo Frasson',
-    icon: new URL('~/assets/img/eduardo.jpg', import.meta.url).href,
-    chatId: 5,
-    messages: 9,
-  },
-  {
-    id: 3,
-    name: 'Leonardo Luzetti',
-    icon: new URL('~/assets/img/leonardo.jpg', import.meta.url).href,
-    chatId: 6,
-    messages: 0,
-  },
-  {
-    id: 4,
-    name: 'Lucas Alencar',
-    icon: new URL('~/assets/img/lucas.jpg', import.meta.url).href,
-    chatId: 7,
-    messages: 0,
-  },
-  {
-    id: 5,
-    name: 'Victor Vendrameto',
-    icon: new URL('~/assets/img/victor.jpg', import.meta.url).href,
-    chatId: 8,
-    messages: 0,
-  },
-])
+const routePath = computed(() => route.path)
+
+const chats = ref(chatList)
+
+const members = ref(projectMemberList)
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-4 h-full">
     <RouterLink to="/organizations">
       <div class="flex justify-center items-center">
         <Icon
@@ -74,13 +28,25 @@ const members = ref([
       </div>
     </RouterLink>
 
-    <div class="flex justify-center items-center my-6">
+    <div
+      class="relative flex justify-center items-center my-6 border-b-electric-violet-500"
+      :class="{ 'border-b-2 py-8': routePath === '/projects' }"
+    >
+      <div
+        v-if="routePath === '/projects'"
+        class="absolute inset-0"
+      >
+        <Icon
+          icon="mdi:bell"
+          class="size-6 text-electric-violet-400"
+        />
+      </div>
       <h1 class="text-xl text-white font-semibold">
-        Projeto Integrador
+        {{ routePath === '/projects' ? 'Fatec Jahu' : 'Projeto Integrador' }}
       </h1>
     </div>
 
-    <div>
+    <div v-if="routePath !== '/projects'">
       <div
         class="border-y-2 border-y-electric-violet-500 flex flex-col justify-start items-start p-4 gap-4"
       >
@@ -95,7 +61,7 @@ const members = ref([
             </p>
           </div>
         </RouterLink>
-        <RouterLink to="/board">
+        <RouterLink to="/kanban">
           <div class="flex justify-start items-center gap-2">
             <Icon
               icon="bi:kanban"
@@ -109,7 +75,7 @@ const members = ref([
       </div>
     </div>
 
-    <div>
+    <div v-if="routePath !== '/projects'">
       <div class="flex items-center my-3 gap-2">
         <Icon
           icon="tdesign:chat-double"
@@ -175,6 +141,18 @@ const members = ref([
             </div>
           </RouterLink>
         </template>
+      </div>
+    </div>
+
+    <div v-if="routePath === '/projects'" class="absolute bottom-0 w-full">
+      <div class="flex justify-center items-center gap-2 w-fit">
+        <Icon
+          icon="mdi:gear"
+          class="size-6 text-electric-violet-400"
+        />
+        <p class="text-white font-semibold">
+          Configurações
+        </p>
       </div>
     </div>
   </div>
