@@ -1,13 +1,13 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-interface Route {
+interface RouteStyle {
   path: string
   component: any
   redirect: Record<'name', string> | string
   children?: RouteRecordRaw[]
 }
 
-export const routes: Route[] = [
+export const routes: RouteStyle[] = [
   {
     path: '',
     component: () => import('~/layouts/AuthLayout.vue'),
