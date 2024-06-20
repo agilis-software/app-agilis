@@ -42,6 +42,11 @@ export const routes: Route[] = [
         name: 'backlog',
         component: () => import('~/views/backlog/List.vue'),
       },
+      {
+        path: '/kanban',
+        name: 'kanban',
+        component: () => import('~/views/kanban/List.vue'),
+      },
     ],
   },
   {
