@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 interface Route {
   path: string
   component: any
+  redirect: Record<'name', string> | string
   children?: RouteRecordRaw[]
 }
 
@@ -10,6 +11,7 @@ export const routes: Route[] = [
   {
     path: '',
     component: () => import('~/layouts/AuthLayout.vue'),
+    redirect: { name: 'login' },
     children: [
       {
         path: '/login',
@@ -26,6 +28,7 @@ export const routes: Route[] = [
   {
     path: '',
     component: () => import('~/layouts/AppLayout.vue'),
+    redirect: { name: 'projects' },
     children: [
       {
         path: '/projects',
@@ -51,6 +54,7 @@ export const routes: Route[] = [
   },
   {
     path: '/organizations',
+    redirect: '',
     component: () => import('~/views/organization/List.vue'),
   },
 ]
