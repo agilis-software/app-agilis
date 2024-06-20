@@ -5,7 +5,7 @@ import Modal from '~/components/Modal.vue'
 import ProjectCard from '~/components/ProjectCard.vue'
 import TaskCard from '~/components/TaskCard.vue'
 import { projectCardList } from '~/static/projectCardList'
-import CreateProduct from '~/views/project/Create.vue'
+import CreateProject from '~/views/project/Create.vue'
 
 const isOpen = ref(false)
 
@@ -69,6 +69,6 @@ function closeModal() {
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateProduct />
+    <CreateProject />
   </Modal>
 </template>

@@ -59,7 +59,7 @@ const emit = defineEmits(['handleClose'])
             >
               <DialogTitle
                 as="h3"
-                class="text-lg font-medium leading-6 flex justify-between"
+                class="text-lg font-medium leading-6 flex justify-between items-center"
               >
                 <span>{{ title }}</span>
                 <Button
@@ -67,7 +67,7 @@ const emit = defineEmits(['handleClose'])
                   @click="emit('handleClose')"
                 >
                   <Icon
-                    class="size-8"
+                    class="size-8 -ml-2 -mt-2"
                     icon="bx:x"
                   />
                 </Button>
