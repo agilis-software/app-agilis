@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 interface RouteStyle {
   path: string
   component: any
-  redirect: string
+  redirect: Record<'name', string> | string
   children?: RouteRecordRaw[]
 }
 
@@ -11,7 +11,7 @@ export const routes: RouteStyle[] = [
   {
     path: '',
     component: () => import('~/layouts/AuthLayout.vue'),
-    redirect: '/login',
+    redirect: { name: 'login' },
     children: [
       {
         path: '/login',
@@ -28,18 +28,33 @@ export const routes: RouteStyle[] = [
   {
     path: '',
     component: () => import('~/layouts/AppLayout.vue'),
-    redirect: '/login',
+    redirect: { name: 'projects' },
     children: [
       {
         path: '/projects',
         name: 'projects',
         component: () => import('~/views/project/List.vue'),
       },
+      {
+        path: '/projects/:id/chats/:chatId',
+        name: 'chat',
+        component: () => import('~/views/project/Chat.vue'),
+      },
+      {
+        path: '/backlog',
+        name: 'backlog',
+        component: () => import('~/views/backlog/List.vue'),
+      },
+      {
+        path: '/kanban',
+        name: 'kanban',
+        component: () => import('~/views/kanban/List.vue'),
+      },
     ],
   },
   {
     path: '/organizations',
-    redirect: '/login',
+    redirect: '',
     component: () => import('~/views/organization/List.vue'),
   },
 ]

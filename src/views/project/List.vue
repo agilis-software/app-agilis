@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import Button from '~/components/Button.vue'
 import Modal from '~/components/Modal.vue'
 import ProjectCard from '~/components/ProjectCard.vue'
 import TaskCard from '~/components/TaskCard.vue'
 import { projectCardList } from '~/static/projectCardList'
-import CreateProduct from '~/views/project/Create.vue'
+import CreateProject from '~/views/project/Create.vue'
 
 const isOpen = ref(false)
 
@@ -40,12 +41,16 @@ function closeModal() {
         </Button>
       </div>
       <div class="flex justify-start gap-x-8 py-5">
-        <ProjectCard
+        <RouterLink
           v-for="(project, index) in projectCardList"
           :key="index"
-          :title="project.title"
-          :description="project.description"
-        />
+          to="kanban"
+        >
+          <ProjectCard
+            :title="project.title"
+            :description="project.description"
+          />
+        </RouterLink>
       </div>
       <div class="flex flex-col justify-start gap-y-4">
         <hr class="w-full border border-[#2F2C2C]">
@@ -55,9 +60,9 @@ function closeModal() {
       </div>
       <div class="flex py-5">
         <TaskCard
-          title="Fazer protótipo"
+          title="Desenvolver Aplicação"
           date="01/06/2024"
-          task-id="PI-1"
+          task-id="PI-2"
           image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
         />
       </div>
@@ -69,6 +74,6 @@ function closeModal() {
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateProduct />
+    <CreateProject />
   </Modal>
 </template>
