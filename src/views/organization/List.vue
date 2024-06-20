@@ -5,10 +5,13 @@ import { RouterLink } from 'vue-router'
 import Modal from '~/components/Modal.vue'
 import OrganizationCard from '~/components/OrganizationCard.vue'
 import IconAgilis from '~/components/icons/IconAgilis.vue'
+import router from '~/router'
 import { organizationList } from '~/static/organizationList'
+import { useAuthStore } from '~/stores/auth'
 import CreateOrganization from '~/views/organization/Create.vue'
 
 const organizations = ref(organizationList)
+const authStore = useAuthStore()
 
 const isOpen = ref(false)
 
@@ -18,6 +21,13 @@ function openModal() {
 
 function closeModal() {
   isOpen.value = false
+}
+
+function handleLogout() {
+  authStore.setLoggedIn(false)
+  authStore.setUserId(null)
+
+  router.push({ name: 'login' })
 }
 </script>
 
@@ -33,20 +43,22 @@ function closeModal() {
             :size="32"
           />
 
-          <Icon
-            icon="bx:user-circle"
-            class="size-10 text-white"
-          />
+          <button @click="handleLogout">
+            <Icon
+              icon="material-symbols:logout"
+              class="size-10 text-white"
+            />
+          </button>
         </div>
       </div>
     </div>
 
     <div class="md:ml-8 md:pl-8">
       <main class="w-full p-12">
-        <div class="flex justify-between flex-col md:flex-row items-center sm:items-start">
-          <h1 class="text-white font-semibold text-4xl">
-            Suas Organizações
-          </h1>
+        <div
+          class="flex justify-between flex-col md:flex-row items-center sm:items-start"
+        >
+          <h1 class="text-white font-semibold text-4xl">Suas Organizações</h1>
           <button
             class="bg-electric-violet-600 flex justify-center items-center px-4 py-2 text-white font-medium rounded-md w-fit my-2 md:my-0"
             @click="openModal"
@@ -55,7 +67,9 @@ function closeModal() {
           </button>
         </div>
 
-        <div class="my-8 flex justify-center items-center flex-wrap flex-col gap-8 sm:flex-row sm:justify-start sm:items-start">
+        <div
+          class="my-8 flex justify-center items-center flex-wrap flex-col gap-8 sm:flex-row sm:justify-start sm:items-start"
+        >
           <RouterLink
             v-for="organization in organizations"
             :key="organization.title"

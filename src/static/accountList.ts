@@ -1,0 +1,42 @@
+export const accountList = [
+  {
+    id: 1,
+    avatarUrl: new URL('~/assets/img/eduardo.jpg', import.meta.url).href,
+    name: 'Eduardo Frasson Domine',
+    online: true,
+    email: 'eduardo.frasson@agilis.com',
+    password: 'eduardo123',
+  },
+  {
+    id: 2,
+    avatarUrl: new URL('~/assets/img/leonardo.jpg', import.meta.url).href,
+    name: 'Leonardo Luzetti',
+    online: true,
+    email: 'leonardo.luzetti@agilis.com',
+    password: 'leonardo123',
+  },
+  {
+    id: 3,
+    avatarUrl: new URL('~/assets/img/victor.jpg', import.meta.url).href,
+    name: 'Victor Vendrameto',
+    online: true,
+    email: 'victor.vendrameto@agilis.com',
+    password: 'victor123',
+  },
+  {
+    id: 4,
+    avatarUrl: new URL('~/assets/img/lucas.jpg', import.meta.url).href,
+    name: 'Lucas Alencar',
+    online: true,
+    email: 'lucas.alencar@agilis.com',
+    password: 'lucas123',
+  },
+  {
+    id: 5,
+    avatarUrl: new URL('~/assets/img/bianca.jpg', import.meta.url).href,
+    name: 'Bianca Morais',
+    online: true,
+    email: 'bianca.morais@agilis.com',
+    password: 'bianca123',
+  },
+]

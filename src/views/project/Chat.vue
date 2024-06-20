@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import MessageCard from '~/components/MessageCard.vue'
 import { messageList } from '~/static/messageList'
+import { useAuthStore } from '~/stores/auth'
 
 const messageContainer = ref<HTMLDivElement | null>(null)
 
@@ -13,7 +14,9 @@ onMounted(() => {
   }
 })
 
-const userId = ref(5)
+const auth = useAuthStore()
+
+const userId = Number(auth.userId)
 
 const messages = ref(messageList)
 </script>

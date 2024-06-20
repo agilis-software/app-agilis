@@ -2,6 +2,10 @@
 import IconAgilis from '@icons/IconAgilis.vue'
 import { reactive } from 'vue'
 import router from '~/router'
+import { accountList } from '~/static/accountList'
+import { useAuthStore } from '~/stores/auth'
+
+const authStore = useAuthStore()
 
 const credentials = reactive({
   email: '',
@@ -9,7 +13,18 @@ const credentials = reactive({
 })
 
 function handleSubmit() {
-  router.push('/organizations')
+  const account = accountList.find((acc) => {
+    return (
+      acc.email === credentials.email && acc.password === credentials.password
+    )
+  })
+
+  if (account) {
+    authStore.setLoggedIn(true)
+    authStore.setUserId(`${account.id}`)
+
+    router.push('/organizations')
+  }
 }
 </script>
 

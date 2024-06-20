@@ -1,10 +1,34 @@
 import type { RouteRecordRaw } from 'vue-router'
+import { useAuthStore } from '~/stores/auth'
 
 interface Route {
   path: string
-  component: any
+  component?: any
   redirect: Record<'name', string> | string
   children?: RouteRecordRaw[]
+}
+
+const middlewares = {
+  redirectToLogin: (to: any, from: any, next: any) => {
+    const auth = useAuthStore()
+
+    if (auth.isLogged) {
+      next()
+    }
+    else {
+      next({ name: 'login' })
+    }
+  },
+  redirectToOrganizations: (to: any, from: any, next: any) => {
+    const auth = useAuthStore()
+
+    if (auth.isLogged) {
+      next('/organizations')
+    }
+    else {
+      next()
+    }
+  },
 }
 
 export const routes: Route[] = [
@@ -17,11 +41,13 @@ export const routes: Route[] = [
         path: '/login',
         name: 'login',
         component: () => import('~/views/auth/Login.vue'),
+        beforeEnter: middlewares.redirectToOrganizations,
       },
       {
         path: '/register',
         name: 'register',
         component: () => import('~/views/auth/Register.vue'),
+        beforeEnter: middlewares.redirectToOrganizations,
       },
     ],
   },
@@ -34,27 +60,37 @@ export const routes: Route[] = [
         path: '/projects',
         name: 'projects',
         component: () => import('~/views/project/List.vue'),
+        beforeEnter: middlewares.redirectToLogin,
       },
       {
         path: '/projects/:id/chats/:chatId',
         name: 'chat',
         component: () => import('~/views/project/Chat.vue'),
+        beforeEnter: middlewares.redirectToLogin,
       },
       {
         path: '/backlog',
         name: 'backlog',
         component: () => import('~/views/backlog/List.vue'),
+        beforeEnter: middlewares.redirectToLogin,
       },
       {
         path: '/kanban',
         name: 'kanban',
         component: () => import('~/views/kanban/List.vue'),
+        beforeEnter: middlewares.redirectToLogin,
       },
     ],
   },
   {
-    path: '/organizations',
+    path: '',
     redirect: '',
-    component: () => import('~/views/organization/List.vue'),
+    children: [
+      {
+        path: 'organizations',
+        component: () => import('~/views/organization/List.vue'),
+        beforeEnter: middlewares.redirectToLogin,
+      },
+    ],
   },
 ]
