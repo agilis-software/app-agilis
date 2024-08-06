@@ -11,9 +11,7 @@ defineProps<{
 </script>
 
 <template>
-  <div
-    class="bg-eerie-black-500 w-52 rounded-md pt-6 pb-2 px-2 flex flex-col justify-between cursor-pointer hover:opacity-75 transition-opacity duration-200"
-  >
+  <div class="bg-eerie-black-500 w-52 rounded-md pt-6 pb-2 px-2 flex flex-col justify-between cursor-pointer hover:opacity-75 transition-opacity duration-200">
     <div class="flex flex-col justify-center items-center">
       <Icon
         icon="bx:group"
@@ -24,9 +22,7 @@ defineProps<{
         {{ organization.title }}
       </h1>
 
-      <p
-        class="text-neutral-400 truncate text-sm w-full line-clamp-2 text-center text-wrap"
-      >
+      <p class="text-neutral-400 truncate text-sm w-full line-clamp-2 text-center text-wrap">
         {{ organization.description }}
       </p>
     </div>
@@ -37,9 +33,9 @@ defineProps<{
         class="size-6 text-neutral-400"
       />
 
-      <span class="text-sm text-neutral-400">{{
-        organization.createdAt.toLocaleDateString()
-      }}</span>
+      <span class="text-sm text-neutral-400">
+        {{ organization.createdAt.toLocaleDateString() }}
+      </span>
     </div>
   </div>
 </template>

@@ -24,9 +24,8 @@ const formattedTime = new Intl.DateTimeFormat('default', {
         class="rounded-full"
       >
       <div
-        :class="`absolute bottom-0 right-0 rounded-full size-2 ${
-          author.online ? 'bg-emerald-500' : 'bg-neutral-500'
-        }`"
+        :class="author.online ? 'bg-emerald-500' : 'bg-neutral-500'"
+        class="absolute bottom-0 right-0 rounded-full size-2"
       />
     </div>
 
@@ -37,16 +36,15 @@ const formattedTime = new Intl.DateTimeFormat('default', {
         <span
           v-if="currentUser"
           class="font-normal text-sm text-neutral-300 ml-2"
-        >(você)</span>
+        >
+          (você)
+        </span>
       </p>
 
-      <div
-        :class="`flex ${currentUser ? 'flex-row-reverse' : 'flex-row'} gap-2`"
-      >
+      <div :class="`flex ${currentUser ? 'flex-row-reverse' : 'flex-row'} gap-2`">
         <div
-          :class="`w-fit max-w-64 h-fit p-2 bg-neutral-600 flex justify-start items-center rounded-lg ${
-            currentUser ? 'rounded-tr-none justify-self-end' : 'rounded-tl-none'
-          }`"
+          :class="currentUser ? 'rounded-tr-none justify-self-end' : 'rounded-tl-none'"
+          class="w-fit max-w-64 h-fit p-2 bg-neutral-600 flex justify-start items-center rounded-lg"
         >
           <p class="text-neutral-200 whitespace-pre-line">
             {{ text }}

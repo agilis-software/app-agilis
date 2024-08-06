@@ -2,7 +2,6 @@
 type ButtonType = 'submit' | 'button' | 'reset'
 
 interface Props {
-
   type?: ButtonType
 }
 
