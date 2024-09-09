@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import Input from '~/components/forms/Input.vue'
-import TextArea from '~/components/forms/TextArea.vue'
-import Select from '~/components/forms/Select.vue'
-import Button from '~/components/Button.vue'
 import { personsList } from '~/static/personsList'
 </script>
 

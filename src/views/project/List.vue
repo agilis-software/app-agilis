@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import Button from '~/components/Button.vue'
-import Modal from '~/components/Modal.vue'
-import ProjectCard from '~/components/ProjectCard.vue'
-import TaskCard from '~/components/TaskCard.vue'
 import { projectCardList } from '~/static/projectCardList'
 import CreateProject from '~/views/project/Create.vue'
 

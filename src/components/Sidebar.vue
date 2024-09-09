@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
-import Navbar from '~/components/Navbar.vue'
 
 const sidebarActive = ref(false)
 
