@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { Icon } from '@iconify/vue'
-import MessageCard from '~/components/MessageCard.vue'
 import { messageList } from '~/static/messageList'
 
 const messageContainer = ref<HTMLDivElement | null>(null)

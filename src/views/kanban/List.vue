@@ -2,9 +2,7 @@
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import TaskCard from '~/blocks/TaskCard.vue'
-import Button from '~/components/Button.vue'
 import KanbanColumn from '~/blocks/KanbanColumn.vue'
-import Modal from '~/components/Modal.vue'
 import { doingTasks, doneTasks, toDoTasks } from '~/static/kanbanTaskList'
 import CreateTask from '~/views/task/Create.vue'
 

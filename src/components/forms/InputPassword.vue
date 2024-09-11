@@ -4,7 +4,6 @@ interface Props {
   value?: string
   validation?: string
   label?: string
-  class?: string
 }
 
 defineProps<Props>()
@@ -16,6 +15,6 @@ defineProps<Props>()
     :value
     :validation
     :label
-    type="textarea"
+    type="password"
   />
 </template>

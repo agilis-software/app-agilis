@@ -46,10 +46,6 @@ const members = ref(projectMemberList)
       </h1>
     </div>
 
-    <!--
-    nao ta daora isso aqui,
-    seria bom criarmos um layout com outra navbar pra essa tela de projetos já que é tão específica
-    -->
     <div v-if="routePath !== '/projects'">
       <div
         class="border-y-2 border-y-electric-violet-500 flex flex-col justify-start items-start p-4 gap-4"

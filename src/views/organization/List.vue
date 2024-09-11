@@ -2,9 +2,7 @@
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import Modal from '~/components/Modal.vue'
 import OrganizationCard from '~/blocks/OrganizationCard.vue'
-import IconAgilis from '~/components/icons/IconAgilis.vue'
 import { organizationList } from '~/static/organizationList'
 import CreateOrganization from '~/views/organization/Create.vue'
 
