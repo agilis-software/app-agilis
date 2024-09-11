@@ -24,7 +24,8 @@
     "tailwind-scrollbar": "^3.1.0",
     "vue": "^3.4.21",
     "vue-multiselect": "^3.0.0",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3.2",
+    "vue-toastification": "^1.7.14"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.21.0",
