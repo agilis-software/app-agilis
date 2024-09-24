@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
+import Login from '~/views/auth/Login.vue'
 
 interface RouteStyle {
   path: string
@@ -11,12 +12,12 @@ export const routes: RouteStyle[] = [
   {
     path: '',
     component: () => import('~/layouts/AuthLayout.vue'),
-    redirect: { name: 'login' },
+    redirect: { name: 'projects' },
     children: [
       {
         path: '/login',
         name: 'login',
-        component: () => import('~/views/auth/Login.vue'),
+        component: Login,
       },
       {
         path: '/register',

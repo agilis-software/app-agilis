@@ -1,16 +1,31 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import IconAgilis from '@icons/IconAgilis.vue'
+import { useAuthStore } from '~/stores/auth'
+import router from '~/router'
+import { notify } from '~/utils/toast'
+
+const authStore = useAuthStore()
 
 const credentials = reactive({
   name: '',
   email: '',
+  birth_date: '',
   password: '',
-  confirmPassword: '',
+  password_confirmation: '',
 })
 
-function handleSubmit() {
+const { execute: register, isFetching: isLoadingRegister } = authStore.register(credentials)
 
+function handleSubmit() {
+  if (credentials.password !== credentials.password_confirmation) {
+    return notify('As senhas não condizem', 'error')
+  }
+
+  register()
+    .then(() => {
+      router.push('/login')
+    })
 }
 </script>
 
@@ -37,15 +52,12 @@ function handleSubmit() {
           Nome completo
         </label>
         <div class="mt-2">
-          <input
-            id="name"
+          <InputText
             v-model="credentials.name"
             name="name"
-            type="text"
-            autocomplete="name"
-            required
-            class="block w-full rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-400 focus:ring-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
-          >
+            validation="required"
+            class="block w-full rounded-md dark:text-black indent-2 border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-neutral-300 focus:ring-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
+          />
         </div>
       </div>
 
@@ -57,15 +69,28 @@ function handleSubmit() {
           Email
         </label>
         <div class="mt-2">
-          <input
-            id="email"
+          <InputEmail
             v-model="credentials.email"
             name="email"
-            type="email"
-            autocomplete="email"
-            required
-            class="block w-full rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-400 focus:outline-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
-          >
+            validation="required"
+            class="block w-full dark:text-black rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 focus:outline-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
+          />
+        </div>
+      </div>
+      <div>
+        <label
+          for="birth_date"
+          class="block text-sm font-medium leading-6 text-neutral-800"
+        >
+          Data de nascimento
+        </label>
+        <div class="mt-2">
+          <InputDate
+            v-model="credentials.birth_date"
+            name="birth_date"
+            validation="required"
+            class="block w-full dark:text-black rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 focus:outline-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
+          />
         </div>
       </div>
 
@@ -77,15 +102,12 @@ function handleSubmit() {
           Senha
         </label>
         <div class="mt-2">
-          <input
-            id="password"
+          <InputPassword
             v-model="credentials.password"
             name="password"
-            type="password"
-            autocomplete="new-password"
-            required
-            class="block w-full rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-400 focus:outline-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
-          >
+            validation="required"
+            class="block w-full dark:text-black rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 focus:outline-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
+          />
         </div>
       </div>
 
@@ -97,19 +119,18 @@ function handleSubmit() {
           Confirme sua senha
         </label>
         <div class="mt-2">
-          <input
-            id="confirm-password"
-            v-model="credentials.confirmPassword"
+          <InputPassword
+            v-model="credentials.password_confirmation"
             name="confirm-password"
-            type="password"
-            required
-            class="block w-full rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-400 focus:outline-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
-          >
+            validation="required"
+            class="block w-full dark:text-black rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 focus:outline-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
+          />
         </div>
       </div>
 
       <div>
         <button
+          :disabled="isLoadingRegister"
           type="submit"
           class="flex w-full justify-center rounded-md bg-electric-violet-500 px-3 py-1.5 text-sm font-medium leading-6 text-white shadow-sm hover:bg-electric-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-violet-600"
         >

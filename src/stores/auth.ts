@@ -10,8 +10,8 @@ const useAuthStore = defineStore('Auth', {
     token: '',
   }),
   actions: {
-    login() {
-      return useApi('/login').get()
+    login(user: any) {
+      return useApi('/login').post(user)
     },
     register(user: any) {
       return useApi('/register').post(user)

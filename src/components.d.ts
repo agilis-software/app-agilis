@@ -11,6 +11,7 @@ declare module 'vue' {
     IconAgilis: typeof import('./components/icons/IconAgilis.vue')['default']
     IconProject: typeof import('./components/icons/IconProject.vue')['default']
     InputDate: typeof import('./components/forms/InputDate.vue')['default']
+    InputEmail: typeof import('./components/forms/InputEmail.vue')['default']
     InputPassword: typeof import('./components/forms/InputPassword.vue')['default']
     InputText: typeof import('./components/forms/InputText.vue')['default']
     Modal: typeof import('./components/Modal.vue')['default']
