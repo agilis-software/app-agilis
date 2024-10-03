@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --force",
     "dev:host": "vite --host",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
@@ -14,6 +14,9 @@
   },
   "dependencies": {
     "@eslint/js": "^9.3.0",
+    "@formkit/core": "^1.6.5",
+    "@formkit/i18n": "^1.6.5",
+    "@formkit/vue": "^1.6.5",
     "@headlessui/vue": "^1.7.22",
     "@types/node": "^20.14.2",
     "@vueuse/core": "^10.11.0",
@@ -21,7 +24,8 @@
     "tailwind-scrollbar": "^3.1.0",
     "vue": "^3.4.21",
     "vue-multiselect": "^3.0.0",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3.2",
+    "vue-toastification": "2.0.0-rc.5"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.21.0",
@@ -34,7 +38,8 @@
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.2.2",
+    "unplugin-vue-components": "^0.27.4",
     "vite": "^5.2.13",
-    "vue-tsc": "^2.0.6"
+    "vue-tsc": "^2.0.19"
   }
 }

@@ -2,14 +2,22 @@
 import IconAgilis from '@icons/IconAgilis.vue'
 import { reactive } from 'vue'
 import router from '~/router'
+import { useAuthStore } from '~/stores/auth'
+
+const authStore = useAuthStore()
 
 const credentials = reactive({
   email: '',
   password: '',
 })
 
+const { execute: login, isFetching: isLoadingLogin } = authStore.login(credentials)
+
 function handleSubmit() {
-  router.push('/organizations')
+  login()
+    .then(() => {
+      router.push('/organizations')
+    })
 }
 </script>
 
@@ -37,15 +45,12 @@ function handleSubmit() {
           Email
         </label>
         <div class="mt-2">
-          <input
-            id="email"
+          <InputEmail
             v-model="credentials.email"
             name="email"
-            type="email"
-            autocomplete="email"
-            required
+            validation="required"
             class="block w-full rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-400 focus:outline-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
-          >
+          />
         </div>
       </div>
 
@@ -57,15 +62,12 @@ function handleSubmit() {
           Senha
         </label>
         <div class="mt-2">
-          <input
-            id="password"
+          <InputPassword
             v-model="credentials.password"
             name="password"
-            type="password"
-            autocomplete="current-password"
-            required
+            validation="required"
             class="block w-full rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-400 focus:outline-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
-          >
+          />
         </div>
         <RouterLink
           to="/recover"
@@ -77,6 +79,7 @@ function handleSubmit() {
 
       <div>
         <button
+          :disabled="isLoadingLogin"
           type="submit"
           class="flex w-full justify-center rounded-md bg-electric-violet-500 px-3 py-1.5 text-sm font-medium leading-6 text-white shadow-sm hover:bg-electric-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-violet-600"
         >

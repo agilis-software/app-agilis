@@ -2,9 +2,7 @@
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import Search from '~/components/Search.vue'
 import TaskRow from '~/blocks/TaskRow.vue'
-import Modal from '~/components/Modal.vue'
 import CreateTask from '~/views/task/Create.vue'
 
 const isOpen = ref(false)

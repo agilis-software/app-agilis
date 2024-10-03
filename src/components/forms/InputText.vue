@@ -16,6 +16,6 @@ defineProps<Props>()
     :value
     :validation
     :label
-    type="textarea"
+    type="text"
   />
 </template>

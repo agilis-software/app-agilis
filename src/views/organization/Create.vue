@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import Input from '~/components/forms/Input.vue'
-import TextArea from '~/components/forms/TextArea.vue'
-import Button from '~/components/Button.vue'
 </script>
 
 <template>
@@ -27,10 +24,9 @@ import Button from '~/components/Button.vue'
 
         <div class="w-full">
           <label for="nome">Nome da organização</label>
-          <Input
-            type="text"
+          <InputText
             name="nome"
-            required
+            validation="required"
           />
         </div>
       </div>
@@ -40,15 +36,15 @@ import Button from '~/components/Button.vue'
       <TextArea
         class="h-20"
         name="descricao"
-        required
+        validation="required"
       />
     </div>
-    <div class="sm:col-span-12">
+    <div class="sm:col-span-12 w-full">
       <label for="convide">Convide pessoas</label>
-      <Input
-        type="text"
+      <InputText
         name="convide"
-        required
+        class="w-full"
+        validation="required"
       />
     </div>
 

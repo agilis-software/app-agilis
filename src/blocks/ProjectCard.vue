@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import IconProject from '~/components/icons/IconProject.vue'
-
 interface Props {
   title: string
   description: string

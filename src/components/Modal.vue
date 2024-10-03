@@ -7,7 +7,6 @@ import {
   TransitionRoot,
 } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
-import Button from '~/components/Button.vue'
 
 interface Props {
   isOpen: boolean

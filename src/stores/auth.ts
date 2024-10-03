@@ -1,19 +1,20 @@
 import { defineStore } from 'pinia'
+import { useApi } from '~/composables/api'
 
 interface State {
-  isLogged: boolean
+  token: string
 }
 
 const useAuthStore = defineStore('Auth', {
   state: (): State => ({
-    isLogged: false,
+    token: '',
   }),
   actions: {
-    setIsLogged() {
-      this.$state.isLogged = true
+    login(user: any) {
+      return useApi('/login').post(user)
     },
-    removeIsLogged() {
-      this.$state.isLogged = false
+    register(user: any) {
+      return useApi('/register').post(user)
     },
   },
 })
