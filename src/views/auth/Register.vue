@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import IconAgilis from '@icons/IconAgilis.vue'
+import LogoAgilis from '@icons/LogoAgilis.vue'
 import { useAuthStore } from '~/stores/auth'
 import router from '~/router'
 import { notify } from '~/utils/toast'
@@ -36,13 +36,10 @@ function handleSubmit() {
       @submit.prevent="handleSubmit"
     >
       <div class="flex justify-center items-center gap-1">
-        <IconAgilis
+        <LogoAgilis
           :size="48"
           fill="#8d00ec"
         />
-        <p class="text-electric-violet-500 mx-2 font-semibold text-3xl">
-          Agilis
-        </p>
       </div>
       <div>
         <label
