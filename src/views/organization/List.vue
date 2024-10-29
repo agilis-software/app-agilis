@@ -1,12 +1,29 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import OrganizationCard from '~/blocks/OrganizationCard.vue'
 import { organizationList } from '~/static/organizationList'
 import CreateOrganization from '~/views/organization/Create.vue'
+import { useOrganizationStore } from '~/stores/organization'
+import { useAuthStore } from '~/stores/auth'
 
-const organizations = ref(organizationList)
+const organizationStore = useOrganizationStore()
+const authStore = useAuthStore()
+
+const { execute: getOrganizations, data: organizationData } = organizationStore.index()
+const { execute: me, data: userData } = authStore.me()
+
+getOrganizations()
+me()
+
+const organizations = computed(() => {
+  return organizationData.value ? organizationData.value.data : []
+})
+
+const user = computed(() => {
+  return userData.value ? userData.value : null
+})
 
 const isOpen = ref(false)
 
@@ -17,6 +34,10 @@ function openModal() {
 function closeModal() {
   isOpen.value = false
 }
+
+watch(userData, () => {
+  console.log(user.value)
+})
 </script>
 
 <template>
@@ -71,6 +92,6 @@ function closeModal() {
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateOrganization />
+    <CreateOrganization :owner-id="user.id" />
   </Modal>
 </template>
