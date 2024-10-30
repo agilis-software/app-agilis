@@ -19,6 +19,7 @@
     "@formkit/i18n": "^1.6.5",
     "@formkit/vue": "^1.6.5",
     "@headlessui/vue": "^1.7.22",
+    "@iconify-icons/mdi": "^1.2.48",
     "@types/node": "^20.14.2",
     "@vueuse/core": "^10.11.0",
     "pinia": "^2.1.7",
