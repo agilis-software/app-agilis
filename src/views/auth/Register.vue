@@ -30,7 +30,7 @@ function handleSubmit() {
 </script>
 
 <template>
-  <div class="bg-[#201E1E] p-8 shadow sm:rounded-lg">
+  <div class="bg-[#201E1E] p-8 shadow-3xl sm:rounded-lg">
     <form
       class="space-y-4"
       @submit.prevent="handleSubmit"

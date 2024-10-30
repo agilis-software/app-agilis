@@ -22,7 +22,7 @@ function handleSubmit() {
 </script>
 
 <template>
-  <div class="bg-[#201E1E] p-8 shadow rounded-lg ">
+  <div class="bg-[#201E1E] p-8 shadow-3xl rounded-lg ">
     <form
       class="space-y-4"
       @submit.prevent="handleSubmit"
@@ -31,6 +31,7 @@ function handleSubmit() {
         <LogoAgilis
           :size="48"
           fill="#8d00ec"
+          class="m-5"
         />
       </div>
 

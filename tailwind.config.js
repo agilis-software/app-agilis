@@ -31,6 +31,9 @@ export default {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
       },
+      boxShadow: {
+        '3xl': '17px 35px 60px -15px rgba(0, 0, 0, 0.4)',
+      }
     },
   },
   plugins: [

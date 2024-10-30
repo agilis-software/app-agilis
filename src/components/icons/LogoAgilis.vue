@@ -12,7 +12,6 @@ defineProps<{
     preserveAspectRatio="xMidYMid meet"
     viewBox="2.32 151.28 494.97 182.9"
     width="60%"
-    height="60%"
   >
     <g
       transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
