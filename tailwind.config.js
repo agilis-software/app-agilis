@@ -41,5 +41,9 @@ export default {
   },
   plugins: [
     require('tailwind-scrollbar'),
+    require('daisyui'),
   ],
+  daisyui: {
+    prefix: 'd-',
+  },
 }

@@ -6,6 +6,7 @@ interface RouteStyle {
   component: any
   redirect: Record<'name', string> | string
   children?: RouteRecordRaw[]
+  meta?: Record<'requiresAuth', boolean>
 }
 
 export const routes: RouteStyle[] = [
@@ -30,6 +31,7 @@ export const routes: RouteStyle[] = [
     path: '',
     component: () => import('~/layouts/AppLayout.vue'),
     redirect: { name: 'projects' },
+    meta: { requiresAuth: true },
     children: [
       {
         path: '/projects',
@@ -56,6 +58,7 @@ export const routes: RouteStyle[] = [
   {
     path: '/organizations',
     redirect: '',
+    meta: { requiresAuth: true },
     component: () => import('~/views/organization/List.vue'),
   },
 ]
