@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { addDateMask } from '~/utils/formatDate'
 
-defineProps<{
+interface Props {
   organization: {
-    title: string
+    name: string
     description: string
-    createdAt: Date
+    created_at: Date
   }
-}>()
+}
+
+defineProps<Props>()
 </script>
 
 <template>
@@ -19,7 +22,7 @@ defineProps<{
       />
 
       <h1 class="text-white text-center text-lg font-semibold truncate w-full">
-        {{ organization.title }}
+        {{ organization.name }}
       </h1>
 
       <p class="text-neutral-400 truncate text-sm w-full line-clamp-2 text-center text-wrap">
@@ -34,7 +37,7 @@ defineProps<{
       />
 
       <span class="text-sm text-neutral-400">
-        {{ organization.createdAt.toLocaleDateString() }}
+        {{ addDateMask(organization.created_at.toString()) }}
       </span>
     </div>
   </div>

@@ -46,4 +46,9 @@ export default antfu({
     'curly': 0,
     'no-console': 'warn',
   },
+  ignores: [
+    'node_modules/',
+    'pnpm-lock.yaml',
+    'src/config',
+  ],
 })

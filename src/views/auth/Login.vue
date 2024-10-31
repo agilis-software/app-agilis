@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import IconAgilis from '@icons/IconAgilis.vue'
-import { reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import router from '~/router'
 import { useAuthStore } from '~/stores/auth'
 
@@ -11,11 +11,16 @@ const credentials = reactive({
   password: '',
 })
 
-const { execute: login, isFetching: isLoadingLogin } = authStore.login(credentials)
+const { execute: login, isFetching: isLoadingLogin, data } = authStore.login(credentials)
+
+const token = computed(() => {
+  return data.value ? data.value.data.access_token : ''
+})
 
 function handleSubmit() {
   login()
     .then(() => {
+      authStore.setToken(token.value)
       router.push('/organizations')
     })
 }

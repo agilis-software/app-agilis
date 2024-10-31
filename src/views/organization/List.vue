@@ -1,12 +1,28 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import OrganizationCard from '~/blocks/OrganizationCard.vue'
-import { organizationList } from '~/static/organizationList'
 import CreateOrganization from '~/views/organization/Create.vue'
+import { useOrganizationStore } from '~/stores/organization'
+import { useAuthStore } from '~/stores/auth'
 
-const organizations = ref(organizationList)
+const organizationStore = useOrganizationStore()
+const authStore = useAuthStore()
+
+const { execute: getOrganizations, data: organizationData, isFetching: isLoadingOrganization } = organizationStore.index()
+const { execute: me, data: userData } = authStore.me()
+
+getOrganizations()
+me()
+
+const organizations = computed(() => {
+  return organizationData.value ? organizationData.value.data : []
+})
+
+const userId = computed(() => {
+  return userData.value ? userData.value.data.id : 0
+})
 
 const isOpen = ref(false)
 
@@ -20,7 +36,7 @@ function closeModal() {
 </script>
 
 <template>
-  <div class="bg-[#201E1E] min-h-screen">
+  <div class="bg-[#201E1E] min-h-screen text-white">
     <div class="hidden md:flex w-16 flex-col inset-y-0 transition-all fixed">
       <div class="flex-1 flex flex-col min-h-0 bg-electric-violet-500 relative">
         <div
@@ -54,12 +70,21 @@ function closeModal() {
         </div>
 
         <div class="my-8 flex justify-center items-center flex-wrap flex-col gap-8 sm:flex-row sm:justify-start sm:items-start">
+          <div v-if="!organizations.length && !isLoadingOrganization">
+            Você ainda não pertence à nenhuma organização.
+          </div>
+          <div
+            v-if="isLoadingOrganization"
+            class="w-full flex justify-center"
+          >
+            <Loading />
+          </div>
           <RouterLink
             v-for="organization in organizations"
             :key="organization.title"
             to="/projects"
           >
-            <OrganizationCard :organization="organization" />
+            <OrganizationCard :organization />
           </RouterLink>
         </div>
       </main>
@@ -71,6 +96,6 @@ function closeModal() {
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateOrganization />
+    <CreateOrganization :owner-id="userId" />
   </Modal>
 </template>
