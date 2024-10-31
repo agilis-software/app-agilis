@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import IconAgilis from '@icons/IconAgilis.vue'
+import LogoAgilis from '@icons/LogoAgilis.vue'
 import { useAuthStore } from '~/stores/auth'
 import router from '~/router'
 import { notify } from '~/utils/toast'
@@ -30,24 +30,21 @@ function handleSubmit() {
 </script>
 
 <template>
-  <div class="bg-white p-8 shadow sm:rounded-lg w-80">
+  <div class="bg-[#201E1E] p-8 shadow-3xl sm:rounded-lg">
     <form
       class="space-y-4"
       @submit.prevent="handleSubmit"
     >
       <div class="flex justify-center items-center gap-1">
-        <IconAgilis
+        <LogoAgilis
           :size="48"
           fill="#8d00ec"
         />
-        <p class="text-electric-violet-500 mx-2 font-semibold text-3xl">
-          Agilis
-        </p>
       </div>
       <div>
         <label
           for="name"
-          class="block text-sm font-medium leading-6 text-neutral-800"
+          class="block text-sm font-medium leading-6 text-electric-violet-500"
         >
           Nome completo
         </label>
@@ -56,6 +53,7 @@ function handleSubmit() {
             v-model="credentials.name"
             name="name"
             validation="required"
+            placeholder="John Doe"
             class="block w-full rounded-md dark:text-black indent-2 border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-neutral-300 focus:ring-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
           />
         </div>
@@ -64,7 +62,7 @@ function handleSubmit() {
       <div>
         <label
           for="email"
-          class="block text-sm font-medium leading-6 text-neutral-800"
+          class="block text-sm font-medium leading-6 text-electric-violet-500"
         >
           Email
         </label>
@@ -73,6 +71,7 @@ function handleSubmit() {
             v-model="credentials.email"
             name="email"
             validation="required"
+            placeholder="example@email.com"
             class="block w-full dark:text-black rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 focus:outline-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
           />
         </div>
@@ -80,7 +79,7 @@ function handleSubmit() {
       <div>
         <label
           for="birth_date"
-          class="block text-sm font-medium leading-6 text-neutral-800"
+          class="block text-sm font-medium leading-6 text-electric-violet-500"
         >
           Data de nascimento
         </label>
@@ -97,7 +96,7 @@ function handleSubmit() {
       <div>
         <label
           for="password"
-          class="block text-sm font-medium leading-6 text-neutral-800"
+          class="block text-sm font-medium leading-6 text-electric-violet-500"
         >
           Senha
         </label>
@@ -114,7 +113,7 @@ function handleSubmit() {
       <div>
         <label
           for="confirm-password"
-          class="block text-sm font-medium leading-6 text-neutral-800"
+          class="block text-sm font-medium leading-6 text-electric-violet-500"
         >
           Confirme sua senha
         </label>
@@ -143,7 +142,7 @@ function handleSubmit() {
       Já possui conta?
       <RouterLink
         to="/login"
-        class="font-semibold mx-1 leading-6 text-electric-violet-600 hover:text-electric-violet-500"
+        class="font-semibold mx-1 leading-6 text-electric-violet-500 hover:text-electric-violet-600"
       >
         Faça login
       </RouterLink>

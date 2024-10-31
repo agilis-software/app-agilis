@@ -7,5 +7,8 @@ export default defaultConfig({
   locale: 'pt',
   config: {
     rootClasses,
+    validationMessages: {
+      required: 'Este campo é obrigatório.',
+    },
   },
 })
