@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import type { Organization } from '~/models/organization'
+import type { Organization } from '~/models/Organization'
 import { useOrganizationStore } from '~/stores/organization'
 
 interface Props {
@@ -15,7 +15,7 @@ const organization = reactive<Organization>({
   id: 0,
   name: '',
   description: '',
-  owner_id: props.ownerId
+  owner_id: props.ownerId,
 })
 
 const { execute: create, isFetching } = organizationStore.create(organization)
@@ -51,7 +51,7 @@ function handleSubmit() {
     <div class="sm:col-span-12">
       <Button
         :disabled="isFetching"
-        class="bg-primary-color w-full" 
+        class="bg-primary-color w-full"
         @click="handleSubmit()"
       >
         Criar

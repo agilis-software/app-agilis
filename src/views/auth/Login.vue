@@ -14,18 +14,13 @@ const credentials = reactive({
 const { execute: login, isFetching: isLoadingLogin, data } = authStore.login(credentials)
 
 const token = computed(() => {
-  if (data.value) {
-    return JSON.parse(String(data.value))
-  }
-
-  return null
+  return data.value ? data.value.data.access_token : ''
 })
-
 
 function handleSubmit() {
   login()
     .then(() => {
-      authStore.setToken(token.value.data.access_token)
+      authStore.setToken(token.value)
       router.push('/organizations')
     })
 }

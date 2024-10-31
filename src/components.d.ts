@@ -15,6 +15,7 @@ declare module 'vue' {
     InputFile: typeof import('./components/forms/InputFile.vue')['default']
     InputPassword: typeof import('./components/forms/InputPassword.vue')['default']
     InputText: typeof import('./components/forms/InputText.vue')['default']
+    Loading: typeof import('./components/Loading.vue')['default']
     Modal: typeof import('./components/Modal.vue')['default']
     Navbar: typeof import('./components/Navbar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
