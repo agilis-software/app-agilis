@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import LogoAgilis from '@icons/LogoAgilis.vue'
-import { reactive } from 'vue'
 import { computed, reactive } from 'vue'
 import router from '~/router'
 import { useAuthStore } from '~/stores/auth'
