@@ -1,12 +1,30 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { projectCardList } from '~/static/projectCardList'
 import CreateProject from '~/views/project/Create.vue'
 import TaskCard from '~/blocks/TaskCard.vue'
 import ProjectCard from '~/blocks/ProjectCard.vue'
+import { useOrganizationStore } from '~/stores/organization'
+import { useProjectStore } from '~/stores/project'
 
 const isOpen = ref(false)
+const projectStore = useProjectStore()
+const organizationStore = useOrganizationStore()
+
+const { execute: getOrganizationInfo, data: organizationData, isFetching: isLoadingOrganization }
+  = organizationStore.getCurrentOrganization()
+
+getOrganizationInfo()
+
+const organization = computed(() => organizationData.value ? organizationData.value.data : [])
+const { id } = organizationStore
+
+const { execute: getProjects, data: projectsData } = projectStore.index(id)
+
+getProjects()
+
+const projects = computed(() => projectsData.value ? projectsData.value.data : [])
 
 function openModal() {
   isOpen.value = true
@@ -18,12 +36,20 @@ function closeModal() {
 </script>
 
 <template>
-  <div class="text-white">
+  <div
+    v-if="isLoadingOrganization"
+    class="size-full flex justify-center items-center"
+  >
+    <Loading size="12" />
+  </div>
+  <div
+    v-else
+    class="text-white"
+  >
     <div class="flex flex-col justify-start gap-y-4">
       <h1 class="text-2xl font-bold">
-        Fatec Jahu
+        {{ organization.name }}
       </h1>
-      <!--  nome do projeto -->
       <hr class="w-full border border-[#2F2C2C]">
     </div>
     <div class="pt-4">
@@ -39,14 +65,17 @@ function closeModal() {
         </Button>
       </div>
       <div class="flex justify-start gap-x-8 py-5">
+        <div v-if="!projects.length" class="text-gray-500 -mt-4">
+          Não há projetos cadastrados.
+        </div>
         <RouterLink
-          v-for="(project, index) in projectCardList"
+          v-for="(project, index) in projects"
           :key="index"
           to="kanban"
         >
           <ProjectCard
-            :title="project.title"
-            :description="project.description"
+            :name="project.name"
+            :description="project.description || ''"
           />
         </RouterLink>
       </div>

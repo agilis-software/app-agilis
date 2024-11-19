@@ -1,0 +1,19 @@
+import { defineStore } from 'pinia'
+import { useApi } from '~/composables/api'
+import type { Project } from '~/models/Project'
+import type { Resource } from '~/models/Resource'
+
+const url = 'projects'
+
+const useProjectStore = defineStore('project', {
+  actions: {
+    index(organizationId: number) {
+      return useApi(`/organizations/${organizationId}/${url}`).get().json<Resource<Project[]>>()
+    },
+    create(project: Project) {
+      return useApi(url).post(project)
+    },
+  },
+})
+
+export { useProjectStore }

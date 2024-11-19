@@ -4,10 +4,10 @@ interface Props {
 }
 
 withDefaults(defineProps<Props>(), {
-  size: 'size-8',
+  size: '8',
 })
 </script>
 
 <template>
-  <span :class="`d-loading d-loading-spinner text-primary-color ${size}`" />
+  <span :class="`d-loading d-loading-spinner text-primary-color size-${size}`" />
 </template>

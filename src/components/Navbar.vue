@@ -4,10 +4,20 @@ import { computed, ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { chatList } from '~/static/chatList'
 import { projectMemberList } from '~/static/projectMemberList'
+import { useOrganizationStore } from '~/stores/organization'
 
 const route = useRoute()
 
 const routePath = computed(() => route.path)
+
+const organizationStore = useOrganizationStore()
+
+const { execute: getOrganizationInfo, data: organizationData }
+  = organizationStore.getCurrentOrganization()
+
+getOrganizationInfo()
+
+const organization = computed(() => organizationData.value ? organizationData.value.data : [])
 
 const chats = ref(chatList)
 
@@ -42,7 +52,7 @@ const members = ref(projectMemberList)
         />
       </div>
       <h1 class="text-xl text-white font-semibold">
-        {{ routePath === '/projects' ? 'Fatec Jahu' : 'Projeto Integrador' }}
+        {{ routePath === '/projects' && organization.name }}
       </h1>
     </div>
 
@@ -144,7 +154,7 @@ const members = ref(projectMemberList)
       </div>
     </div>
 
-    <div v-if="routePath === '/projects'" class="absolute bottom-0 w-full">
+    <div v-if="routePath === '/projects'" class="absolute bottom-0 w-full cursor-pointer">
       <div class="flex justify-center items-center gap-2 w-fit">
         <Icon
           icon="mdi:gear"

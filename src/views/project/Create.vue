@@ -1,12 +1,31 @@
 <script setup lang="ts">
-import { personsList } from '~/static/personsList'
+import { reactive } from 'vue'
+import { useProjectStore } from '~/stores/project'
+
+const projectStore = useProjectStore()
+
+const project = reactive({
+  id: 0,
+  name: '',
+  description: '',
+  organization_id: 1,
+  start_date: '',
+  finish_date: '',
+})
+
+const { execute } = projectStore.create(project)
+
+function handleSubmit() {
+  execute()
+}
 </script>
 
 <template>
-  <form class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-12 mt-4">
+  <form class="grid grid-cols-1 gap-y-2 gap-x-4 sm:grid-cols-12 mt-4">
     <div class="sm:col-span-12">
       <label for="nome">Nome</label>
       <InputText
+        v-model="project.name"
         name="nome"
         validation="required"
       />
@@ -14,26 +33,16 @@ import { personsList } from '~/static/personsList'
     <div class="sm:col-span-12">
       <label for="descricao">Descrição</label>
       <TextArea
+        v-model="project.description"
         class="h-20"
         name="descricao"
         validation="required"
       />
     </div>
-    <div class="sm:col-span-12">
-      <label for="participantes">Participantes</label>
-      <Select>
-        <option
-          v-for="(option, index) in personsList"
-          :key="index"
-          :value="option.id"
-        >
-          {{ option.name }}
-        </option>
-      </Select>
-    </div>
     <div class="sm:col-span-6">
       <label for="data_inicio">Data de Início</label>
       <InputDate
+        v-model="project.start_date"
         name="data_inicio"
         validation="required"
       />
@@ -53,7 +62,10 @@ import { personsList } from '~/static/personsList'
     </div>
 
     <div class="sm:col-span-12">
-      <Button class="bg-primary-color w-full">
+      <Button
+        class="bg-primary-color w-full"
+        @click="handleSubmit()"
+      >
         Criar
       </Button>
     </div>
