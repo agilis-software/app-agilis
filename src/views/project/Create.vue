@@ -2,6 +2,11 @@
 import { reactive } from 'vue'
 import { useProjectStore } from '~/stores/project'
 
+interface Props {
+  organizationId: number
+}
+
+const props = defineProps<Props>()
 const projectStore = useProjectStore()
 
 const project = reactive({
@@ -11,9 +16,10 @@ const project = reactive({
   organization_id: 1,
   start_date: '',
   finish_date: '',
+  task_prefix: ''
 })
 
-const { execute } = projectStore.create(project)
+const { execute } = projectStore.create(project, props.organizationId)
 
 function handleSubmit() {
   execute()
@@ -50,12 +56,14 @@ function handleSubmit() {
     <div class="sm:col-span-6">
       <label for="data_conclusao">Data de Conclusão</label>
       <InputDate
+        v-model="project.finish_date"
         name="data_conclusao"
       />
     </div>
     <div class="sm:col-span-12">
       <label for="prefixo">Prefixo da Tarefa</label>
       <InputText
+        v-model="project.task_prefix"
         name="prefixo"
         validation="required"
       />

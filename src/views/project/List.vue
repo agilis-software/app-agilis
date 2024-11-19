@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { projectCardList } from '~/static/projectCardList'
 import CreateProject from '~/views/project/Create.vue'
 import TaskCard from '~/blocks/TaskCard.vue'
 import ProjectCard from '~/blocks/ProjectCard.vue'
@@ -101,6 +100,6 @@ function closeModal() {
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateProject />
+    <CreateProject :organization-id="id"/>
   </Modal>
 </template>

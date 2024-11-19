@@ -52,7 +52,7 @@ const members = ref(projectMemberList)
         />
       </div>
       <h1 class="text-xl text-white font-semibold">
-        {{ routePath === '/projects' && organization.name }}
+        {{ routePath === '/projects' ? organization.name : 'Projeto'}}
       </h1>
     </div>
 
