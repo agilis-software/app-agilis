@@ -39,9 +39,7 @@ function goToProjects(id: number) {
     return
   }
 
-  organizationStore.setOrganizationId(id)
-
-  router.push({ name: 'projects' })
+  router.push({ name: 'projects', params: { organizationId: id} })
 }
 </script>
 

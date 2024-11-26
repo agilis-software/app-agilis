@@ -1,12 +1,36 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import TaskCard from '~/blocks/TaskCard.vue'
 import KanbanColumn from '~/blocks/KanbanColumn.vue'
 import { doingTasks, doneTasks, toDoTasks } from '~/static/kanbanTaskList'
 import CreateTask from '~/views/task/Create.vue'
+import CreateStatus from '~/views/status/Create.vue'
+import { useStatusStore } from '~/stores/status'
+import { useProjectStore } from '~/stores/project'
+import { useOrganizationStore } from '~/stores/organization'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
+
+const {
+  organizationId,
+  projectId,
+} = route.params
+
+const organizationsStore = useOrganizationStore()
+const projectStore = useProjectStore()
+const statusStore = useStatusStore()
+
+const { execute: getStatus, data: statusData } = statusStore.index(Number(organizationId), Number(projectId))
+
+getStatus()
 const isOpen = ref(false)
+const isOpenStatus = ref(false)
+
+const status = computed(() => statusData?.value?.data)
+
+console.log(status.value)
 
 function openModal() {
   isOpen.value = true
@@ -14,6 +38,14 @@ function openModal() {
 
 function closeModal() {
   isOpen.value = false
+}
+
+function closeModalStatus() {
+  isOpenStatus.value = false
+}
+
+function openModalStatus() {
+  isOpenStatus.value = true
 }
 </script>
 
@@ -77,7 +109,10 @@ function closeModal() {
           />
         </KanbanColumn>
       </div>
-      <Button class="size-8">
+      <Button 
+        class="size-8" 
+        @click="openModalStatus"
+      >
         <Icon
           icon="bx:plus"
           class="size-8"
@@ -92,5 +127,16 @@ function closeModal() {
     @handle-close="closeModal"
   >
     <CreateTask />
+  </Modal>
+  <Modal
+    :is-open="isOpenStatus"
+    title="Criar status"
+    @close="closeModalStatus"
+    @handle-close="closeModalStatus"
+  >
+    <CreateStatus 
+      :organization-id="Number(organizationId)"
+      :project-id="Number(projectId)"
+    />
   </Modal>
 </template>

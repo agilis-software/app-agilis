@@ -5,6 +5,7 @@ interface RouteStyle {
   path: string
   component: any
   redirect: Record<'name', string> | string
+  name?: string
   children?: RouteRecordRaw[]
   meta?: Record<'requiresAuth', boolean>
 }
@@ -34,7 +35,7 @@ export const routes: RouteStyle[] = [
     meta: { requiresAuth: true },
     children: [
       {
-        path: '/projects',
+        path: '/organizations/:organizationId/projects',
         name: 'projects',
         component: () => import('~/views/project/List.vue'),
       },
@@ -49,7 +50,7 @@ export const routes: RouteStyle[] = [
         component: () => import('~/views/backlog/List.vue'),
       },
       {
-        path: '/kanban',
+        path: '/organizations/:organizationId/projects/:projectId/kanban',
         name: 'kanban',
         component: () => import('~/views/kanban/List.vue'),
       },
@@ -57,6 +58,7 @@ export const routes: RouteStyle[] = [
   },
   {
     path: '/organizations',
+    name: 'organizations',
     redirect: '',
     meta: { requiresAuth: true },
     component: () => import('~/views/organization/List.vue'),
