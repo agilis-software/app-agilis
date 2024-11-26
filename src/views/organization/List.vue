@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { computed, ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import router from '~/router'
 import OrganizationCard from '~/blocks/OrganizationCard.vue'
 import CreateOrganization from '~/views/organization/Create.vue'
 import { useOrganizationStore } from '~/stores/organization'
@@ -32,6 +32,16 @@ function openModal() {
 
 function closeModal() {
   isOpen.value = false
+}
+
+function goToProjects(id: number) {
+  if (!id) {
+    return
+  }
+
+  organizationStore.setOrganizationId(id)
+
+  router.push({ name: 'projects' })
 }
 </script>
 
@@ -79,13 +89,12 @@ function closeModal() {
           >
             <Loading />
           </div>
-          <RouterLink
+          <OrganizationCard
             v-for="organization in organizations"
             :key="organization.title"
-            to="/projects"
-          >
-            <OrganizationCard :organization />
-          </RouterLink>
+            :organization
+            @click="goToProjects(organization.id)"
+          />
         </div>
       </main>
     </div>

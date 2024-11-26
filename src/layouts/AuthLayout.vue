@@ -7,7 +7,7 @@
     >
       <div>
         <IconAgilis
-          size="800"
+          :size="800"
           fill="#000"
           class="opacity-5 z-5 float-right mt-10 mr-20"
         />
