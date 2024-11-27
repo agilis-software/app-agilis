@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
 
 const route = useRoute()
 const selectedItem = ref(route.path)
+
+watch(() => route.path, (newPath) => {
+  selectedItem.value = newPath
+})
 
 const isSelected = (path: string) => selectedItem.value === path
 </script>
