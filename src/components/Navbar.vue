@@ -144,7 +144,8 @@ const members = ref(projectMemberList)
       </div>
     </div>
 
-    <div v-if="routePath === '/projects'" class="absolute bottom-0 w-full">
+    <div v-if="routePath === '/projects'" class="absolute bottom-0 w-fit ml-4">
+      <RouterLink :to="`/settings`">
       <div class="flex justify-center items-center gap-2 w-fit">
         <Icon
           icon="mdi:gear"
@@ -154,6 +155,7 @@ const members = ref(projectMemberList)
           Configurações
         </p>
       </div>
+    </RouterLink>
     </div>
   </div>
 </template>

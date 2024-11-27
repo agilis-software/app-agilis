@@ -11,33 +11,14 @@ interface Props {
   label?: string
 }
 
-const props = defineProps<Props>()
-const showPassword = ref(false)
-const inputValue = ref('')
-
-const inputType = computed(() => (showPassword.value ? 'text' : 'password'))
-
-const togglePasswordVisibility = () => {
-  showPassword.value = !showPassword.value
-}
-
-const eyeIconType = computed(() => {
-  return showPassword.value ? eyeOffIcon : eyeIcon
-})
-
-const shouldShowIcon = () => inputValue.value.length > 0
+defineProps<Props>();
 </script>
 
 <template>
   <FormKit
-    v-bind="props"
-    :type="inputType"
-    v-model="inputValue"
-  />
-  <Icon
-    v-if="shouldShowIcon()"
-    :icon="eyeIconType"
-    @click="togglePasswordVisibility"
-    class="relative -inset-y-13 float-right right-3 cursor-pointer text-neutral-700 text-2xl"
+    :name
+    :value
+    :validation
+    :label
   />
 </template>
