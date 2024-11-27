@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { taskStatusOptions } from '~/static/taskStatusOptions'
-import { personsList } from '~/static/personsList'
+interface Props {
+  statusList: any[]
+  membersList: any[]
+}
+
+defineProps<Props>()
 </script>
 
 <template>
@@ -16,11 +20,11 @@ import { personsList } from '~/static/personsList'
       <label for="status">Status</label>
       <Select>
         <option
-          v-for="(option, index) in taskStatusOptions"
+          v-for="(option, index) in statusList"
           :key="index"
           :value="option.value"
         >
-          {{ option.label }}
+          {{ option.name }}
         </option>
       </Select>
     </div>
@@ -49,7 +53,7 @@ import { personsList } from '~/static/personsList'
       <label for="responsavel">Responsável</label>
       <Select>
         <option
-          v-for="(option, index) in personsList"
+          v-for="(option, index) in membersList"
           :key="index"
           :value="option.id"
         >

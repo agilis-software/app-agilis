@@ -38,7 +38,7 @@ function closeModal() {
 }
 
 function goToKanban(projectId: number) {
-  router.push({ name: 'kanban', params: { organizationId : id, projectId}})
+  router.push({ name: 'kanban', params: { organizationId: id, projectId } })
 }
 </script>
 
@@ -86,7 +86,7 @@ function goToKanban(projectId: number) {
           />
         </div>
       </div>
-      <div class="flex flex-col justify-start gap-y-4">
+      <!-- <div class="flex flex-col justify-start gap-y-4">
         <hr class="w-full border border-[#2F2C2C]">
         <h4 class="text-lg">
           Suas tarefas em progresso
@@ -99,7 +99,7 @@ function goToKanban(projectId: number) {
           task-id="PI-2"
           image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
         />
-      </div>
+      </div> -->
     </div>
   </div>
   <Modal
@@ -108,6 +108,6 @@ function goToKanban(projectId: number) {
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateProject :organization-id="id"/>
+    <CreateProject :organization-id="id" />
   </Modal>
 </template>

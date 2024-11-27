@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Icon } from '@iconify/vue'
+import { useRoute } from 'vue-router'
 import TaskCard from '~/blocks/TaskCard.vue'
 import KanbanColumn from '~/blocks/KanbanColumn.vue'
 import { doingTasks, doneTasks, toDoTasks } from '~/static/kanbanTaskList'
@@ -8,8 +9,7 @@ import CreateTask from '~/views/task/Create.vue'
 import CreateStatus from '~/views/status/Create.vue'
 import { useStatusStore } from '~/stores/status'
 import { useProjectStore } from '~/stores/project'
-import { useOrganizationStore } from '~/stores/organization'
-import { useRoute } from 'vue-router'
+// import { useOrganizationStore } from '~/stores/organization'
 
 const route = useRoute()
 
@@ -18,19 +18,21 @@ const {
   projectId,
 } = route.params
 
-const organizationsStore = useOrganizationStore()
+// const organizationsStore = useOrganizationStore()
 const projectStore = useProjectStore()
 const statusStore = useStatusStore()
 
 const { execute: getStatus, data: statusData } = statusStore.index(Number(organizationId), Number(projectId))
+const { execute: getMembers, data: membersData } = projectStore.getMembers(Number(organizationId), Number(projectId))
 
 getStatus()
+getMembers()
+
 const isOpen = ref(false)
 const isOpenStatus = ref(false)
 
 const status = computed(() => statusData?.value?.data)
-
-console.log(status.value)
+const members = computed(() => membersData?.value?.data)
 
 function openModal() {
   isOpen.value = true
@@ -109,8 +111,8 @@ function openModalStatus() {
           />
         </KanbanColumn>
       </div>
-      <Button 
-        class="size-8" 
+      <Button
+        class="size-8"
         @click="openModalStatus"
       >
         <Icon
@@ -126,7 +128,10 @@ function openModalStatus() {
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateTask />
+    <CreateTask
+      :status-list="status || []"
+      :members-list="members || []"
+    />
   </Modal>
   <Modal
     :is-open="isOpenStatus"
@@ -134,7 +139,7 @@ function openModalStatus() {
     @close="closeModalStatus"
     @handle-close="closeModalStatus"
   >
-    <CreateStatus 
+    <CreateStatus
       :organization-id="Number(organizationId)"
       :project-id="Number(projectId)"
     />
