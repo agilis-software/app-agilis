@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Icon } from '@iconify/vue'
 import { computed } from 'vue'
 import { useOrganizationStore } from '~/stores/organization'
 
@@ -27,15 +28,19 @@ const organizations = computed(() => {
   <div v-else>
     <ul
       v-if="organizations.length"
-      class="space-y-4"
+      class="mt-8"
     >
       <li
         v-for="organization in organizations"
         :key="organization.id"
-        class="border border-[#3F3F3F] p-4 rounded-lg flex justify-between items-center"
+        class="p-4 flex justify-between items-center"
       >
-        <div>
-          <h2 class="text-xl font-semibold text-white">
+        <div class="flex items-center space-x-4 ml-16">
+          <Icon
+            icon="heroicons-solid:office-building"
+            class="size-12 text-white"
+          />
+          <h2 class="text-2xl font-semibold text-white">
             {{ organization.name }}
           </h2>
         </div>
