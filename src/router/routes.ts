@@ -61,4 +61,32 @@ export const routes: RouteStyle[] = [
     meta: { requiresAuth: true },
     component: () => import('~/views/organization/List.vue'),
   },
+  {
+    path: '/settings',
+    component: () => import('~/layouts/SettingsLayout.vue'),
+    redirect: { name: 'settings-account' },
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'account',
+        name: 'settings-account',
+        component: () => import('~/views/settings/Account.vue'),
+      },
+      {
+        path: 'organizations',
+        name: 'settings-organizations',
+        component: () => import('~/views/settings/Organizations.vue'),
+      },
+      {
+        path: 'notifications',
+        name: 'settings-notifications',
+        component: () => import('~/views/settings/Notifications.vue'),
+      },
+      {
+        path: 'sound',
+        name: 'settings-sound',
+        component: () => import('~/views/settings/Sound.vue'),
+      },
+    ],
+  },
 ]
