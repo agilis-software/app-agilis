@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import OrganizationCard from '~/blocks/OrganizationCard.vue'
 import CreateOrganization from '~/views/organization/Create.vue'

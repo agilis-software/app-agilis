@@ -12,6 +12,10 @@ const useOrganizationStore = defineStore('Organization', {
     create(organization: Organization) {
       return useApi(baseUrl).post(organization)
     },
+    getById(id: string)
+    {
+      return useApi(`${baseUrl}/${id}`).get().json()
+    }
   },
 })
 

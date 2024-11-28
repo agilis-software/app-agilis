@@ -96,7 +96,7 @@ export const routes: RouteStyle[] = [
     meta: { requiresAuth: true },
     children: [
       {
-        path: 'organization',
+        path: 'organization/:id',
         name: 'organization',
         component: () => import('~/views/settings/ConfigOrganization.vue'),
       },
