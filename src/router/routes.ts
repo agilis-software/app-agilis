@@ -89,4 +89,17 @@ export const routes: RouteStyle[] = [
       },
     ],
   },
+  {
+    path: '/config',
+    redirect: { name: 'config-organization' },
+    component: () => import('~/layouts/SettingsLayout.vue'),
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'organization',
+        name: 'organization',
+        component: () => import('~/views/settings/ConfigOrganization.vue'),
+      },
+    ],
+  }
 ]

@@ -35,15 +35,17 @@ const organizations = computed(() => {
         :key="organization.id"
         class="p-4 flex justify-between items-center"
       >
-        <div class="flex items-center space-x-4 ml-16">
+      <RouterLink to="/config/organization">
+        <div class="flex items-center ml-16">
           <Icon
             icon="heroicons-solid:office-building"
             class="size-12 text-white"
           />
-          <h2 class="text-2xl font-semibold text-white">
+          <h2 class="text-2xl font-semibold text-white ml-4">
             {{ organization.name }}
           </h2>
         </div>
+      </RouterLink>
       </li>
     </ul>
     <div
@@ -52,5 +54,7 @@ const organizations = computed(() => {
     >
       Você ainda não pertence a nenhuma organização.
     </div>
+
+    <DeleteModal v-if="isOpen" @close="closeModal"/>
   </div>
 </template>
