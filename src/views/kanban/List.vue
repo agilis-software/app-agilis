@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
+import draggableComponent from 'vuedraggable'
 import TaskCard from '~/blocks/TaskCard.vue'
 import KanbanColumn from '~/blocks/KanbanColumn.vue'
 import { doingTasks, doneTasks, toDoTasks } from '~/static/kanbanTaskList'
@@ -49,6 +50,24 @@ function closeModalStatus() {
 function openModalStatus() {
   isOpenStatus.value = true
 }
+
+const columns = [
+  {
+    title: 'To-Do',
+    tasks: toDoTasks,
+    status: 'To-Do',
+  },
+  {
+    title: 'Doing',
+    tasks: doingTasks,
+    status: 'Doing',
+  },
+  {
+    title: 'Done',
+    tasks: doneTasks,
+    status: 'Done',
+  }, 
+]
 </script>
 
 <template>
@@ -66,15 +85,23 @@ function openModalStatus() {
     </div>
     <div class="pt-4 flex gap-x-4">
       <div class="flex gap-x-4 overflow-x-auto h-full">
-        <KanbanColumn title="To-Do">
-          <TaskCard
-            v-for="(task, index) in toDoTasks"
-            :key="index"
-            :title="task.title"
-            :date="task.date"
-            :task-id="task.taskId"
-            :image-source="task.imageSource"
-          />
+        <KanbanColumn 
+          v-for="column in columns" 
+          :key="column.status" 
+          :title="column.title"
+        >
+          <draggableComponent 
+            :list="column.tasks" 
+            item-key="name" 
+            group="tasks"
+          >
+            <template #item="{element}">
+              <TaskCard
+                :task="element"
+              />
+            </template>
+          </draggableComponent>
+
           <template #newTask>
             <div class="pt-4 -ml-3">
               <Button
@@ -89,26 +116,6 @@ function openModalStatus() {
               </Button>
             </div>
           </template>
-        </KanbanColumn>
-        <KanbanColumn title="Doing">
-          <TaskCard
-            v-for="(task, index) in doingTasks"
-            :key="index"
-            :title="task.title"
-            :date="task.date"
-            :task-id="task.taskId"
-            :image-source="task.imageSource"
-          />
-        </KanbanColumn>
-        <KanbanColumn title="Done">
-          <TaskCard
-            v-for="(task, index) in doneTasks"
-            :key="index"
-            :title="task.title"
-            :date="task.date"
-            :task-id="task.taskId"
-            :image-source="task.imageSource"
-          />
         </KanbanColumn>
       </div>
       <Button

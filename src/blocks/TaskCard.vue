@@ -1,16 +1,23 @@
 <script setup lang="ts">
-interface Props {
+
+interface Task {
   title: string
   date: string
   taskId?: string
   imageSource?: string
 }
 
-defineProps<Props>()
+interface Props {
+  task: Task
+}
+
+const props = defineProps<Props>()
+
+const { title, date, taskId, imageSource } = props.task
 </script>
 
 <template>
-  <div class="w-56 h-22 rounded bg-[#5C5C5C] cursor-pointer flex">
+  <div class="w-56 h-22 rounded bg-[#5C5C5C] cursor-pointer flex mb-4">
     <div class="p-4 flex flex-row w-full">
       <div class="w-[80%]">
         <h3 class="text-md font-bold">
