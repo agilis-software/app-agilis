@@ -1,7 +1,11 @@
 <script setup lang="ts">
+interface FormKitFile {
+  file: File
+  name: string
+}
 interface Props {
   name: string
-  value?: string
+  value?: FormKitFile[]
   validation?: string
   label?: string
   class?: string

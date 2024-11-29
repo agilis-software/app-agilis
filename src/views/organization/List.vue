@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import OrganizationCard from '~/blocks/OrganizationCard.vue'
 import CreateOrganization from '~/views/organization/Create.vue'
@@ -20,8 +20,8 @@ const organizations = computed(() => {
   return organizationData.value ? organizationData.value.data : []
 })
 
-const userId = computed(() => {
-  return userData.value ? userData.value.data.id : 0
+const user = computed(() => {
+  return userData.value ? userData.value.data : null
 })
 
 const isOpen = ref(false)
@@ -46,12 +46,18 @@ function closeModal() {
             fill="white"
             :size="32"
           />
-          <RouterLink to='/settings/account'>
-            <Icon
-              icon="bxs:user-circle"
-              class="size-10 text-white"
-            />
-        </RouterLink>
+          <RouterLink v-if="user" to="/settings/account">
+            <img
+              :src="user.avatar_url"
+              class="size-10 rounded-full"
+            >
+          </RouterLink>
+
+          <Icon
+            v-else
+            icon="bxs:user-circle"
+            class="size-12 translate-y-1 text-neutral-900/45 animate-pulse"
+          />
         </div>
       </div>
     </div>
@@ -92,11 +98,12 @@ function closeModal() {
     </div>
   </div>
   <Modal
+    v-if="user"
     :is-open
     title="Nova organização"
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateOrganization :owner-id="userId" />
+    <CreateOrganization :owner-id="user.id" />
   </Modal>
 </template>
