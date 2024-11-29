@@ -46,11 +46,12 @@ function closeModal() {
             fill="white"
             :size="32"
           />
-
-          <Icon
-            icon="bx:user-circle"
-            class="size-10 text-white"
-          />
+          <RouterLink to='/settings/account'>
+            <Icon
+              icon="bxs:user-circle"
+              class="size-10 text-white"
+            />
+        </RouterLink>
         </div>
       </div>
     </div>

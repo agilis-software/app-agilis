@@ -20,5 +20,6 @@ defineProps<Props>();
     :value
     :validation
     :label
+    type="password"
   />
 </template>
