@@ -4,17 +4,20 @@ interface Props {
   value?: string
   validation?: string
   label?: string
+  placeholder?: string
+  bgColor?: string
 }
 
 defineProps<Props>()
 </script>
 
 <template>
-  <FormKit
-    :name
-    :value
-    :validation
-    :label
-    type="email"
-  />
+    <FormKit
+      :name
+      :value
+      :validation
+      :label
+      :placeholder="placeholder"
+      type="email"
+    />
 </template>
