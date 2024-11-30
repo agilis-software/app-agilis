@@ -4,4 +4,5 @@ export interface Project {
   organization_id: number
   finish_date?: string
   description?: string
+  id?: number
 }

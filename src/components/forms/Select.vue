@@ -1,7 +1,25 @@
+<script setup lang="ts">
+interface Props {
+  options: any[]
+  optionLabel: string
+  optionValue: string
+  value?: string | number
+}
+
+defineProps<Props>()
+</script>
+
 <template>
-  <select
-    class="border shadow-sm focus:ring-primary-color p-2 bg-[#2C2A2A] focus:border-primary-color block w-full sm:text-md  border-[#5C5C5C] rounded-md"
+  <FormKit
+    :value
+    type="select"
   >
-    <slot />
-  </select>
+    <option
+      v-for="(item, index) in options"
+      :key="index"
+      :value="item[optionValue]"
+    >
+      {{ item[optionLabel] }}
+    </option>
+  </Formkit>
 </template>

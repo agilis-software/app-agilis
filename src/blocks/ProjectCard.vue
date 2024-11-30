@@ -17,7 +17,7 @@ defineProps<Props>()
       <h3 class="text-sm mt-3 font-bold ">
         {{ name }}
       </h3>
-      <p class="text-xs mt-3">
+      <p class="text-xs mt-3 truncate">
         {{ description }}
       </p>
     </div>

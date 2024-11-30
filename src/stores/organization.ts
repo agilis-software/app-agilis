@@ -24,8 +24,8 @@ const useOrganizationStore = defineStore('Organization', {
     setOrganizationId(id: number) {
       this.$state.id = id
     },
-    getCurrentOrganization() {
-      return useApi(`${url}/${this.$state.id}`).get().json()
+    getCurrentOrganization(id: number) {
+      return useApi(`${url}/${id}`).get().json()
     },
   },
 })

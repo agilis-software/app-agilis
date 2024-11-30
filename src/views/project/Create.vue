@@ -16,7 +16,7 @@ const project = reactive({
   organization_id: 1,
   start_date: '',
   finish_date: '',
-  task_prefix: ''
+  task_prefix: '',
 })
 
 const { execute } = projectStore.create(project, props.organizationId)
