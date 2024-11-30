@@ -4,6 +4,8 @@ interface Props {
   value?: string
   validation?: string
   label?: string
+  placeholder?: string
+  bgColor?: string
 }
 
 defineProps<Props>()
@@ -15,6 +17,7 @@ defineProps<Props>()
     :value
     :validation
     :label
+    :placeholder="placeholder"
     type="email"
   />
 </template>

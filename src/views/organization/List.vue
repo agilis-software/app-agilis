@@ -25,8 +25,8 @@ const organizations = computed(() => {
   return organizationData.value ? organizationData.value.data : []
 })
 
-const userId = computed(() => {
-  return userData.value ? userData.value.data.id : 0
+const user = computed(() => {
+  return userData.value ? userData.value.data : null
 })
 
 const isOpen = ref(false)
@@ -59,10 +59,17 @@ function goToProjects(id: number) {
             fill="white"
             :size="32"
           />
+          <RouterLink v-if="user" to="/settings/account">
+            <img
+              :src="user.avatar_url"
+              class="size-10 rounded-full"
+            >
+          </RouterLink>
 
           <Icon
-            icon="bx:user-circle"
-            class="size-10 text-white"
+            v-else
+            icon="bxs:user-circle"
+            class="size-12 translate-y-1 text-neutral-900/45 animate-pulse"
           />
         </div>
       </div>
@@ -103,11 +110,12 @@ function goToProjects(id: number) {
     </div>
   </div>
   <Modal
+    v-if="user"
     :is-open
     title="Nova organização"
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateOrganization :owner-id="userId" />
+    <CreateOrganization :owner-id="user.id" />
   </Modal>
 </template>

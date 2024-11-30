@@ -27,6 +27,15 @@ const useOrganizationStore = defineStore('Organization', {
     getCurrentOrganization(id: number) {
       return useApi(`${url}/${id}`).get().json()
     },
+    getById(id: string) {
+      return useApi(`${url}/${id}`).get().json()
+    },
+    getMembersByOrganization(id: string) {
+      return useApi(`${url}/${id}/users`).get().json()
+    },
+    getProjects(id: string) {
+      return useApi(`${url}/${id}/projects`).get().json()
+    },
   },
 })
 

@@ -8,11 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Button: typeof import('./components/Button.vue')['default']
+    DeleteModal: typeof import('./components/DeleteModal.vue')['default']
     IconAgilis: typeof import('./components/icons/IconAgilis.vue')['default']
     IconProject: typeof import('./components/icons/IconProject.vue')['default']
     InputDate: typeof import('./components/forms/InputDate.vue')['default']
     InputEmail: typeof import('./components/forms/InputEmail.vue')['default']
-    InputFile: typeof import('./components/forms/InputFile.vue')['default']
     InputPassword: typeof import('./components/forms/InputPassword.vue')['default']
     InputText: typeof import('./components/forms/InputText.vue')['default']
     Loading: typeof import('./components/Loading.vue')['default']
@@ -23,6 +23,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./components/Search.vue')['default']
     Select: typeof import('./components/forms/Select.vue')['default']
+    SettingsMenu: typeof import('./components/SettingsMenu.vue')['default']
     Sidebar: typeof import('./components/Sidebar.vue')['default']
     TextArea: typeof import('./components/forms/TextArea.vue')['default']
   }

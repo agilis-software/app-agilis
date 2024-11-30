@@ -69,4 +69,35 @@ export const routes: RouteStyle[] = [
     meta: { requiresAuth: true },
     component: () => import('~/views/organization/List.vue'),
   },
+  {
+    path: '/settings',
+    component: () => import('~/layouts/SettingsLayout.vue'),
+    redirect: { name: 'settings-account' },
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'account',
+        name: 'settings-account',
+        component: () => import('~/views/settings/Account.vue'),
+      },
+      {
+        path: 'organizations',
+        name: 'settings-organizations',
+        component: () => import('~/views/settings/Organizations.vue'),
+      },
+    ],
+  },
+  {
+    path: '/config',
+    redirect: { name: 'config-organization' },
+    component: () => import('~/layouts/SettingsLayout.vue'),
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'organization/:id',
+        name: 'organization',
+        component: () => import('~/views/settings/ConfigOrganization.vue'),
+      },
+    ],
+  },
 ]

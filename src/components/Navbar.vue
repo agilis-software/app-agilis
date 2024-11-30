@@ -154,16 +154,21 @@ const members = ref(projectMemberList)
       </div>
     </div>
 
-    <div v-if="routePath === '/projects'" class="absolute bottom-0 w-full cursor-pointer">
-      <div class="flex justify-center items-center gap-2 w-fit">
-        <Icon
-          icon="mdi:gear"
-          class="size-6 text-electric-violet-400"
-        />
-        <p class="text-white font-semibold">
-          Configurações
-        </p>
-      </div>
+    <div
+      v-if="routePath === '/projects'"
+      class="absolute bottom-0 w-fit ml-4"
+    >
+      <RouterLink to="/settings">
+        <div class="flex justify-center items-center gap-2 w-fit">
+          <Icon
+            icon="mdi:gear"
+            class="size-6 text-electric-violet-400"
+          />
+          <p class="text-white font-semibold">
+            Configurações
+          </p>
+        </div>
+      </RouterLink>
     </div>
   </div>
 </template>

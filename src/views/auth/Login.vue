@@ -23,6 +23,9 @@ function handleSubmit() {
       authStore.setToken(token.value)
       router.push('/organizations')
     })
+    .catch((error) => {
+      console.error('Login failed:', error)
+    })
 }
 </script>
 
