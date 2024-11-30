@@ -19,6 +19,8 @@ declare module 'vue' {
     LogoAgilis: typeof import('./components/icons/LogoAgilis.vue')['default']
     Modal: typeof import('./components/Modal.vue')['default']
     Navbar: typeof import('./components/Navbar.vue')['default']
+    OrganizationNavbar: typeof import('./components/OrganizationNavbar.vue')['default']
+    ProjectNavbar: typeof import('./components/ProjectNavbar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./components/Search.vue')['default']

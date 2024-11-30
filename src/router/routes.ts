@@ -14,7 +14,7 @@ export const routes: RouteStyle[] = [
   {
     path: '',
     component: () => import('~/layouts/AuthLayout.vue'),
-    redirect: { name: 'projects' },
+    redirect: { name: 'organizations' },
     children: [
       {
         path: '/login',
@@ -41,7 +41,7 @@ export const routes: RouteStyle[] = [
         component: () => import('~/views/project/List.vue'),
       },
       {
-        path: '/projects/:id/chats/:chatId',
+        path: '/organizations/:organizationId/chats/:chatId',
         name: 'chat',
         component: () => import('~/views/project/Chat.vue'),
       },

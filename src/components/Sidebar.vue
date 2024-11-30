@@ -37,7 +37,7 @@ const iconStyle = computed(() => {
     >
       <div
         :class="navbarContainerStyle"
-        class="p-2 transition-all transform h-full"
+        class="p-2 transition-all transform h-full w-full"
       >
         <Navbar />
       </div>
