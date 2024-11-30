@@ -122,5 +122,21 @@ const users = computed(() => organizationUsers.value ? organizationUsers.value.d
       </div>
       <hr v-else class="mx-2 border-none bg-white/20 h-7 w-40 rounded-lg animate-pulse">
     </div>
+
+    <div
+      class="absolute bottom-0 w-fit ml-4"
+    >
+      <RouterLink to="/settings">
+        <div class="flex justify-center items-center gap-2 w-fit">
+          <Icon
+            icon="mdi:gear"
+            class="size-6 text-electric-violet-400"
+          />
+          <p class="text-white font-semibold">
+            Configurações
+          </p>
+        </div>
+      </RouterLink>
+    </div>
   </div>
 </template>
