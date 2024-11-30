@@ -10,6 +10,9 @@ const useProjectStore = defineStore('project', {
     index(organizationId: number) {
       return useApi(`/organizations/${organizationId}/${url}`).get().json<Resource<Project[]>>()
     },
+    show(organizationId: number, projectId: number) {
+      return useApi(`/organizations/${organizationId}/${url}/${projectId}`).get().json()
+    },
     create(project: Project, organizationId: number) {
       return useApi(`/organizations/${organizationId}/${url}`).post(project)
     },

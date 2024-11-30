@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { messageList } from '~/static/messageList'
+import MessageCard from '~/blocks/MessageCard.vue'
 
 const messageContainer = ref<HTMLDivElement | null>(null)
 
