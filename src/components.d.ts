@@ -13,7 +13,6 @@ declare module 'vue' {
     IconProject: typeof import('./components/icons/IconProject.vue')['default']
     InputDate: typeof import('./components/forms/InputDate.vue')['default']
     InputEmail: typeof import('./components/forms/InputEmail.vue')['default']
-    InputFile: typeof import('./components/forms/InputFile.vue')['default']
     InputPassword: typeof import('./components/forms/InputPassword.vue')['default']
     InputText: typeof import('./components/forms/InputText.vue')['default']
     Loading: typeof import('./components/Loading.vue')['default']

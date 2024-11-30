@@ -17,7 +17,7 @@ const isSelected = (path: string) => selectedItem.value === path
   <div
     class="flex flex-col h-screen w-72 bg-[#2F2C2C] text-white shadow-md fixed rounded-tr-3xl rounded-br-3xl"
   >
-    <RouterLink to="/">
+    <RouterLink to="/organizations">
       <div
         class="flex items-center p-4 hover:bg-[#3A3737] rounded-tr-3xl cursor-pointer"
       >
