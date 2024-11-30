@@ -10,7 +10,12 @@ import { useAuthStore } from '~/stores/auth'
 const organizationStore = useOrganizationStore()
 const authStore = useAuthStore()
 
-const { execute: getOrganizations, data: organizationData, isFetching: isLoadingOrganization } = organizationStore.index()
+const {
+  execute: getOrganizations,
+  data: organizationData,
+  isFetching: isLoadingOrganization,
+} = organizationStore.index()
+
 const { execute: me, data: userData } = authStore.me()
 
 getOrganizations()
@@ -39,7 +44,7 @@ function goToProjects(id: number) {
     return
   }
 
-  router.push({ name: 'projects', params: { organizationId: id} })
+  router.push({ name: 'projects', params: { organizationId: id } })
 }
 </script>
 

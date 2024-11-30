@@ -1,11 +1,7 @@
 <script setup lang="ts">
-
-interface Task {
-  title: string
-  date: string
-  taskId?: string
-  imageSource?: string
-}
+import type { Task } from '~/models/Task'
+import defaultUserImg from '~/assets/img/default-user-icon.svg'
+import { addDateMask } from '~/utils/formatDate'
 
 interface Props {
   task: Task
@@ -13,7 +9,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { title, date, taskId, imageSource } = props.task
+const { title, due_date, id, assignee } = props.task
 </script>
 
 <template>
@@ -25,18 +21,25 @@ const { title, date, taskId, imageSource } = props.task
         </h3>
         <div class="text-xs flex flex-col gap-y-1">
           <p>
-            {{ date }}
+            {{ addDateMask(due_date) }}
           </p>
           <p class="font-bold">
-            {{ taskId }}
+            {{ id }}
           </p>
         </div>
       </div>
       <div class="w-[20%] flex items-end justify-end">
         <img
-          :src="imageSource"
+          v-if="assignee"
+          :src="assignee.avatar_url"
           alt="task-collaborator-image"
           class="size-8 rounded-full"
+        >
+        <img
+          v-else
+          :src="defaultUserImg"
+          alt="task-collaborator-image"
+          class="size-8 rounded-full text-white"
         >
       </div>
     </div>

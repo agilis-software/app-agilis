@@ -20,6 +20,7 @@ export const routes: RouteStyle[] = [
         path: '/login',
         name: 'login',
         component: Login,
+        alias: '/',
       },
       {
         path: '/register',
@@ -53,6 +54,11 @@ export const routes: RouteStyle[] = [
         path: '/organizations/:organizationId/projects/:projectId/kanban',
         name: 'kanban',
         component: () => import('~/views/kanban/List.vue'),
+      },
+      {
+        path: '/organizations/:organizationId/projects/:projectId/tasks/:taskId',
+        name: 'view-task',
+        component: () => import('~/views/task/View.vue'),
       },
     ],
   },

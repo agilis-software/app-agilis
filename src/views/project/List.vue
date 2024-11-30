@@ -2,7 +2,6 @@
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import CreateProject from '~/views/project/Create.vue'
-import TaskCard from '~/blocks/TaskCard.vue'
 import ProjectCard from '~/blocks/ProjectCard.vue'
 import { useOrganizationStore } from '~/stores/organization'
 import { useProjectStore } from '~/stores/project'
@@ -17,7 +16,7 @@ const projectStore = useProjectStore()
 const organizationStore = useOrganizationStore()
 
 const { execute: getOrganizationInfo, data: organizationData, isFetching: isLoadingOrganization }
-  = organizationStore.getCurrentOrganization()
+  = organizationStore.getCurrentOrganization(id)
 
 getOrganizationInfo()
 

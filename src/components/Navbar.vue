@@ -19,7 +19,7 @@ const routePath = computed(() => route.path)
 const organizationStore = useOrganizationStore()
 
 const { execute: getOrganizationInfo, data: organizationData }
-  = organizationStore.getCurrentOrganization()
+  = organizationStore.getCurrentOrganization(Number(organizationId))
 
 getOrganizationInfo()
 
@@ -70,17 +70,6 @@ const members = ref(projectMemberList)
       <div
         class="border-y-2 border-y-electric-violet-500 flex flex-col justify-start items-start p-4 gap-4"
       >
-        <!-- <RouterLink to="/backlog">
-          <div class="flex justify-start items-center gap-2">
-            <Icon
-              icon="fluent:list-rtl-16-filled"
-              class="size-6 text-electric-violet-500"
-            />
-            <p class="text-white">
-              Backlog
-            </p>
-          </div>
-        </RouterLink> -->
         <div
           class="flex justify-start items-center gap-2 cursor-pointer"
           @click="goToKanban"
