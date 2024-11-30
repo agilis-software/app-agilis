@@ -2,12 +2,32 @@
 import { Icon } from '@iconify/vue'
 import { computed, ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
+import router from '~/router'
 import { chatList } from '~/static/chatList'
 import { projectMemberList } from '~/static/projectMemberList'
+import { useOrganizationStore } from '~/stores/organization'
 
 const route = useRoute()
 
+const {
+  organizationId,
+  projectId,
+} = route.params
+
 const routePath = computed(() => route.path)
+
+const organizationStore = useOrganizationStore()
+
+const { execute: getOrganizationInfo, data: organizationData }
+  = organizationStore.getCurrentOrganization(Number(organizationId))
+
+getOrganizationInfo()
+
+const organization = computed(() => organizationData.value ? organizationData.value.data : [])
+
+function goToKanban() {
+  router.push({ name: 'kanban', params: { organizationId, projectId } })
+}
 
 const chats = ref(chatList)
 
@@ -42,7 +62,7 @@ const members = ref(projectMemberList)
         />
       </div>
       <h1 class="text-xl text-white font-semibold">
-        {{ routePath === '/projects' ? 'Fatec Jahu' : 'Projeto Integrador' }}
+        {{ routePath === '/projects' ? organization.name : 'Projeto' }}
       </h1>
     </div>
 
@@ -50,28 +70,18 @@ const members = ref(projectMemberList)
       <div
         class="border-y-2 border-y-electric-violet-500 flex flex-col justify-start items-start p-4 gap-4"
       >
-        <RouterLink to="/backlog">
-          <div class="flex justify-start items-center gap-2">
-            <Icon
-              icon="fluent:list-rtl-16-filled"
-              class="size-6 text-electric-violet-500"
-            />
-            <p class="text-white">
-              Backlog
-            </p>
-          </div>
-        </RouterLink>
-        <RouterLink to="/kanban">
-          <div class="flex justify-start items-center gap-2">
-            <Icon
-              icon="bi:kanban"
-              class="size-6 text-electric-violet-500"
-            />
-            <p class="text-white">
-              Quadro
-            </p>
-          </div>
-        </RouterLink>
+        <div
+          class="flex justify-start items-center gap-2 cursor-pointer"
+          @click="goToKanban"
+        >
+          <Icon
+            icon="bi:kanban"
+            class="size-6 text-electric-violet-500"
+          />
+          <p class="text-white">
+            Quadro
+          </p>
+        </div>
       </div>
     </div>
 
@@ -144,18 +154,21 @@ const members = ref(projectMemberList)
       </div>
     </div>
 
-    <div v-if="routePath === '/projects'" class="absolute bottom-0 w-fit ml-4">
-      <RouterLink :to="`/settings`">
-      <div class="flex justify-center items-center gap-2 w-fit">
-        <Icon
-          icon="mdi:gear"
-          class="size-6 text-electric-violet-400"
-        />
-        <p class="text-white font-semibold">
-          Configurações
-        </p>
-      </div>
-    </RouterLink>
+    <div
+      v-if="routePath === '/projects'"
+      class="absolute bottom-0 w-fit ml-4"
+    >
+      <RouterLink to="/settings">
+        <div class="flex justify-center items-center gap-2 w-fit">
+          <Icon
+            icon="mdi:gear"
+            class="size-6 text-electric-violet-400"
+          />
+          <p class="text-white font-semibold">
+            Configurações
+          </p>
+        </div>
+      </RouterLink>
     </div>
   </div>
 </template>

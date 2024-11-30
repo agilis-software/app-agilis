@@ -5,6 +5,7 @@ interface RouteStyle {
   path: string
   component: any
   redirect: Record<'name', string> | string
+  name?: string
   children?: RouteRecordRaw[]
   meta?: Record<'requiresAuth', boolean>
 }
@@ -19,6 +20,7 @@ export const routes: RouteStyle[] = [
         path: '/login',
         name: 'login',
         component: Login,
+        alias: '/',
       },
       {
         path: '/register',
@@ -34,7 +36,7 @@ export const routes: RouteStyle[] = [
     meta: { requiresAuth: true },
     children: [
       {
-        path: '/projects',
+        path: '/organizations/:organizationId/projects',
         name: 'projects',
         component: () => import('~/views/project/List.vue'),
       },
@@ -49,14 +51,20 @@ export const routes: RouteStyle[] = [
         component: () => import('~/views/backlog/List.vue'),
       },
       {
-        path: '/kanban',
+        path: '/organizations/:organizationId/projects/:projectId/kanban',
         name: 'kanban',
         component: () => import('~/views/kanban/List.vue'),
+      },
+      {
+        path: '/organizations/:organizationId/projects/:projectId/tasks/:taskId',
+        name: 'view-task',
+        component: () => import('~/views/task/View.vue'),
       },
     ],
   },
   {
     path: '/organizations',
+    name: 'organizations',
     redirect: '',
     meta: { requiresAuth: true },
     component: () => import('~/views/organization/List.vue'),
@@ -77,16 +85,6 @@ export const routes: RouteStyle[] = [
         name: 'settings-organizations',
         component: () => import('~/views/settings/Organizations.vue'),
       },
-      {
-        path: 'notifications',
-        name: 'settings-notifications',
-        component: () => import('~/views/settings/Notifications.vue'),
-      },
-      {
-        path: 'sound',
-        name: 'settings-sound',
-        component: () => import('~/views/settings/Sound.vue'),
-      },
     ],
   },
   {
@@ -101,5 +99,5 @@ export const routes: RouteStyle[] = [
         component: () => import('~/views/settings/ConfigOrganization.vue'),
       },
     ],
-  }
+  },
 ]

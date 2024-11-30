@@ -18,13 +18,11 @@ export const useApi = createFetch({
       return { options }
     },
     onFetchError(ctx) {
-      let message = null
+      const message = ctx.data?.message || 'Não foi possível concluir a requisição'
 
-      if (ctx.data) {
-        message = ctx.data?.message
-      }
+      notify(message, 'error')
 
-      throw notify(message ?? ctx?.response?.statusText ?? 'Não foi possível concluir a requisição', 'error')
+      return ctx
     },
     immediate: false,
   },

@@ -40,7 +40,7 @@ const isSelected = (path: string) => selectedItem.value === path
               'absolute inset-y-0 left-0 w-2 bg-electric-violet-400 rounded-r-full':
                 isSelected('/settings/account'),
             }"
-          ></div>
+          />
           Conta
         </div>
       </RouterLink>
@@ -55,38 +55,8 @@ const isSelected = (path: string) => selectedItem.value === path
               'absolute inset-y-0 left-0 w-2 bg-electric-violet-400 rounded-r-full':
                 isSelected('/settings/organizations'),
             }"
-          ></div>
+          />
           Organizações
-        </div>
-      </RouterLink>
-
-      <RouterLink
-        to="/settings/notifications"
-        class="relative group"
-      >
-        <div class="flex items-center ml-14 p-4 cursor-pointer transition-all">
-          <div
-            :class="{
-              'absolute inset-y-0 left-0 w-2 bg-electric-violet-400 rounded-r-full':
-                isSelected('/settings/notifications'),
-            }"
-          ></div>
-          Notificações
-        </div>
-      </RouterLink>
-
-      <RouterLink
-        to="/settings/sound"
-        class="relative group"
-      >
-        <div class="flex items-center ml-14 p-4 cursor-pointer transition-all">
-          <div
-            :class="{
-              'absolute inset-y-0 left-0 w-2 bg-electric-violet-400 rounded-r-full':
-                isSelected('/settings/sound'),
-            }"
-          ></div>
-          Som e Áudio
         </div>
       </RouterLink>
     </nav>

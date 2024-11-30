@@ -1,6 +1,6 @@
 <script setup lang="ts">
 interface Props {
-  title: string
+  name: string
   description: string
 }
 
@@ -15,9 +15,9 @@ defineProps<Props>()
     </div>
     <div class="px-4 py-1">
       <h3 class="text-sm mt-3 font-bold ">
-        {{ title }}
+        {{ name }}
       </h3>
-      <p class="text-xs mt-3">
+      <p class="text-xs mt-3 truncate">
         {{ description }}
       </p>
     </div>

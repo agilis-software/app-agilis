@@ -1,12 +1,32 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
-import { projectCardList } from '~/static/projectCardList'
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import CreateProject from '~/views/project/Create.vue'
-import TaskCard from '~/blocks/TaskCard.vue'
 import ProjectCard from '~/blocks/ProjectCard.vue'
+import { useOrganizationStore } from '~/stores/organization'
+import { useProjectStore } from '~/stores/project'
+import router from '~/router'
+
+const route = useRoute()
+
+const id = Number(route.params.organizationId)
 
 const isOpen = ref(false)
+const projectStore = useProjectStore()
+const organizationStore = useOrganizationStore()
+
+const { execute: getOrganizationInfo, data: organizationData, isFetching: isLoadingOrganization }
+  = organizationStore.getCurrentOrganization(id)
+
+getOrganizationInfo()
+
+const organization = computed(() => organizationData.value ? organizationData.value.data : [])
+
+const { execute: getProjects, data: projectsData } = projectStore.index(id)
+
+getProjects()
+
+const projects = computed(() => projectsData.value ? projectsData.value.data : [])
 
 function openModal() {
   isOpen.value = true
@@ -15,15 +35,27 @@ function openModal() {
 function closeModal() {
   isOpen.value = false
 }
+
+function goToKanban(projectId: number) {
+  router.push({ name: 'kanban', params: { organizationId: id, projectId } })
+}
 </script>
 
 <template>
-  <div class="text-white">
+  <div
+    v-if="isLoadingOrganization"
+    class="size-full flex justify-center items-center"
+  >
+    <Loading size="12" />
+  </div>
+  <div
+    v-else
+    class="text-white"
+  >
     <div class="flex flex-col justify-start gap-y-4">
       <h1 class="text-2xl font-bold">
-        Fatec Jahu
+        {{ organization.name }}
       </h1>
-      <!--  nome do projeto -->
       <hr class="w-full border border-[#2F2C2C]">
     </div>
     <div class="pt-4">
@@ -39,18 +71,21 @@ function closeModal() {
         </Button>
       </div>
       <div class="flex justify-start gap-x-8 py-5">
-        <RouterLink
-          v-for="(project, index) in projectCardList"
+        <div v-if="!projects.length" class="text-gray-500 -mt-4">
+          Não há projetos cadastrados.
+        </div>
+        <div
+          v-for="(project, index) in projects"
           :key="index"
-          to="kanban"
+          @click="goToKanban(project.id || 0)"
         >
           <ProjectCard
-            :title="project.title"
-            :description="project.description"
+            :name="project.name"
+            :description="project.description || ''"
           />
-        </RouterLink>
+        </div>
       </div>
-      <div class="flex flex-col justify-start gap-y-4">
+      <!-- <div class="flex flex-col justify-start gap-y-4">
         <hr class="w-full border border-[#2F2C2C]">
         <h4 class="text-lg">
           Suas tarefas em progresso
@@ -63,7 +98,7 @@ function closeModal() {
           task-id="PI-2"
           image-source="https://avatars.githubusercontent.com/u/83726062?v=4"
         />
-      </div>
+      </div> -->
     </div>
   </div>
   <Modal
@@ -72,6 +107,6 @@ function closeModal() {
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateProject />
+    <CreateProject :organization-id="id" />
   </Modal>
 </template>

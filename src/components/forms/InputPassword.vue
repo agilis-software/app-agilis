@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { Icon } from '@iconify/vue'
-import eyeIcon from '@iconify-icons/mdi/eye'
-import eyeOffIcon from '@iconify-icons/mdi/eye-off'
+import { computed, ref } from 'vue'
 
 interface Props {
   name: string
@@ -11,15 +8,17 @@ interface Props {
   label?: string
 }
 
-defineProps<Props>();
+const props = defineProps<Props>()
+const showPassword = ref(false)
+const inputValue = ref('')
+
+const inputType = computed(() => (showPassword.value ? 'text' : 'password'))
 </script>
 
 <template>
   <FormKit
-    :name
-    :value
-    :validation
-    :label
-    type="password"
+    v-bind="props"
+    v-model="inputValue"
+    :type="inputType"
   />
 </template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useOrganizationStore } from '~/stores/organization'
 import { Icon } from '@iconify/vue'
+import { useOrganizationStore } from '~/stores/organization'
 
 const route = useRoute()
 const organizationStore = useOrganizationStore()
@@ -11,7 +11,6 @@ const { id } = route.params
 const {
   execute: getOrganization,
   data: organizationData,
-  isFetching: isLoadingOrganization,
 } = organizationStore.getById(id as string)
 getOrganization()
 
@@ -20,7 +19,7 @@ const organization = computed(() => {
 })
 
 const activeTab = ref('configuracoes')
-const switchTab = (tab: string) => {
+function switchTab(tab: string) {
   activeTab.value = tab
 }
 
@@ -28,7 +27,6 @@ const switchTab = (tab: string) => {
 const {
   execute: getMembers,
   data: membersData,
-  isFetching: isLoadingMembers,
 } = organizationStore.getMembersByOrganization(id as string)
 getMembers()
 
@@ -40,7 +38,6 @@ const members = computed(() => {
 const {
   execute: getProjects,
   data: projectsData,
-  isFetching: isLoadingProjects,
 } = organizationStore.getProjects(id as string)
 getProjects()
 
@@ -63,7 +60,6 @@ function goBack() {
   selectedProject.value = { name: '', description: '', start_date: '', finish_date: '' }
 }
 
-// Delete modal
 const isModalOpen = ref(false)
 function openDeleteModal() {
   isModalOpen.value = true
@@ -82,7 +78,9 @@ function closeDeleteModal() {
         icon="bx:left-arrow-alt"
         @click="goBack"
       />
-      <h2 class="font-semibold text-3xl ml-4">{{ organization.name }}</h2>
+      <h2 class="font-semibold text-3xl ml-4">
+        {{ organization.name }}
+      </h2>
     </div>
 
     <div class="border-b border-[#2F2C2C]">
@@ -92,26 +90,22 @@ function closeDeleteModal() {
       >
         <a
           role="tab"
-          class="ml-1"
+          class="ml-1 d-tab text-white [--tab-border:none] border-0 w-full"
           :class="[
-            'd-tab text-white [--tab-border:none] border-0 w-full',
-            activeTab === 'configuracoes' &&
-              'd-tab-active [--tab-bg:#2F2C2C] [--tab-border-color:#2F2C2C] ml-4',
+            activeTab === 'configuracoes'
+              && 'd-tab-active [--tab-bg:#2F2C2C] [--tab-border-color:#2F2C2C] ml-4',
           ]"
           @click="switchTab('configuracoes')"
-          >Configurações</a
-        >
+        >Configurações</a>
         <a
           role="tab"
-          class="ml-3"
+          class="ml-3 d-tab text-white [--tab-border:none] border-0 w-full"
           :class="[
-            'd-tab text-white [--tab-border:none] border-0 w-full',
-            activeTab === 'projetos' &&
-              'd-tab-active [--tab-bg:#2F2C2C] [--tab-border-color:#2F2C2C] ml-1',
+            activeTab === 'projetos'
+              && 'd-tab-active [--tab-bg:#2F2C2C] [--tab-border-color:#2F2C2C] ml-1',
           ]"
           @click="switchTab('projetos')"
-          >Projetos</a
-        >
+        >Projetos</a>
       </div>
     </div>
 
@@ -123,7 +117,10 @@ function closeDeleteModal() {
           class="flex flex-col w-[70%]"
         >
           <label class="font-semibold"> Nome da organização </label>
-          <InputText v-model="organization.name" />
+          <InputText
+            v-model="organization.name"
+            name="name"
+          />
         </div>
 
         <div v-if="activeTab === 'projetos' && !selectedProject.name">
@@ -131,8 +128,8 @@ function closeDeleteModal() {
             <li
               v-for="project in projects"
               :key="project.id"
-              @click="selectProject(project)"
               class="cursor-pointer m-6 flex items-center gap-4"
+              @click="selectProject(project)"
             >
               <Icon
                 icon="tdesign:system-code"
@@ -158,13 +155,16 @@ function closeDeleteModal() {
         >
           <div class="flex flex-col w-[70%]">
             <label class="font-semibold"> Nome do Projeto</label>
-            <InputText v-model="selectedProject.name" />
+            <InputText
+              v-model="selectedProject.name"
+              name="project_name"
+            />
           </div>
 
-          <div class="flex flex-col items-center justify-center ml-auto">
+          <!-- <div class="flex flex-col items-center justify-center ml-auto">
             <label class="font-semibold"> Prefixo do projeto </label>
-            <InputText />
-          </div>
+            <InputText name/>
+          </div> -->
         </div>
       </div>
 
@@ -172,29 +172,37 @@ function closeDeleteModal() {
         v-if="activeTab === 'configuracoes' || selectedProject.name"
         class="mt-4 flex flex-row w-full"
       >
-        <div class="w-full mr-20" v-if="activeTab === 'configuracoes'">
+        <div v-if="activeTab === 'configuracoes'" class="w-full mr-20">
           <label class="font-semibold"> Descrição </label>
           <TextArea
             v-model="organization.description"
-          />
-        </div>
-        
-        <div class="w-full mr-20" v-if="activeTab === 'projetos'"> 
-          <label class="font-semibold"> Descrição </label>
-          <TextArea
-            v-model="selectedProject.description"
+            name="description"
           />
         </div>
 
-        <div class="mr-6" v-if="activeTab === 'projetos' && selectedProject.name">
+        <div v-if="activeTab === 'projetos'" class="w-full mr-20">
+          <label class="font-semibold"> Descrição </label>
+          <TextArea
+            v-model="selectedProject.description"
+            name="project_description"
+          />
+        </div>
+
+        <div v-if="activeTab === 'projetos' && selectedProject.name" class="mr-6">
           <div>
             <label class="font-semibold text-sm"> Data de início </label>
-            <InputDate v-model="selectedProject.start_date" />
+            <InputDate
+              v-model="selectedProject.start_date"
+              name="start_date"
+            />
           </div>
 
           <div>
             <label class="font-semibold text-sm"> Data final </label>
-            <InputDate v-model="selectedProject.finish_date" />
+            <InputDate
+              v-model="selectedProject.finish_date"
+              name="finish_date"
+            />
           </div>
         </div>
       </div>
@@ -205,7 +213,10 @@ function closeDeleteModal() {
       >
         <label class="font-semibold"> Membros </label>
         <div class="relative">
-          <InputEmail placeholder="Informe o email do membro a ser convidado" />
+          <InputEmail
+            name="new_user"
+            placeholder="Informe o email do membro a ser convidado"
+          />
           <Button>
             <Icon
               icon="material-symbols:add"
@@ -223,14 +234,14 @@ function closeDeleteModal() {
           >
             <ul>
               <li
-                class="p-2 pl-10 flex items-center gap-2"
                 v-for="member in members"
                 :key="member.id"
+                class="p-2 pl-10 flex items-center gap-2"
               >
                 <img
                   :src="member.avatar_url"
                   class="w-8 h-8 rounded-full"
-                />
+                >
                 {{ member.name }}
                 <span v-if="member.is_owner"> - Dono </span>
                 <span v-else> - Membro </span>
@@ -257,9 +268,23 @@ function closeDeleteModal() {
         </button>
       </div>
     </div>
-    <DeleteModal
-      v-if="isModalOpen"
-      @close="closeDeleteModal"
-    />
+    <Modal
+      :is-open="isModalOpen"
+      title="Atenção!"
+      @handle-close="closeDeleteModal"
+    >
+      <p>Tem certeza de que deseja excluir esta organização?</p>
+      <div class="mt-4 flex justify-center gap-x-10">
+        <Button>
+          Não
+        </Button>
+        <Button
+          class="bg-red-500"
+          @click="closeDeleteModal"
+        >
+          Sim
+        </Button>
+      </div>
+    </Modal>
   </div>
 </template>

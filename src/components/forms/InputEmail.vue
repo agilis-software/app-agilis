@@ -12,12 +12,12 @@ defineProps<Props>()
 </script>
 
 <template>
-    <FormKit
-      :name
-      :value
-      :validation
-      :label
-      :placeholder="placeholder"
-      type="email"
-    />
+  <FormKit
+    :name
+    :value
+    :validation
+    :label
+    :placeholder="placeholder"
+    type="email"
+  />
 </template>

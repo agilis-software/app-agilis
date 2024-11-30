@@ -18,15 +18,14 @@ const token = computed(() => {
 })
 
 function handleSubmit() {
-  console.log('Credentials:', credentials);
   login()
     .then(() => {
       authStore.setToken(token.value)
       router.push('/organizations')
     })
     .catch((error) => {
-      console.error('Login failed:', error);  // Adicione um catch para ver o erro completo
-    });
+      console.error('Login failed:', error)
+    })
 }
 </script>
 

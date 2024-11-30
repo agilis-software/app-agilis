@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import type { Organization } from '~/models/organization'
+import type { Organization } from '~/models/Organization'
 import { useOrganizationStore } from '~/stores/organization'
 
 interface Props {
