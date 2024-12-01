@@ -2,7 +2,9 @@ import type { RemovableRef } from '@vueuse/core'
 import { useStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { useApi } from '~/composables/api'
+import type { User } from '~/models/Auth'
 import type { Organization } from '~/models/Organization'
+import type { Resource } from '~/models/Resource'
 
 const url = '/organizations'
 
@@ -32,6 +34,9 @@ const useOrganizationStore = defineStore('Organization', {
     },
     getMembersByOrganization(id: string) {
       return useApi(`${url}/${id}/users`).get().json()
+    },
+    getParticipantByOrganization(id: string, userId: string) {
+      return useApi(`${url}/${id}/users/${userId}`).get().json<Resource<User>>()
     },
     getProjects(id: string) {
       return useApi(`${url}/${id}/projects`).get().json()

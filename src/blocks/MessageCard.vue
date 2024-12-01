@@ -1,32 +1,26 @@
 <script setup lang="ts">
+import type { User } from '~/models/Auth'
+
 const { currentUser, author, text, createdAt } = defineProps<{
   currentUser: boolean
-  author: {
-    avatarUrl: string
-    name: string
-    online: boolean
-  }
+  author: Pick<User, 'name' | 'avatar_url'>
   text: string
-  createdAt: Date
+  createdAt: string
 }>()
 
 const formattedTime = new Intl.DateTimeFormat('default', {
   hour: '2-digit',
   minute: '2-digit',
-}).format(createdAt)
+}).format(new Date(createdAt))
 </script>
 
 <template>
   <div class="flex gap-4">
     <div class="size-6 relative">
       <img
-        :src="author.avatarUrl"
+        :src="author.avatar_url"
         class="rounded-full"
       >
-      <div
-        :class="author.online ? 'bg-emerald-500' : 'bg-neutral-500'"
-        class="absolute bottom-0 right-0 rounded-full size-2"
-      />
     </div>
 
     <div class="flex flex-col justify-start">

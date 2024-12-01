@@ -41,7 +41,7 @@ export const routes: RouteStyle[] = [
         component: () => import('~/views/project/List.vue'),
       },
       {
-        path: '/organizations/:organizationId/chats/:chatId',
+        path: '/organizations/:organizationId/chats/:receiverId',
         name: 'chat',
         component: () => import('~/views/project/Chat.vue'),
       },
