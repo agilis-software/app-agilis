@@ -36,7 +36,7 @@ const messageList = computed(() => (messageData.value ? messageData.value.data :
 function initializeSocket() {
   socketStore.connect({ auth: { token: authStore.token } })
   socketStore.listen('message', async (message: Message) => {
-    messages.value = [...messageList.value, message]
+    messages.value.push(message)
     await nextTick()
     scrollToBottom()
   })
