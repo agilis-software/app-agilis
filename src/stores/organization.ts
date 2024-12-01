@@ -17,8 +17,8 @@ const useOrganizationStore = defineStore('Organization', {
     id: useStorage('selectedOrganization', 0),
   }),
   actions: {
-    index() {
-      return useApi(url).get().json()
+    index(filter: 'all' | 'own' = 'all') {
+      return useApi(`${url}?filter=${filter}`).get().json()
     },
     create(organization: Organization) {
       return useApi(url).post(organization)
