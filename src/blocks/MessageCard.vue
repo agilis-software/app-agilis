@@ -37,10 +37,10 @@ const formattedTime = new Intl.DateTimeFormat('default', {
 
       <div :class="`flex ${currentUser ? 'flex-row-reverse' : 'flex-row'} gap-2`">
         <div
-          :class="currentUser ? 'rounded-tr-none justify-self-end' : 'rounded-tl-none'"
-          class="w-fit max-w-64 h-fit p-2 bg-neutral-600 flex justify-start items-center rounded-lg"
+          :class="currentUser ? 'rounded-tr-none justify-self-end' : 'rounded-tl-none' "
+          class="w-fit max-w-72 border p-2 bg-neutral-600 flex items-start rounded-lg break-words break-all"
         >
-          <p class="text-neutral-200 whitespace-pre-line">
+          <p class="text-neutral-200 whitespace-pre-wrap">
             {{ text }}
           </p>
         </div>

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { computed, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import router from '~/router'
 import OrganizationCard from '~/blocks/OrganizationCard.vue'
 import CreateOrganization from '~/views/organization/Create.vue'
 import { useOrganizationStore } from '~/stores/organization'
 import { useAuthStore } from '~/stores/auth'
+import { useSocketStore } from '~/stores/socket'
+import type { Message } from '~/models/Message'
 
 const organizationStore = useOrganizationStore()
 const authStore = useAuthStore()
@@ -29,6 +31,34 @@ const user = computed(() => {
   return userData.value ? userData.value.data : null
 })
 
+const socketStore = useSocketStore()
+
+socketStore.connect({
+  auth: {
+    token: authStore.token,
+  },
+})
+
+type MessageNotification = Message & { visible: boolean }
+
+const notifications = reactive<MessageNotification[]>([])
+
+onMounted(() => {
+  // add notification and set visible to false in 3 seconds
+  socketStore.listen('message', (message: Message) => {
+    const notification = {
+      ...message,
+      visible: true,
+    }
+
+    notifications.push(notification)
+
+    setTimeout(() => {
+      notifications.splice(notifications.indexOf(notification), 1)
+    }, 3000)
+  })
+})
+
 const isOpen = ref(false)
 
 function openModal() {
@@ -49,6 +79,17 @@ function goToProjects(id: number) {
 </script>
 
 <template>
+  <Notification
+    v-for="(message, index) in notifications"
+    :key="index"
+    :notification="{
+      title: message.sender.name,
+      description: 'Te enviou uma mensagem',
+      content: message.content,
+      photo: message.sender.avatar_url,
+      visible: message.visible,
+    }"
+  />
   <div class="bg-[#201E1E] min-h-screen text-white">
     <div class="hidden md:flex w-16 flex-col inset-y-0 transition-all fixed">
       <div class="flex-1 flex flex-col min-h-0 bg-electric-violet-500 relative">
