@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { useOrganizationStore } from '~/stores/organization'
@@ -12,7 +12,16 @@ const {
   execute: getOrganization,
   data: organizationData,
 } = organizationStore.getById(id as string)
-getOrganization()
+
+const currentOrganizationData = reactive({
+  name: '',
+  description: '',
+})
+
+getOrganization().then(() => {
+  currentOrganizationData.name = organizationData.value.data.name
+  currentOrganizationData.description = organizationData.value.data.description
+})
 
 const organization = computed(() => {
   return organizationData.value ? organizationData.value.data : []
@@ -68,6 +77,42 @@ function openDeleteModal() {
 function closeDeleteModal() {
   isModalOpen.value = false
 }
+
+const email = ref('')
+
+async function inviteUser() {
+  const regex = /^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i
+
+  if (!regex.test(email.value))
+    return
+
+  const { execute: invite }
+    = organizationStore.invite(id as string, email.value)
+
+  await invite()
+  email.value = ''
+  await getMembers()
+}
+
+const updating = ref(false)
+async function updateOrganization() {
+  if (updating.value)
+    return
+
+  updating.value = true
+
+  const updateData = Object.fromEntries(
+    Object.entries(currentOrganizationData)
+      .filter(([_, value]) => value !== ''),
+  )
+
+  const { execute: update }
+    = organizationStore.update(id as string, updateData)
+
+  await update()
+  await getOrganization()
+  updating.value = false
+}
 </script>
 
 <template>
@@ -118,7 +163,7 @@ function closeDeleteModal() {
         >
           <label class="font-semibold"> Nome da organização </label>
           <InputText
-            v-model="organization.name"
+            v-model="currentOrganizationData.name"
             name="name"
           />
         </div>
@@ -175,7 +220,7 @@ function closeDeleteModal() {
         <div v-if="activeTab === 'configuracoes'" class="w-full mr-20">
           <label class="font-semibold"> Descrição </label>
           <TextArea
-            v-model="organization.description"
+            v-model="currentOrganizationData.description"
             name="description"
           />
         </div>
@@ -214,6 +259,7 @@ function closeDeleteModal() {
         <label class="font-semibold"> Membros </label>
         <div class="relative">
           <InputEmail
+            v-model="email"
             name="new_user"
             placeholder="Informe o email do membro a ser convidado"
           />
@@ -222,6 +268,7 @@ function closeDeleteModal() {
               icon="material-symbols:add"
               style="color: #a865ff"
               class="size-8 absolute top-[0.3rem] right-2"
+              @click="inviteUser"
             />
           </Button>
         </div>
@@ -257,6 +304,8 @@ function closeDeleteModal() {
       >
         <button
           class="flex w-32 justify-center rounded-md bg-electric-violet-500 px-3 py-1.5 text-sm font-medium leading-6 text-white shadow-sm hover:bg-electric-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-violet-600"
+          :class="{ 'cursor-default opacity-50': updating }"
+          @click="updateOrganization"
         >
           Salvar
         </button>
