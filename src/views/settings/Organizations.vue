@@ -9,7 +9,7 @@ const {
   execute: getOrganizations,
   data: organizationData,
   isFetching: isLoadingOrganization,
-} = organizationStore.index()
+} = organizationStore.index('own')
 getOrganizations()
 
 const organizations = computed(() => {
@@ -56,7 +56,7 @@ const organizations = computed(() => {
       v-else
       class="text-gray-400 text-left ml-16 mt-10"
     >
-      Você ainda não pertence a nenhuma organização.
+      Você ainda não possui nenhuma organização.
     </div>
   </div>
 </template>

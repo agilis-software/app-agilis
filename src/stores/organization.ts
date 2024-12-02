@@ -17,8 +17,8 @@ const useOrganizationStore = defineStore('Organization', {
     id: useStorage('selectedOrganization', 0),
   }),
   actions: {
-    index() {
-      return useApi(url).get().json()
+    index(filter: 'all' | 'own' = 'all') {
+      return useApi(`${url}?filter=${filter}`).get().json()
     },
     create(organization: Organization) {
       return useApi(url).post(organization)
@@ -40,6 +40,12 @@ const useOrganizationStore = defineStore('Organization', {
     },
     getProjects(id: string) {
       return useApi(`${url}/${id}/projects`).get().json()
+    },
+    invite(id: string, email: string) {
+      return useApi(`${url}/${id}/invite`).post({ email }).json<Resource<User>>()
+    },
+    update(id: string, organization: Partial<Organization>) {
+      return useApi(`${url}/${id}`).put(organization).json<Resource<Organization>>()
     },
   },
 })
