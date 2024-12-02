@@ -23,7 +23,7 @@ const projectStore = useProjectStore()
 const statusStore = useStatusStore()
 const taskStore = useTaskStore()
 
-const { execute: getStatus, data: statusData }
+const { execute: getStatus, data: statusData, isFetching: isFetchingStatus }
   = statusStore.index(Number(organizationId), Number(projectId))
 
 const { execute: getMembers, data: membersData }
@@ -79,7 +79,7 @@ const columns = computed(() => {
 
 <template>
   <div class="text-white">
-    <div class="flex flex-col justify-start gap-y-4">
+    <div class="flex flex-col justify-start gap-y-4 mb-4">
       <div>
         <h1 class="text-2xl font-bold">
           Quadro
@@ -90,10 +90,13 @@ const columns = computed(() => {
       <hr class="w-full border border-[#2F2C2C]">
       <p>Projeto Integrador / Quadro</p>
     </div>
-    <!-- <Loading v-if="isFetching" /> -->
+    <div v-if="!columns.length && !isFetchingStatus">
+      Não existem status de tarefa cadastrados.
+    </div>
     <div
       class="pt-4 flex gap-x-4"
     >
+      <Loading v-if="isFetchingStatus" />
       <div class="flex gap-x-4 overflow-x-auto h-full">
         <KanbanColumn
           v-for="column in columns"

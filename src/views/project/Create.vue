@@ -16,7 +16,7 @@ const project = reactive({
   organization_id: 1,
   start_date: '',
   finish_date: '',
-  task_prefix: '',
+  // task_prefix: '',
 })
 
 const { execute } = projectStore.create(project, props.organizationId)
@@ -60,14 +60,14 @@ function handleSubmit() {
         name="data_conclusao"
       />
     </div>
-    <div class="sm:col-span-12">
+    <!--   <div class="sm:col-span-12">
       <label for="prefixo">Prefixo da Tarefa</label>
       <InputText
         v-model="project.task_prefix"
         name="prefixo"
         validation="required"
       />
-    </div>
+    </div> -->
 
     <div class="sm:col-span-12">
       <Button

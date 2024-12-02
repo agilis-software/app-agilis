@@ -25,6 +25,9 @@ const useTaskStore = defineStore('tasks', {
         },
       }).post(task).json()
     },
+    update(task: any, organizationId: number, projectId: number, taskId: number) {
+      return useApi(`/organizations/${organizationId}/projects/${projectId}/${url}/${taskId}`).put(task)
+    },
     setAssignee(payload: SetAssignPayload, taskId = 0) {
       const {
         assigneeId,
@@ -38,6 +41,9 @@ const useTaskStore = defineStore('tasks', {
         = `/organizations/${organizationId}/projects/${projectId}/${url}/${taskId}/assignee`
 
       return useApi(requestUrl).put({ assignee_id: assigneeId })
+    },
+    getById(taskId: number, organizationId: number, projectId: number) {
+      return useApi(`/organizations/${organizationId}/projects/${projectId}/${url}/${taskId}`).get().json()
     },
   },
 })
