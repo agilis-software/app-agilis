@@ -22,12 +22,12 @@ const { execute, isFetching } = statusStore.create(status, props.organizationId,
 function handleSubmit() {
   execute()
     .then(() => {
-      toast.success('Projeto criado com sucesso!')
+      toast.success('Status da tarefa criado com sucesso!')
       emit('refreshList')
       emit('closeModal')
     })
     .catch(() => {
-      toast.error('Ocorreu um erro ao criar o projeto.')
+      toast.error('Ocorreu um erro ao criar o status da tarefa.')
     })
 }
 </script>

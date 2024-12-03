@@ -57,7 +57,7 @@ function handleSubmit() {
 
 <template>
   <form
-    class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-12 mt-4"
+    class="grid grid-cols-1 gap-y-2 gap-x-4 sm:grid-cols-12 mt-4"
   >
     <div class="sm:col-span-12">
       <label for="nome">Título</label>

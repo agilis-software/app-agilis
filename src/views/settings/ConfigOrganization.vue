@@ -2,12 +2,14 @@
 import { computed, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
+import { toast } from 'vue3-toastify'
 import { useOrganizationStore } from '~/stores/organization'
 import { useProjectStore } from '~/stores/project'
 
 const router = useRouter()
 const route = useRoute()
 const organizationStore = useOrganizationStore()
+const projectStore = useProjectStore()
 const { id } = route.params
 
 const { execute: getOrganization, data: organizationData }
@@ -104,42 +106,46 @@ async function inviteUser() {
   await getMembers()
 }
 
+const organizationId = Array.isArray(id)
+  ? Number.parseInt(id[0], 10)
+  : Number.parseInt(id, 10)
+
 const updating = ref(false)
 async function updateOrganization() {
   if (activeTab.value !== 'projetos') {
-    if (updating.value) return
+    if (updating.value)
+      return
 
     updating.value = true
 
     const updateData = Object.fromEntries(
       Object.entries(currentOrganizationData).filter(
-        ([_, value]) => value !== ''
-      )
+        ([_, value]) => value !== '',
+      ),
     )
 
     const { execute: update } = organizationStore.update(
       id as string,
-      updateData
+      updateData,
     )
 
     await update()
     await getOrganization()
     updating.value = false
   }
-  else
-  {
+  else {
     updating.value = true
 
     const updateData = Object.fromEntries(
       Object.entries(selectedProject.value).filter(
-        ([_, value]) => value !== ''
-      )
+        ([_, value]) => value !== '',
+      ),
     )
 
     const { execute: update } = projectStore.update(
       organizationId,
       selectedProject.value.id as number,
-      updateData
+      updateData,
     )
 
     await update()
@@ -148,11 +154,6 @@ async function updateOrganization() {
   }
 }
 
-const projectStore = useProjectStore()
-const organizationId = Array.isArray(id)
-  ? parseInt(id[0], 10)
-  : parseInt(id, 10)
-
 const pass = ref('')
 const pass_confirm = ref('')
 
@@ -160,12 +161,13 @@ async function handleDelete() {
   if (selectedProject.value.id) {
     const { execute: deleteProject } = projectStore.delete(
       organizationId,
-      selectedProject.value.id
+      selectedProject.value.id,
     )
     await deleteProject()
     getProjects()
     goBack()
-  } else {
+  }
+  else {
     openPassModal()
   }
   closeDeleteModal()
@@ -176,19 +178,24 @@ function openPassModal() {
   isPassModalOpen.value = true
 }
 
-async function handleDeleteOrganization() {
+function handleDeleteOrganization() {
   if (pass.value === pass_confirm.value) {
     const { execute: deleteOrganization } = organizationStore.delete(
       id as string,
       pass.value as string,
-      pass_confirm.value as string
+      pass_confirm.value as string,
     )
-    await deleteOrganization()
+    deleteOrganization()
+      .then(() => {
+        toast.success('Organização excluída com sucesso.')
+        router.push('/settings/organizations')
+      })
+      .catch(() => {
+        toast.error('Não foi possível excluir a organização. Tente novamente.')
+      })
   }
 
-  // colocar um else para notificar a senha errada
-
-  router.push('/settings/organizations')
+  toast.error('As senhas não condizem. Tente novamente')
 }
 
 function closePassModal() {
@@ -273,14 +280,13 @@ function closePassModal() {
 
         <div
           v-if="
-            activeTab === 'projetos' &&
-            !selectedProject.name &&
-            !projects.length
+            activeTab === 'projetos'
+              && !selectedProject.name
+              && !projects.length
           "
         >
           <label class="text-sm ml-2 text-[#595553]">
-            Você ainda não possui projetos nesta organização</label
-          >
+            Você ainda não possui projetos nesta organização</label>
         </div>
 
         <div
@@ -430,7 +436,9 @@ function closePassModal() {
     >
       <p>Tem certeza de que deseja excluir?</p>
       <div class="mt-4 flex justify-center gap-x-10">
-        <Button @click="closeDeleteModal"> Não </Button>
+        <Button @click="closeDeleteModal">
+          Não
+        </Button>
         <Button
           class="bg-red-500"
           @click="handleDelete"
@@ -447,20 +455,22 @@ function closePassModal() {
     >
       <label> Digite sua senha </label>
       <InputPassword
-        name="pass"
         v-model="pass"
+        name="pass"
       />
 
       <label> Confirme a senha </label>
       <InputPassword
-        name="pass_confirm"
         v-model="pass_confirm"
+        name="pass_confirm"
       />
       <div class="flex justify-center gap-x-8">
-        <Button @click="closePassModal"> Cancelar </Button>
+        <Button @click="closePassModal">
+          Cancelar
+        </Button>
         <Button
-          @click="handleDeleteOrganization"
           class="bg-red-500"
+          @click="handleDeleteOrganization"
         >
           Excluir
         </Button>

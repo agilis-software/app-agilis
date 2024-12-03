@@ -33,7 +33,6 @@ function handleSubmit() {
   <div class="bg-[#201E1E] p-8 shadow-3xl rounded-lg ">
     <form
       class="space-y-4"
-      @submit.prevent="handleSubmit"
     >
       <div class="flex justify-center items-center gap-1">
         <LogoAgilis
@@ -73,6 +72,7 @@ function handleSubmit() {
             v-model="credentials.password"
             name="password"
             validation="required"
+            placeholder="your password"
             class="block w-full rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-400 focus:outline-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
           />
         </div>
@@ -85,13 +85,13 @@ function handleSubmit() {
       </div>
 
       <div>
-        <button
+        <Button
           :disabled="isLoadingLogin"
-          type="submit"
           class="flex w-full justify-center rounded-md bg-electric-violet-500 px-3 py-1.5 text-sm font-medium leading-6 text-white shadow-sm hover:bg-electric-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-violet-600"
+          @click="handleSubmit"
         >
           Entrar
-        </button>
+        </Button>
       </div>
     </form>
 

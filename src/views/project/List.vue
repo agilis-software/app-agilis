@@ -76,7 +76,7 @@ function goToKanban(projectId: number) {
         </div>
         <div
           v-if="isFetchingProjects"
-          class="flex justify-center"
+          class="flex w-full justify-center"
         >
           <Loading />
         </div>

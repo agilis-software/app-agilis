@@ -2,15 +2,23 @@
 import { ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
+import { useAuthStore } from '~/stores/auth'
 
 const route = useRoute()
+const authStore = useAuthStore()
 const selectedItem = ref(route.path)
 
 watch(() => route.path, (newPath) => {
   selectedItem.value = newPath
 })
 
+const { execute: logout, isFetching } = authStore.logout()
+
 const isSelected = (path: string) => selectedItem.value === path
+
+function handleLogout() {
+  logout()
+}
 </script>
 
 <template>
@@ -60,5 +68,20 @@ const isSelected = (path: string) => selectedItem.value === path
         </div>
       </RouterLink>
     </nav>
+    <div
+      class="text-xl text-white flex items-center ml-16 gap-x-4 cursor-pointer mt-auto pb-8"
+      @click="handleLogout"
+    >
+      <div v-if="isFetching">
+        <Loading />
+      </div>
+      <div
+        v-else
+        class="flex items-center gap-x-4"
+      >
+        <Icon icon="bx:log-out" />
+        Sair
+      </div>
+    </div>
   </div>
 </template>

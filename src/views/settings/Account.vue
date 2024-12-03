@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { toast } from 'vue3-toastify'
-import { Icon } from '@iconify/vue'
 import { useAuthStore } from '~/stores/auth'
 import { useApi } from '~/composables/api'
 
@@ -14,7 +13,7 @@ const currentUserData = ref({
   email: '',
 })
 
-const { execute: getUserData, data: userData } = authStore.me()
+const { execute: getUserData, data: userData, isFetching } = authStore.me()
 
 async function updateUserData() {
   if (updating.value)
@@ -41,11 +40,6 @@ async function updateUserData() {
   }
 }
 
-function handleLogout() {
-  const { execute: logout } = authStore.logout()
-  logout()
-}
-
 onMounted(async () => {
   await getUserData()
 
@@ -62,7 +56,16 @@ onMounted(async () => {
       Sua conta
     </h1>
   </div>
-  <div class="mt-8 ml-16 text-xl">
+  <div
+    v-if="isFetching"
+    class="flex w-full justify-center mt-8"
+  >
+    <Loading />
+  </div>
+  <div
+    v-else
+    class="mt-8 ml-16 text-xl"
+  >
     <div class="flex flex-col w-[70%]">
       <label class="font-semibold text-white"> Nome do Usuário </label>
       <InputText
@@ -87,15 +90,6 @@ onMounted(async () => {
       >
         Salvar
       </button>
-    </div>
-    <div>
-      <p
-        class="mt-20 text-white flex items-center gap-x-4 cursor-pointer"
-        @click="handleLogout"
-      >
-        <Icon icon="bx:log-out" />
-        Sair
-      </p>
     </div>
   </div>
 </template>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import LogoAgilis from '@icons/LogoAgilis.vue'
+import { toast } from 'vue3-toastify'
 import { useAuthStore } from '~/stores/auth'
 import router from '~/router'
-import { notify } from '~/utils/toast'
 
 const authStore = useAuthStore()
 
@@ -19,11 +19,12 @@ const { execute: register, isFetching: isLoadingRegister } = authStore.register(
 
 function handleSubmit() {
   if (credentials.password !== credentials.password_confirmation) {
-    return notify('As senhas não condizem', 'error')
+    return toast.error('As senhas não condizem. Tente novamente.')
   }
 
   register()
     .then(() => {
+      toast.success('Usuário registrado com sucesso.')
       router.push('/login')
     })
 }
@@ -33,7 +34,6 @@ function handleSubmit() {
   <div class="bg-[#201E1E] p-8 shadow-3xl sm:rounded-lg">
     <form
       class="space-y-4"
-      @submit.prevent="handleSubmit"
     >
       <div class="flex justify-center items-center gap-1">
         <LogoAgilis
@@ -105,6 +105,7 @@ function handleSubmit() {
             v-model="credentials.password"
             name="password"
             validation="required"
+            placeholder="your password"
             class="block w-full dark:text-black rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 focus:outline-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
           />
         </div>
@@ -122,19 +123,20 @@ function handleSubmit() {
             v-model="credentials.password_confirmation"
             name="confirm-password"
             validation="required"
+            placeholder="your password again"
             class="block w-full dark:text-black rounded-md indent-2 border-0 py-1.5 text-neutral-800 shadow-sm ring-1 ring-inset ring-neutral-300 focus:outline-2 focus:outline-inset focus:outline-electric-violet-600 sm:text-sm sm:leading-6"
           />
         </div>
       </div>
 
       <div>
-        <button
+        <Button
           :disabled="isLoadingRegister"
-          type="submit"
-          class="flex w-full justify-center rounded-md bg-electric-violet-500 px-3 py-1.5 text-sm font-medium leading-6 text-white shadow-sm hover:bg-electric-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-violet-600"
+          class="flex w-full justify-center rounded-md bg-electric-violet-500 px-3 text-sm font-medium leading-6 text-white shadow-sm hover:bg-electric-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric-violet-600"
+          @click="handleSubmit"
         >
           Registrar
-        </button>
+        </Button>
       </div>
     </form>
 
