@@ -3,9 +3,10 @@ import { computed, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { useOrganizationStore } from '~/stores/organization'
+import { useProjectStore } from '~/stores/project'
 
-const route = useRoute()
 const router = useRouter()
+const route = useRoute()
 const organizationStore = useOrganizationStore()
 const { id } = route.params
 
@@ -50,6 +51,7 @@ const projects = computed(() => {
 })
 
 const selectedProject = ref({
+  id: 0,
   name: '',
   description: '',
   start_date: '',
@@ -63,6 +65,7 @@ function selectProject(project: any) {
 function goBack() {
   if (selectedProject.value.name) {
     selectedProject.value = {
+      id: 0,
       name: '',
       description: '',
       start_date: '',
@@ -103,20 +106,93 @@ async function inviteUser() {
 
 const updating = ref(false)
 async function updateOrganization() {
-  if (updating.value)
-    return
+  if (activeTab.value !== 'projetos') {
+    if (updating.value) return
 
-  updating.value = true
+    updating.value = true
 
-  const updateData = Object.fromEntries(
-    Object.entries(currentOrganizationData).filter(([_, value]) => value !== ''),
-  )
+    const updateData = Object.fromEntries(
+      Object.entries(currentOrganizationData).filter(
+        ([_, value]) => value !== ''
+      )
+    )
 
-  const { execute: update } = organizationStore.update(id as string, updateData)
+    const { execute: update } = organizationStore.update(
+      id as string,
+      updateData
+    )
 
-  await update()
-  await getOrganization()
-  updating.value = false
+    await update()
+    await getOrganization()
+    updating.value = false
+  }
+  else
+  {
+    updating.value = true
+
+    const updateData = Object.fromEntries(
+      Object.entries(selectedProject.value).filter(
+        ([_, value]) => value !== ''
+      )
+    )
+
+    const { execute: update } = projectStore.update(
+      organizationId,
+      selectedProject.value.id as number,
+      updateData
+    )
+
+    await update()
+    await getOrganization()
+    updating.value = false
+  }
+}
+
+const projectStore = useProjectStore()
+const organizationId = Array.isArray(id)
+  ? parseInt(id[0], 10)
+  : parseInt(id, 10)
+
+const pass = ref('')
+const pass_confirm = ref('')
+
+async function handleDelete() {
+  if (selectedProject.value.id) {
+    const { execute: deleteProject } = projectStore.delete(
+      organizationId,
+      selectedProject.value.id
+    )
+    await deleteProject()
+    getProjects()
+    goBack()
+  } else {
+    openPassModal()
+  }
+  closeDeleteModal()
+}
+
+const isPassModalOpen = ref(false)
+function openPassModal() {
+  isPassModalOpen.value = true
+}
+
+async function handleDeleteOrganization() {
+  if (pass.value === pass_confirm.value) {
+    const { execute: deleteOrganization } = organizationStore.delete(
+      id as string,
+      pass.value as string,
+      pass_confirm.value as string
+    )
+    await deleteOrganization()
+  }
+
+  // colocar um else para notificar a senha errada
+
+  router.push('/settings/organizations')
+}
+
+function closePassModal() {
+  isPassModalOpen.value = false
 }
 </script>
 
@@ -173,7 +249,11 @@ async function updateOrganization() {
           />
         </div>
 
-        <div v-if="activeTab === 'projetos' && !selectedProject.name">
+        <div
+          v-if="
+            activeTab === 'projetos' && !selectedProject.name && projects.length
+          "
+        >
           <ul>
             <li
               v-for="project in projects"
@@ -189,6 +269,25 @@ async function updateOrganization() {
               {{ project.name }}
             </li>
           </ul>
+        </div>
+
+        <div
+          v-if="
+            activeTab === 'projetos' &&
+            !selectedProject.name &&
+            !projects.length
+          "
+        >
+          <label class="text-sm ml-2 text-[#595553]">
+            Você ainda não possui projetos nesta organização</label
+          >
+        </div>
+
+        <div
+          v-if="activeTab === 'configuracoes'"
+          class="flex items-center justify-center ml-32"
+        >
+          <label class="font-semibold"> Arquivo </label>
         </div>
 
         <!-- Tab de Projetos -->
@@ -329,14 +428,41 @@ async function updateOrganization() {
       title="Atenção!"
       @handle-close="closeDeleteModal"
     >
-      <p>Tem certeza de que deseja excluir esta organização?</p>
+      <p>Tem certeza de que deseja excluir?</p>
       <div class="mt-4 flex justify-center gap-x-10">
-        <Button> Não </Button>
+        <Button @click="closeDeleteModal"> Não </Button>
         <Button
           class="bg-red-500"
-          @click="closeDeleteModal"
+          @click="handleDelete"
         >
           Sim
+        </Button>
+      </div>
+    </Modal>
+
+    <Modal
+      :is-open="isPassModalOpen"
+      title="Confirme sua senha"
+      @handle-close="closePassModal"
+    >
+      <label> Digite sua senha </label>
+      <InputPassword
+        name="pass"
+        v-model="pass"
+      />
+
+      <label> Confirme a senha </label>
+      <InputPassword
+        name="pass_confirm"
+        v-model="pass_confirm"
+      />
+      <div class="flex justify-center gap-x-8">
+        <Button @click="closePassModal"> Cancelar </Button>
+        <Button
+          @click="handleDeleteOrganization"
+          class="bg-red-500"
+        >
+          Excluir
         </Button>
       </div>
     </Modal>

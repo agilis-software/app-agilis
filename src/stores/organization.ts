@@ -47,6 +47,9 @@ const useOrganizationStore = defineStore('Organization', {
     update(id: string, organization: Partial<Organization>) {
       return useApi(`${url}/${id}`).put(organization).json<Resource<Organization>>()
     },
+    delete(id: string, password: string, password_confirmation: string) {
+      return useApi(`${url}/${id}/delete`).post({password, password_confirmation})
+    }
   },
 })
 
