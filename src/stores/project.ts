@@ -23,6 +23,10 @@ const useProjectStore = defineStore('project', {
     {
       return useApi(`/organizations/${organizationId}/${url}/${projectId}`).delete().json()
     },
+    update(organizationId: number, projectId: number, project: any)
+    {
+      return useApi(`/organizations/${organizationId}/${url}/${projectId}`).put(project)
+    },
   },
 })
 

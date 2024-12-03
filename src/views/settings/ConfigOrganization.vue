@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { useRoute, useRouter, useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { useOrganizationStore } from '~/stores/organization'
 import { useProjectStore } from '~/stores/project'
 
 const router = useRouter()
 const route = useRoute()
-const router = useRouter()
 const organizationStore = useOrganizationStore()
 const { id } = route.params
 
-const { execute: getOrganization, data: organizationData } =
-  organizationStore.getById(id as string)
 const { execute: getOrganization, data: organizationData } =
   organizationStore.getById(id as string)
 
@@ -38,8 +35,6 @@ function switchTab(tab: string) {
 // Lista de membros da organização
 const { execute: getMembers, data: membersData } =
   organizationStore.getMembersByOrganization(id as string)
-const { execute: getMembers, data: membersData } =
-  organizationStore.getMembersByOrganization(id as string)
 getMembers()
 
 const members = computed(() => {
@@ -47,8 +42,6 @@ const members = computed(() => {
 })
 
 // Lista de projetos da organização
-const { execute: getProjects, data: projectsData } =
-  organizationStore.getProjects(id as string)
 const { execute: getProjects, data: projectsData } =
   organizationStore.getProjects(id as string)
 getProjects()
@@ -98,12 +91,7 @@ async function inviteUser() {
   const regex = /^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i
 
   if (!regex.test(email.value)) return
-  if (!regex.test(email.value)) return
 
-  const { execute: invite } = organizationStore.invite(
-    id as string,
-    email.value
-  )
   const { execute: invite } = organizationStore.invite(
     id as string,
     email.value
@@ -116,21 +104,46 @@ async function inviteUser() {
 
 const updating = ref(false)
 async function updateOrganization() {
-  if (updating.value) return
-  if (updating.value) return
+  if (activeTab.value !== 'projetos') {
+    if (updating.value) return
 
-  updating.value = true
+    updating.value = true
 
-  const updateData = Object.fromEntries(
-    Object.entries(currentOrganizationData).filter(([_, value]) => value !== '')
-    Object.entries(currentOrganizationData).filter(([_, value]) => value !== '')
-  )
+    const updateData = Object.fromEntries(
+      Object.entries(currentOrganizationData).filter(
+        ([_, value]) => value !== ''
+      )
+    )
 
-  const { execute: update } = organizationStore.update(id as string, updateData)
+    const { execute: update } = organizationStore.update(
+      id as string,
+      updateData
+    )
 
-  await update()
-  await getOrganization()
-  updating.value = false
+    await update()
+    await getOrganization()
+    updating.value = false
+  }
+  else
+  {
+    updating.value = true
+
+    const updateData = Object.fromEntries(
+      Object.entries(selectedProject.value).filter(
+        ([_, value]) => value !== ''
+      )
+    )
+
+    const { execute: update } = projectStore.update(
+      organizationId,
+      selectedProject.value.id as number,
+      updateData
+    )
+
+    await update()
+    await getOrganization()
+    updating.value = false
+  }
 }
 
 const projectStore = useProjectStore()
@@ -170,6 +183,8 @@ async function handleDeleteOrganization() {
     )
     await deleteOrganization()
   }
+
+  // colocar um else para notificar a senha errada
 
   router.push('/settings/organizations')
 }
@@ -413,7 +428,7 @@ function closePassModal() {
       title="Atenção!"
       @handle-close="closeDeleteModal"
     >
-      <p>Tem certeza de que deseja excluir esta organização?</p>
+      <p>Tem certeza de que deseja excluir?</p>
       <div class="mt-4 flex justify-center gap-x-10">
         <Button @click="closeDeleteModal"> Não </Button>
         <Button
