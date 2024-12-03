@@ -10,8 +10,8 @@ const route = useRoute()
 const organizationStore = useOrganizationStore()
 const { id } = route.params
 
-const { execute: getOrganization, data: organizationData } =
-  organizationStore.getById(id as string)
+const { execute: getOrganization, data: organizationData }
+  = organizationStore.getById(id as string)
 
 const currentOrganizationData = reactive({
   name: '',
@@ -33,8 +33,8 @@ function switchTab(tab: string) {
 }
 
 // Lista de membros da organização
-const { execute: getMembers, data: membersData } =
-  organizationStore.getMembersByOrganization(id as string)
+const { execute: getMembers, data: membersData }
+  = organizationStore.getMembersByOrganization(id as string)
 getMembers()
 
 const members = computed(() => {
@@ -42,8 +42,8 @@ const members = computed(() => {
 })
 
 // Lista de projetos da organização
-const { execute: getProjects, data: projectsData } =
-  organizationStore.getProjects(id as string)
+const { execute: getProjects, data: projectsData }
+  = organizationStore.getProjects(id as string)
 getProjects()
 
 const projects = computed(() => {
@@ -71,7 +71,8 @@ function goBack() {
       start_date: '',
       finish_date: '',
     }
-  } else {
+  }
+  else {
     router.back()
   }
 }
@@ -90,11 +91,12 @@ const email = ref('')
 async function inviteUser() {
   const regex = /^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i
 
-  if (!regex.test(email.value)) return
+  if (!regex.test(email.value))
+    return
 
   const { execute: invite } = organizationStore.invite(
     id as string,
-    email.value
+    email.value,
   )
 
   await invite()
@@ -216,22 +218,20 @@ function closePassModal() {
           role="tab"
           class="ml-1 d-tab text-white [--tab-border:none] border-0 w-full"
           :class="[
-            activeTab === 'configuracoes' &&
-              'd-tab-active [--tab-bg:#2F2C2C] [--tab-border-color:#2F2C2C] ml-4',
+            activeTab === 'configuracoes'
+              && 'd-tab-active [--tab-bg:#2F2C2C] [--tab-border-color:#2F2C2C] ml-4',
           ]"
           @click="switchTab('configuracoes')"
-          >Configurações</a
-        >
+        >Configurações</a>
         <a
           role="tab"
           class="ml-3 d-tab text-white [--tab-border:none] border-0 w-full"
           :class="[
-            activeTab === 'projetos' &&
-              'd-tab-active [--tab-bg:#2F2C2C] [--tab-border-color:#2F2C2C] ml-1',
+            activeTab === 'projetos'
+              && 'd-tab-active [--tab-bg:#2F2C2C] [--tab-border-color:#2F2C2C] ml-1',
           ]"
           @click="switchTab('projetos')"
-          >Projetos</a
-        >
+        >Projetos</a>
       </div>
     </div>
 
@@ -394,7 +394,7 @@ function closePassModal() {
                 <img
                   :src="member.avatar_url"
                   class="w-8 h-8 rounded-full"
-                />
+                >
                 {{ member.name }}
                 <span v-if="member.is_owner"> - Dono </span>
                 <span v-else> - Membro </span>

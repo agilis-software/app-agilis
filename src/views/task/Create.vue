@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { toast } from 'vue3-toastify'
 import type { SetAssignPayload } from '~/models/Task'
 import { useTaskStore } from '~/stores/task'
 
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const emit = defineEmits(['refreshList', 'closeModal'])
 
 const {
   organizationId,
@@ -42,6 +44,13 @@ function handleSubmit() {
         const { execute: setAssignToTask } = taskStore.setAssignee(payload)
         setAssignToTask()
       }
+
+      toast.success('Tarefa criada com sucesso!')
+      emit('refreshList')
+      emit('closeModal')
+    })
+    .catch(() => {
+      toast.error('Ocorreu um erro ao tentar criar a tarefa.')
     })
 }
 </script>

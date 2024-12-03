@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+import { toast } from 'vue3-toastify'
+import { Icon } from '@iconify/vue'
 import { useAuthStore } from '~/stores/auth'
 import { useApi } from '~/composables/api'
 
@@ -15,7 +17,8 @@ const currentUserData = ref({
 const { execute: getUserData, data: userData } = authStore.me()
 
 async function updateUserData() {
-  if (updating.value) return
+  if (updating.value)
+    return
 
   updating.value = true
 
@@ -28,12 +31,19 @@ async function updateUserData() {
     const { execute: update } = useApi('/users/me').put(updateData).json()
     await update()
     await getUserData()
-    console.log('Dados atualizados com sucesso!')
-  } catch (error) {
+    toast.success('Usuário atualizado com sucesso!')
+  }
+  catch (error) {
     console.error('Erro ao atualizar dados do usuário:', error)
-  } finally {
+  }
+  finally {
     updating.value = false
   }
+}
+
+function handleLogout() {
+  const { execute: logout } = authStore.logout()
+  logout()
 }
 
 onMounted(async () => {
@@ -48,7 +58,9 @@ onMounted(async () => {
 
 <template>
   <div class="ml-16 mt-10 border-b border-[#2F2C2C] pb-3">
-    <h1 class="text-white font-bold text-4xl">Sua conta</h1>
+    <h1 class="text-white font-bold text-4xl">
+      Sua conta
+    </h1>
   </div>
   <div class="mt-8 ml-16 text-xl">
     <div class="flex flex-col w-[70%]">
@@ -75,6 +87,15 @@ onMounted(async () => {
       >
         Salvar
       </button>
+    </div>
+    <div>
+      <p
+        class="mt-20 text-white flex items-center gap-x-4 cursor-pointer"
+        @click="handleLogout"
+      >
+        <Icon icon="bx:log-out" />
+        Sair
+      </p>
     </div>
   </div>
 </template>

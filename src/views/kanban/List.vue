@@ -23,7 +23,7 @@ const projectStore = useProjectStore()
 const statusStore = useStatusStore()
 const taskStore = useTaskStore()
 
-const { execute: getStatus, data: statusData }
+const { execute: getStatus, data: statusData, isFetching: isFetchingStatus }
   = statusStore.index(Number(organizationId), Number(projectId))
 
 const { execute: getMembers, data: membersData }
@@ -32,9 +32,12 @@ const { execute: getMembers, data: membersData }
 const { execute: getTasks, data: taskData }
   = taskStore.index(Number(organizationId), Number(projectId))
 
+const { execute: getProject, data: projectData } = projectStore.show(Number(organizationId), Number(projectId))
+
 getStatus()
 getMembers()
 getTasks()
+getProject()
 
 const isOpen = ref(false)
 const isOpenStatus = ref(false)
@@ -44,6 +47,7 @@ const isOpenStatus = ref(false)
 const status = computed(() => statusData?.value?.data || [])
 const members = computed(() => membersData?.value?.data || [])
 const tasks = computed(() => taskData?.value?.data || [])
+const project = computed(() => projectData?.value?.data)
 
 function openModal() {
   isOpen.value = true
@@ -79,21 +83,25 @@ const columns = computed(() => {
 
 <template>
   <div class="text-white">
-    <div class="flex flex-col justify-start gap-y-4">
+    <div class="flex flex-col justify-start gap-y-4 mb-4">
       <div>
         <h1 class="text-2xl font-bold">
           Quadro
         </h1>
       </div>
 
-      <!--  nome do projeto -->
       <hr class="w-full border border-[#2F2C2C]">
-      <p>Projeto Integrador / Quadro</p>
+      <p v-if="project">
+        {{ project.name }} / Quadro
+      </p>
     </div>
-    <!-- <Loading v-if="isFetching" /> -->
+    <div v-if="!columns.length && !isFetchingStatus">
+      Não existem status de tarefa cadastrados.
+    </div>
     <div
       class="pt-4 flex gap-x-4"
     >
+      <Loading v-if="isFetchingStatus" />
       <div class="flex gap-x-4 overflow-x-auto h-full">
         <KanbanColumn
           v-for="column in columns"
@@ -151,6 +159,8 @@ const columns = computed(() => {
       :members-list="members || []"
       :organization-id="Number(organizationId)"
       :project-id="Number(projectId)"
+      @refresh-list="getTasks"
+      @close-modal="closeModal"
     />
   </Modal>
   <Modal
@@ -162,6 +172,8 @@ const columns = computed(() => {
     <CreateStatus
       :organization-id="Number(organizationId)"
       :project-id="Number(projectId)"
+      @refresh-list="getStatus"
+      @close-modal="closeModalStatus"
     />
   </Modal>
 </template>
