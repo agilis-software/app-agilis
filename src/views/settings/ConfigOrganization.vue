@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { useOrganizationStore } from '~/stores/organization'
+import { useProjectStore } from '~/stores/project'
 
+const router = useRouter()
 const route = useRoute()
 const organizationStore = useOrganizationStore()
 const { id } = route.params
 
-const {
-  execute: getOrganization,
-  data: organizationData,
-} = organizationStore.getById(id as string)
+const { execute: getOrganization, data: organizationData } =
+  organizationStore.getById(id as string)
 
 const currentOrganizationData = reactive({
   name: '',
@@ -33,10 +33,8 @@ function switchTab(tab: string) {
 }
 
 // Lista de membros da organização
-const {
-  execute: getMembers,
-  data: membersData,
-} = organizationStore.getMembersByOrganization(id as string)
+const { execute: getMembers, data: membersData } =
+  organizationStore.getMembersByOrganization(id as string)
 getMembers()
 
 const members = computed(() => {
@@ -44,10 +42,8 @@ const members = computed(() => {
 })
 
 // Lista de projetos da organização
-const {
-  execute: getProjects,
-  data: projectsData,
-} = organizationStore.getProjects(id as string)
+const { execute: getProjects, data: projectsData } =
+  organizationStore.getProjects(id as string)
 getProjects()
 
 const projects = computed(() => {
@@ -55,6 +51,7 @@ const projects = computed(() => {
 })
 
 const selectedProject = ref({
+  id: 0,
   name: '',
   description: '',
   start_date: '',
@@ -66,7 +63,17 @@ function selectProject(project: any) {
 }
 
 function goBack() {
-  selectedProject.value = { name: '', description: '', start_date: '', finish_date: '' }
+  if (selectedProject.value.name) {
+    selectedProject.value = {
+      id: 0,
+      name: '',
+      description: '',
+      start_date: '',
+      finish_date: '',
+    }
+  } else {
+    router.back()
+  }
 }
 
 const isModalOpen = ref(false)
@@ -83,11 +90,12 @@ const email = ref('')
 async function inviteUser() {
   const regex = /^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i
 
-  if (!regex.test(email.value))
-    return
+  if (!regex.test(email.value)) return
 
-  const { execute: invite }
-    = organizationStore.invite(id as string, email.value)
+  const { execute: invite } = organizationStore.invite(
+    id as string,
+    email.value
+  )
 
   await invite()
   email.value = ''
@@ -96,22 +104,64 @@ async function inviteUser() {
 
 const updating = ref(false)
 async function updateOrganization() {
-  if (updating.value)
-    return
+  if (updating.value) return
 
   updating.value = true
 
   const updateData = Object.fromEntries(
-    Object.entries(currentOrganizationData)
-      .filter(([_, value]) => value !== ''),
+    Object.entries(currentOrganizationData).filter(([_, value]) => value !== '')
   )
 
-  const { execute: update }
-    = organizationStore.update(id as string, updateData)
+  const { execute: update } = organizationStore.update(id as string, updateData)
 
   await update()
   await getOrganization()
   updating.value = false
+}
+
+const projectStore = useProjectStore()
+const organizationId = Array.isArray(id)
+  ? parseInt(id[0], 10)
+  : parseInt(id, 10)
+
+const pass = ref('')
+const pass_confirm = ref('')
+
+async function handleDelete() {
+  if (selectedProject.value.id) {
+    const { execute: deleteProject } = projectStore.delete(
+      organizationId,
+      selectedProject.value.id
+    )
+    await deleteProject()
+    getProjects()
+    goBack()
+  } else {
+    openPassModal()
+  }
+  closeDeleteModal()
+}
+
+const isPassModalOpen = ref(false)
+function openPassModal() {
+  isPassModalOpen.value = true
+}
+
+async function handleDeleteOrganization() {
+  if (pass.value === pass_confirm.value) {
+    const { execute: deleteOrganization } = organizationStore.delete(
+      id as string,
+      pass.value as string,
+      pass_confirm.value as string
+    )
+    await deleteOrganization()
+  }
+
+  router.push('/settings/organizations')
+}
+
+function closePassModal() {
+  isPassModalOpen.value = false
 }
 </script>
 
@@ -137,20 +187,22 @@ async function updateOrganization() {
           role="tab"
           class="ml-1 d-tab text-white [--tab-border:none] border-0 w-full"
           :class="[
-            activeTab === 'configuracoes'
-              && 'd-tab-active [--tab-bg:#2F2C2C] [--tab-border-color:#2F2C2C] ml-4',
+            activeTab === 'configuracoes' &&
+              'd-tab-active [--tab-bg:#2F2C2C] [--tab-border-color:#2F2C2C] ml-4',
           ]"
           @click="switchTab('configuracoes')"
-        >Configurações</a>
+          >Configurações</a
+        >
         <a
           role="tab"
           class="ml-3 d-tab text-white [--tab-border:none] border-0 w-full"
           :class="[
-            activeTab === 'projetos'
-              && 'd-tab-active [--tab-bg:#2F2C2C] [--tab-border-color:#2F2C2C] ml-1',
+            activeTab === 'projetos' &&
+              'd-tab-active [--tab-bg:#2F2C2C] [--tab-border-color:#2F2C2C] ml-1',
           ]"
           @click="switchTab('projetos')"
-        >Projetos</a>
+          >Projetos</a
+        >
       </div>
     </div>
 
@@ -168,7 +220,11 @@ async function updateOrganization() {
           />
         </div>
 
-        <div v-if="activeTab === 'projetos' && !selectedProject.name">
+        <div
+          v-if="
+            activeTab === 'projetos' && !selectedProject.name && projects.length
+          "
+        >
           <ul>
             <li
               v-for="project in projects"
@@ -184,6 +240,18 @@ async function updateOrganization() {
               {{ project.name }}
             </li>
           </ul>
+        </div>
+
+        <div
+          v-if="
+            activeTab === 'projetos' &&
+            !selectedProject.name &&
+            !projects.length
+          "
+        >
+          <label class="text-sm ml-2 text-[#595553]">
+            Você ainda não possui projetos nesta organização</label
+          >
         </div>
 
         <div
@@ -217,7 +285,10 @@ async function updateOrganization() {
         v-if="activeTab === 'configuracoes' || selectedProject.name"
         class="mt-4 flex flex-row w-full"
       >
-        <div v-if="activeTab === 'configuracoes'" class="w-full mr-20">
+        <div
+          v-if="activeTab === 'configuracoes'"
+          class="w-full mr-20"
+        >
           <label class="font-semibold"> Descrição </label>
           <TextArea
             v-model="currentOrganizationData.description"
@@ -225,7 +296,10 @@ async function updateOrganization() {
           />
         </div>
 
-        <div v-if="activeTab === 'projetos'" class="w-full mr-20">
+        <div
+          v-if="activeTab === 'projetos'"
+          class="w-full mr-20"
+        >
           <label class="font-semibold"> Descrição </label>
           <TextArea
             v-model="selectedProject.description"
@@ -233,7 +307,10 @@ async function updateOrganization() {
           />
         </div>
 
-        <div v-if="activeTab === 'projetos' && selectedProject.name" class="mr-6">
+        <div
+          v-if="activeTab === 'projetos' && selectedProject.name"
+          class="mr-6"
+        >
           <div>
             <label class="font-semibold text-sm"> Data de início </label>
             <InputDate
@@ -288,7 +365,7 @@ async function updateOrganization() {
                 <img
                   :src="member.avatar_url"
                   class="w-8 h-8 rounded-full"
-                >
+                />
                 {{ member.name }}
                 <span v-if="member.is_owner"> - Dono </span>
                 <span v-else> - Membro </span>
@@ -324,14 +401,39 @@ async function updateOrganization() {
     >
       <p>Tem certeza de que deseja excluir esta organização?</p>
       <div class="mt-4 flex justify-center gap-x-10">
-        <Button>
-          Não
-        </Button>
+        <Button @click="closeDeleteModal"> Não </Button>
         <Button
           class="bg-red-500"
-          @click="closeDeleteModal"
+          @click="handleDelete"
         >
           Sim
+        </Button>
+      </div>
+    </Modal>
+
+    <Modal
+      :is-open="isPassModalOpen"
+      title="Confirme sua senha"
+      @handle-close="closePassModal"
+    >
+      <label> Digite sua senha </label>
+      <InputPassword
+        name="pass"
+        v-model="pass"
+      />
+
+      <label> Confirme a senha </label>
+      <InputPassword
+        name="pass_confirm"
+        v-model="pass_confirm"
+      />
+      <div class="flex justify-center gap-x-8">
+        <Button @click="closePassModal"> Cancelar </Button>
+        <Button
+          @click="handleDeleteOrganization"
+          class="bg-red-500"
+        >
+          Excluir
         </Button>
       </div>
     </Modal>

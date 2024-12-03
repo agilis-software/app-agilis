@@ -19,6 +19,10 @@ const useProjectStore = defineStore('project', {
     getMembers(organizationId: number, projectId: number) {
       return useApi(`/organizations/${organizationId}/${url}/${projectId}/users`).get().json<Resource<any[]>>()
     },
+    delete(organizationId: number, projectId: number)
+    {
+      return useApi(`/organizations/${organizationId}/${url}/${projectId}`).delete().json()
+    },
   },
 })
 
