@@ -22,7 +22,7 @@ getOrganizationInfo()
 
 const organization = computed(() => organizationData.value ? organizationData.value.data : [])
 
-const { execute: getProjects, data: projectsData } = projectStore.index(id)
+const { execute: getProjects, data: projectsData, isFetching: isFetchingProjects } = projectStore.index(id)
 
 getProjects()
 
@@ -70,19 +70,30 @@ function goToKanban(projectId: number) {
           Adicionar
         </Button>
       </div>
-      <div class="flex justify-start gap-x-8 py-5">
-        <div v-if="!projects.length" class="text-gray-500 -mt-4">
+      <div class="flex justify-start w-full">
+        <div v-if="!projects.length" class="text-gray-500 -mt-2 w-full">
           Não há projetos cadastrados.
         </div>
         <div
-          v-for="(project, index) in projects"
-          :key="index"
-          @click="goToKanban(project.id || 0)"
+          v-if="isFetchingProjects"
+          class="flex justify-center"
         >
-          <ProjectCard
-            :name="project.name"
-            :description="project.description || ''"
-          />
+          <Loading />
+        </div>
+        <div
+          v-else
+          class="flex justify-start px-4 py-5 gap-x-4 w-full -ml-4"
+        >
+          <div
+            v-for="(project, index) in projects"
+            :key="index"
+            @click="goToKanban(project.id || 0)"
+          >
+            <ProjectCard
+              :name="project.name"
+              :description="project.description || ''"
+            />
+          </div>
         </div>
       </div>
       <!-- <div class="flex flex-col justify-start gap-y-4">
@@ -107,6 +118,10 @@ function goToKanban(projectId: number) {
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateProject :organization-id="id" />
+    <CreateProject
+      :organization-id="id"
+      @refresh-list="getProjects"
+      @close-modal="closeModal"
+    />
   </Modal>
 </template>

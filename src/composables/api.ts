@@ -1,7 +1,7 @@
 import { createFetch } from '@vueuse/core'
+import { toast } from 'vue3-toastify'
 import { apiUrl } from '~/config/env'
 import { useAuthStore } from '~/stores/auth'
-import { notify } from '~/utils/toast'
 
 export const useApi = createFetch({
   baseUrl: apiUrl,
@@ -20,7 +20,7 @@ export const useApi = createFetch({
     onFetchError(ctx) {
       const message = ctx.data?.message || 'Não foi possível concluir a requisição'
 
-      notify(message, 'error')
+      toast.error(message)
 
       return ctx
     },

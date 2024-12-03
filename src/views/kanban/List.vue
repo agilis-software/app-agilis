@@ -32,9 +32,12 @@ const { execute: getMembers, data: membersData }
 const { execute: getTasks, data: taskData }
   = taskStore.index(Number(organizationId), Number(projectId))
 
+const { execute: getProject, data: projectData } = projectStore.show(Number(organizationId), Number(projectId))
+
 getStatus()
 getMembers()
 getTasks()
+getProject()
 
 const isOpen = ref(false)
 const isOpenStatus = ref(false)
@@ -44,6 +47,7 @@ const isOpenStatus = ref(false)
 const status = computed(() => statusData?.value?.data || [])
 const members = computed(() => membersData?.value?.data || [])
 const tasks = computed(() => taskData?.value?.data || [])
+const project = computed(() => projectData?.value?.data)
 
 function openModal() {
   isOpen.value = true
@@ -86,9 +90,10 @@ const columns = computed(() => {
         </h1>
       </div>
 
-      <!--  nome do projeto -->
       <hr class="w-full border border-[#2F2C2C]">
-      <p>Projeto Integrador / Quadro</p>
+      <p v-if="project">
+        {{ project.name }} / Quadro
+      </p>
     </div>
     <div v-if="!columns.length && !isFetchingStatus">
       Não existem status de tarefa cadastrados.
@@ -154,6 +159,8 @@ const columns = computed(() => {
       :members-list="members || []"
       :organization-id="Number(organizationId)"
       :project-id="Number(projectId)"
+      @refresh-list="getTasks"
+      @close-modal="closeModal"
     />
   </Modal>
   <Modal
@@ -165,6 +172,8 @@ const columns = computed(() => {
     <CreateStatus
       :organization-id="Number(organizationId)"
       :project-id="Number(projectId)"
+      @refresh-list="getStatus"
+      @close-modal="closeModalStatus"
     />
   </Modal>
 </template>

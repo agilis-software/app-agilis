@@ -142,6 +142,7 @@ function goToProjects(id: number) {
           </div>
           <OrganizationCard
             v-for="organization in organizations"
+            v-else
             :key="organization.title"
             :organization
             @click="goToProjects(organization.id)"
@@ -157,6 +158,10 @@ function goToProjects(id: number) {
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateOrganization :owner-id="user.id" />
+    <CreateOrganization
+      :owner-id="user.id"
+      @refresh-list="getOrganizations"
+      @close-modal="closeModal"
+    />
   </Modal>
 </template>

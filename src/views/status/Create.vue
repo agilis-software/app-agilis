@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { toast } from 'vue3-toastify'
 import { useStatusStore } from '~/stores/status'
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const emit = defineEmits(['refreshList', 'closeModal'])
 const statusStore = useStatusStore()
 
 const status = reactive({
@@ -15,10 +17,18 @@ const status = reactive({
   name: '',
 })
 
-const { execute } = statusStore.create(status, props.organizationId, props.projectId)
+const { execute, isFetching } = statusStore.create(status, props.organizationId, props.projectId)
 
 function handleSubmit() {
   execute()
+    .then(() => {
+      toast.success('Projeto criado com sucesso!')
+      emit('refreshList')
+      emit('closeModal')
+    })
+    .catch(() => {
+      toast.error('Ocorreu um erro ao criar o projeto.')
+    })
 }
 </script>
 
@@ -35,6 +45,7 @@ function handleSubmit() {
 
     <div class="sm:col-span-12">
       <Button
+        :disabled="isFetching"
         class="bg-primary-color w-full"
         @click="handleSubmit()"
       >

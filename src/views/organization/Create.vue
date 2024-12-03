@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { toast } from 'vue3-toastify'
 import type { Organization } from '~/models/Organization'
 import { useOrganizationStore } from '~/stores/organization'
 
@@ -8,6 +9,8 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+const emit = defineEmits(['refreshList', 'closeModal'])
 
 const organizationStore = useOrganizationStore()
 
@@ -22,6 +25,14 @@ const { execute: create, isFetching } = organizationStore.create(organization)
 
 function handleSubmit() {
   create()
+    .then(() => {
+      toast.success('Organização criada com sucesso!')
+      emit('refreshList')
+      emit('closeModal')
+    })
+    .catch(() => {
+      toast.error('Ocorreu um erro ao criar a organização.')
+    })
 }
 </script>
 

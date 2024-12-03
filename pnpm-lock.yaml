@@ -56,6 +56,9 @@ importers:
       vue-toastification:
         specifier: 2.0.0-rc.5
         version: 2.0.0-rc.5(vue@3.4.27(typescript@5.4.5))
+      vue3-toastify:
+        specifier: ^0.2.5
+        version: 0.2.5(vue@3.4.27(typescript@5.4.5))
       vuedraggable:
         specifier: ^4.1.0
         version: 4.1.0(vue@3.4.27(typescript@5.4.5))
@@ -2208,6 +2211,15 @@ packages:
     hasBin: true
     peerDependencies:
       typescript: '*'
+
+  vue3-toastify@0.2.5:
+    resolution: {integrity: sha512-ejYfMily9cUz21ZPiA9PmNMKArN5tx92ftrSi6cFi6dS1L8gBSmp8uuG7C/z7ZF+KGDg0ZDxmF26o7uzRvGpSw==}
+    engines: {node: '>=20', npm: '>=9.0.0'}
+    peerDependencies:
+      vue: '>=3.2.0'
+    peerDependenciesMeta:
+      vue:
+        optional: true
 
   vue@3.4.27:
     resolution: {integrity: sha512-8s/56uK6r01r1icG/aEOHqyMVxd1bkYcSe9j8HcKtr/xTOFWvnzIVTehNW+5Yt89f+DLBe4A569pnZLS5HzAMA==}
@@ -4451,6 +4463,10 @@ snapshots:
       '@vue/language-core': 2.0.19(typescript@5.4.5)
       semver: 7.6.2
       typescript: 5.4.5
+
+  vue3-toastify@0.2.5(vue@3.4.27(typescript@5.4.5)):
+    optionalDependencies:
+      vue: 3.4.27(typescript@5.4.5)
 
   vue@3.4.27(typescript@5.4.5):
     dependencies:
