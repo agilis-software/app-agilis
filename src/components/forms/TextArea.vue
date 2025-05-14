@@ -1,5 +1,21 @@
+<script setup lang="ts">
+interface Props {
+  name: string
+  value?: string
+  validation?: string
+  label?: string
+  class?: string
+}
+
+defineProps<Props>()
+</script>
+
 <template>
-  <textarea
-    class="border shadow-sm focus:ring-primary-color p-2 bg-[#2C2A2A] focus:border-primary-color block w-full sm:text-md  border-[#5C5C5C] rounded-md"
+  <FormKit
+    :name
+    :value
+    :validation
+    :label
+    type="textarea"
   />
 </template>

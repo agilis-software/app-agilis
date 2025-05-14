@@ -1,67 +1,91 @@
 <script setup lang="ts">
-import Input from '~/components/forms/Input.vue'
-import TextArea from '~/components/forms/TextArea.vue'
-import Select from '~/components/forms/Select.vue'
-import Button from '~/components/Button.vue'
-import { personsList } from '~/static/personsList'
+import { reactive } from 'vue'
+import { toast } from 'vue3-toastify'
+import { useProjectStore } from '~/stores/project'
+
+interface Props {
+  organizationId: number
+}
+
+const props = defineProps<Props>()
+const emit = defineEmits(['refreshList', 'closeModal'])
+
+const projectStore = useProjectStore()
+
+const project = reactive({
+  id: 0,
+  name: '',
+  description: '',
+  organization_id: 1,
+  start_date: '',
+  finish_date: '',
+  // task_prefix: '',
+})
+
+const { execute, isFetching } = projectStore.create(project, props.organizationId)
+
+function handleSubmit() {
+  execute()
+    .then(() => {
+      toast.success('Projeto criado com sucesso!')
+      emit('refreshList')
+      emit('closeModal')
+    })
+    .catch(() => {
+      toast.error('Ocorreu um erro ao criar o projeto.')
+    })
+}
 </script>
 
 <template>
-  <form class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-12 mt-4">
+  <form class="grid grid-cols-1 gap-y-2 gap-x-4 sm:grid-cols-12 mt-4">
     <div class="sm:col-span-12">
       <label for="nome">Nome</label>
-      <Input
-        type="text"
+      <InputText
+        v-model="project.name"
         name="nome"
-        required
+        validation="required"
       />
     </div>
     <div class="sm:col-span-12">
       <label for="descricao">Descrição</label>
       <TextArea
+        v-model="project.description"
         class="h-20"
         name="descricao"
-        required
+        validation="required"
       />
-    </div>
-    <div class="sm:col-span-12">
-      <label for="participantes">Participantes</label>
-      <Select>
-        <option
-          v-for="(option, index) in personsList"
-          :key="index"
-          :value="option.id"
-        >
-          {{ option.name }}
-        </option>
-      </Select>
     </div>
     <div class="sm:col-span-6">
       <label for="data_inicio">Data de Início</label>
-      <Input
-        type="date"
+      <InputDate
+        v-model="project.start_date"
         name="data_inicio"
-        required
+        validation="required"
       />
     </div>
     <div class="sm:col-span-6">
       <label for="data_conclusao">Data de Conclusão</label>
-      <Input
-        type="date"
+      <InputDate
+        v-model="project.finish_date"
         name="data_conclusao"
       />
     </div>
-    <div class="sm:col-span-12">
+    <!--   <div class="sm:col-span-12">
       <label for="prefixo">Prefixo da Tarefa</label>
-      <Input
-        type="text"
+      <InputText
+        v-model="project.task_prefix"
         name="prefixo"
-        required
+        validation="required"
       />
-    </div>
+    </div> -->
 
     <div class="sm:col-span-12">
-      <Button class="bg-primary-color w-full">
+      <Button
+        :disabled="isFetching"
+        class="bg-primary-color w-full"
+        @click="handleSubmit()"
+      >
         Criar
       </Button>
     </div>

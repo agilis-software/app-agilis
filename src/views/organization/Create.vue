@@ -1,36 +1,51 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import Input from '~/components/forms/Input.vue'
-import TextArea from '~/components/forms/TextArea.vue'
-import Button from '~/components/Button.vue'
+import { reactive } from 'vue'
+import { toast } from 'vue3-toastify'
+import type { Organization } from '~/models/Organization'
+import { useOrganizationStore } from '~/stores/organization'
+
+interface Props {
+  ownerId: number
+}
+
+const props = defineProps<Props>()
+
+const emit = defineEmits(['refreshList', 'closeModal'])
+
+const organizationStore = useOrganizationStore()
+
+const organization = reactive<Organization>({
+  id: 0,
+  name: '',
+  description: '',
+  owner_id: props.ownerId,
+})
+
+const { execute: create, isFetching } = organizationStore.create(organization)
+
+function handleSubmit() {
+  create()
+    .then(() => {
+      toast.success('Organização criada com sucesso!')
+      emit('refreshList')
+      emit('closeModal')
+    })
+    .catch(() => {
+      toast.error('Ocorreu um erro ao criar a organização.')
+    })
+}
 </script>
 
 <template>
   <form class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-12 mt-4">
     <div class="sm:col-span-12">
       <div class="flex items-end gap-2">
-        <div class="flex w-4/12">
-          <Button
-            class="bg-neutral-500/25 w-full h-12 rounded-xl relative flex justify-center"
-          >
-            <div class="flex flex-col justify-center items-center absolute -top-6">
-              <Icon
-                icon="ion:folder-open"
-                class="size-12 text-electric-violet-400 -top-12"
-              />
-              <p class="text-sm font-normal text-neutral-200">
-                Imagem
-              </p>
-            </div>
-          </Button>
-        </div>
-
         <div class="w-full">
           <label for="nome">Nome da organização</label>
-          <Input
-            type="text"
+          <InputText
+            v-model="organization.name"
             name="nome"
-            required
+            validation="required"
           />
         </div>
       </div>
@@ -38,22 +53,18 @@ import Button from '~/components/Button.vue'
     <div class="sm:col-span-12">
       <label for="descricao">Descrição</label>
       <TextArea
+        v-model="organization.description"
         class="h-20"
         name="descricao"
-        required
+        validation="required"
       />
     </div>
     <div class="sm:col-span-12">
-      <label for="convide">Convide pessoas</label>
-      <Input
-        type="text"
-        name="convide"
-        required
-      />
-    </div>
-
-    <div class="sm:col-span-12">
-      <Button class="bg-primary-color w-full">
+      <Button
+        :disabled="isFetching"
+        class="bg-primary-color w-full"
+        @click="handleSubmit()"
+      >
         Criar
       </Button>
     </div>

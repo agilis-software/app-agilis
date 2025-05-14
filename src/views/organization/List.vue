@@ -1,14 +1,63 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
-import Modal from '~/components/Modal.vue'
-import OrganizationCard from '~/components/OrganizationCard.vue'
-import IconAgilis from '~/components/icons/IconAgilis.vue'
-import { organizationList } from '~/static/organizationList'
+import { computed, onMounted, reactive, ref } from 'vue'
+import router from '~/router'
+import OrganizationCard from '~/blocks/OrganizationCard.vue'
 import CreateOrganization from '~/views/organization/Create.vue'
+import { useOrganizationStore } from '~/stores/organization'
+import { useAuthStore } from '~/stores/auth'
+import { useSocketStore } from '~/stores/socket'
+import type { Message } from '~/models/Message'
 
-const organizations = ref(organizationList)
+const organizationStore = useOrganizationStore()
+const authStore = useAuthStore()
+
+const {
+  execute: getOrganizations,
+  data: organizationData,
+  isFetching: isLoadingOrganization,
+} = organizationStore.index()
+
+const { execute: me, data: userData } = authStore.me()
+
+getOrganizations()
+me()
+
+const organizations = computed(() => {
+  return organizationData.value ? organizationData.value.data : []
+})
+
+const user = computed(() => {
+  return userData.value ? userData.value.data : null
+})
+
+const socketStore = useSocketStore()
+
+socketStore.connect({
+  auth: {
+    token: authStore.token,
+  },
+})
+
+type MessageNotification = Message & { visible: boolean }
+
+const notifications = reactive<MessageNotification[]>([])
+
+onMounted(() => {
+  // add notification and set visible to false in 3 seconds
+  socketStore.listen('message', (message: Message) => {
+    const notification = {
+      ...message,
+      visible: true,
+    }
+
+    notifications.push(notification)
+
+    setTimeout(() => {
+      notifications.splice(notifications.indexOf(notification), 1)
+    }, 3000)
+  })
+})
 
 const isOpen = ref(false)
 
@@ -19,10 +68,29 @@ function openModal() {
 function closeModal() {
   isOpen.value = false
 }
+
+function goToProjects(id: number) {
+  if (!id) {
+    return
+  }
+
+  router.push({ name: 'projects', params: { organizationId: id } })
+}
 </script>
 
 <template>
-  <div class="bg-[#201E1E] min-h-screen">
+  <Notification
+    v-for="(message, index) in notifications"
+    :key="index"
+    :notification="{
+      title: message.sender.name,
+      description: 'Te enviou uma mensagem',
+      content: message.content,
+      photo: message.sender.avatar_url,
+      visible: message.visible,
+    }"
+  />
+  <div class="bg-[#201E1E] min-h-screen text-white">
     <div class="hidden md:flex w-16 flex-col inset-y-0 transition-all fixed">
       <div class="flex-1 flex flex-col min-h-0 bg-electric-violet-500 relative">
         <div
@@ -32,10 +100,17 @@ function closeModal() {
             fill="white"
             :size="32"
           />
+          <RouterLink v-if="user" to="/settings/account">
+            <img
+              :src="user.avatar_url"
+              class="size-10 rounded-full"
+            >
+          </RouterLink>
 
           <Icon
-            icon="bx:user-circle"
-            class="size-10 text-white"
+            v-else
+            icon="bxs:user-circle"
+            class="size-12 translate-y-1 text-neutral-900/45 animate-pulse"
           />
         </div>
       </div>
@@ -56,23 +131,37 @@ function closeModal() {
         </div>
 
         <div class="my-8 flex justify-center items-center flex-wrap flex-col gap-8 sm:flex-row sm:justify-start sm:items-start">
-          <RouterLink
-            v-for="organization in organizations"
-            :key="organization.title"
-            to="/projects"
+          <div v-if="!organizations.length && !isLoadingOrganization">
+            Você ainda não pertence à nenhuma organização.
+          </div>
+          <div
+            v-if="isLoadingOrganization"
+            class="w-full flex justify-center"
           >
-            <OrganizationCard :organization="organization" />
-          </RouterLink>
+            <Loading />
+          </div>
+          <OrganizationCard
+            v-for="organization in organizations"
+            v-else
+            :key="organization.title"
+            :organization
+            @click="goToProjects(organization.id)"
+          />
         </div>
       </main>
     </div>
   </div>
   <Modal
+    v-if="user"
     :is-open
     title="Nova organização"
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateOrganization />
+    <CreateOrganization
+      :owner-id="user.id"
+      @refresh-list="getOrganizations"
+      @close-modal="closeModal"
+    />
   </Modal>
 </template>

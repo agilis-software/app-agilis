@@ -2,10 +2,7 @@
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import Search from '~/components/Search.vue'
-import TaskRow from '~/components/TaskRow.vue'
-import Modal from '~/components/Modal.vue'
-import CreateTask from '~/views/task/Create.vue'
+import TaskRow from '~/blocks/TaskRow.vue'
 
 const isOpen = ref(false)
 
@@ -111,6 +108,6 @@ function closeModal() {
     @close="closeModal"
     @handle-close="closeModal"
   >
-    <CreateTask />
+    <!-- <CreateTask /> -->
   </Modal>
 </template>
